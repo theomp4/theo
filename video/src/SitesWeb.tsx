@@ -3,8 +3,8 @@
 // pas de coupe sèche, chaque scène se fond dans la suivante.
 import React from "react";
 import { AbsoluteFill, Audio, Img, Sequence, staticFile, useVideoConfig } from "remotion";
-import { Background, Check, Pill, Sparkle, StarRow, Title, springAt, useT } from "./components";
-import { DesktopSite, MobileSite } from "./Site";
+import { Background, Check, GoogleG, Pill, Sparkle, Title, springAt, useT } from "./components";
+import { DesktopSite, GoogleResults, MobileSite } from "./Site";
 import { C, EASE, FPS, H, W, fontFamily, shadow, tw } from "./theme";
 
 export const DURATION = 26;
@@ -26,13 +26,18 @@ const SOUNDS: [string, number, number?][] = [
   ["tick", 4.8, 0.35],
   ["tick", 4.95, 0.35],
   ["shimmer", 5.8, 0.3],
-  ["whoosh-soft", 7.55, 0.4],
-  ["ding", 7.95, 0.45],
+  ["whoosh-soft", 7.45, 0.4],
+  ["tick", 7.7, 0.3],
+  ["tick", 7.85, 0.3],
+  ["tick", 8.0, 0.3],
+  ["tick", 8.15, 0.3],
+  ["tick", 8.3, 0.3],
+  ["whoosh-soft", 8.7, 0.35],
+  ["ding", 9.1, 0.45],
   ["whoosh-soft", 9.6, 0.35],
   ["click", 10.9, 0.6],
   ["whoosh", 11.95, 0.5],
-  ["pop", 14.2, 0.4],
-  ["whoosh-soft", 15.75, 0.4],
+    ["whoosh-soft", 15.75, 0.4],
   ["pop", 16.4, 0.45],
   ["pop", 16.8, 0.45],
   ["pop", 17.2, 0.45],
@@ -47,8 +52,8 @@ const DESK = { x: 40, y: 640, w: 1000, h: 724 };
 const PHONE = { x: 290, y: 570, w: 500, h: 1020 };
 // points clés du site (en coordonnées écran, version ordinateur)
 const K = DESK.w / 940;
-const BTN = { x: DESK.x + 837 * K, y: DESK.y + 64 + 39 * K };
-const REVIEWS = { x: DESK.x + 216 * K, y: DESK.y + 64 + 427 * K };
+const RESULT = { x: DESK.x + 344 * K, y: DESK.y + 64 + 215 * K }; // 1er résultat Google
+const CLICK = { x: DESK.x + 250 * K, y: DESK.y + 64 + 238 * K }; // son titre
 const TOOLBAR = 64;
 const lerp = (a: number, b: number, p: number) => a + (b - a) * p;
 
@@ -73,6 +78,8 @@ const Device: React.FC = () => {
   const innerH = h - bezel * 2 - bar;
 
   const chars = Math.floor(tw(t, [4.3, 5.1], [0, URL.length], (v) => v));
+  const g = tw(t, [7.45, 7.85], [0, 1], EASE.inOut) * (1 - tw(t, [11.0, 11.45], [0, 1], EASE.inOut));
+  const urlText = t >= 7.6 && t < 11.1 ? "google.fr/search?q=boulangerie" : URL.slice(0, chars);
   const scroll = tw(t, [13.6, 15.4], [0, 250], EASE.inOut) + tw(t, [16.8, 19.8], [0, 120], EASE.inOut);
   const deskO = 1 - tw(m, [0.15, 0.55], [0, 1], (v) => v);
   const mobO = tw(m, [0.45, 0.85], [0, 1], (v) => v);
@@ -109,7 +116,7 @@ const Device: React.FC = () => {
             <path d="M6 10V8a6 6 0 1 1 12 0v2h1v12H5V10h1zm2 0h8V8a4 4 0 1 0-8 0v2z" fill={C.grey} />
           </svg>
           <span>
-            {URL.slice(0, chars)}
+            {urlText}
             <span style={{ opacity: t < 5.6 && Math.floor(t * 2.5) % 2 === 0 ? 1 : 0, color: C.blue }}>|</span>
           </span>
         </div>
@@ -118,12 +125,17 @@ const Device: React.FC = () => {
       <div style={{ position: "absolute", left: bezel, top: bezel + bar, width: innerW, height: innerH, borderRadius: Math.max(0, radius - bezel), overflow: "hidden", background: C.white }}>
         {deskO > 0 && (
           <div style={{ position: "absolute", left: 0, top: 0, width: 940, height: 636, transformOrigin: "0 0", transform: `scale(${innerW / 940})`, opacity: deskO, filter: `blur(${(1 - deskO) * 6}px)` }}>
-            <DesktopSite skel={4.4} fill={5.8} starsAt={7.9} />
+            <DesktopSite skel={4.4} fill={5.8} />
+            {g > 0 && (
+              <div style={{ position: "absolute", inset: 0, opacity: g, transform: `translateY(${(1 - g) * 30}px) scale(${0.98 + g * 0.02})`, filter: `blur(${(1 - g) * 8}px)` }}>
+                <GoogleResults at={7.5} />
+              </div>
+            )}
           </div>
         )}
         {mobO > 0 && (
           <div style={{ position: "absolute", left: 0, top: 0, width: 416, height: 876, transformOrigin: "0 0", transform: `scale(${innerW / 416})`, opacity: mobO, filter: `blur(${(1 - mobO) * 6}px)` }}>
-            <MobileSite scroll={scroll} starsAt={14.15} />
+            <MobileSite scroll={scroll} />
           </div>
         )}
         {/* Dynamic Island */}
@@ -137,14 +149,14 @@ const Cursor: React.FC = () => {
   const t = useT();
   if (t < 9.9 || t > 12.2) return null;
   const p = tw(t, [10.0, 10.85], [0, 1], EASE.inOut);
-  const x = lerp(760, BTN.x, p) + Math.sin(p * Math.PI) * 120;
-  const y = lerp(1420, BTN.y, p);
+  const x = lerp(820, CLICK.x, p) + Math.sin(p * Math.PI) * 120;
+  const y = lerp(1500, CLICK.y, p);
   const click = tw(t, [10.85, 10.95], [0, 1]) - tw(t, [10.95, 11.15], [0, 1]);
   const ripple = tw(t, [10.9, 11.6], [0, 1]);
   const o = tw(t, [9.9, 10.1], [0, 1]) * (1 - tw(t, [11.7, 12.0], [0, 1]));
   return (
     <>
-      <div style={{ position: "absolute", left: BTN.x - 60, top: BTN.y - 60, width: 120, height: 120, borderRadius: "50%", border: `4px solid ${C.blue}`, opacity: ripple > 0 ? (1 - ripple) * 0.8 : 0, transform: `scale(${0.2 + ripple})` }} />
+      <div style={{ position: "absolute", left: CLICK.x - 60, top: CLICK.y - 60, width: 120, height: 120, borderRadius: "50%", border: `4px solid ${C.blue}`, opacity: ripple > 0 ? (1 - ripple) * 0.8 : 0, transform: `scale(${0.2 + ripple})` }} />
       <svg width="54" height="54" viewBox="0 0 24 24" style={{ position: "absolute", left: x - 8, top: y - 4, opacity: o, transform: `scale(${1 - click * 0.18})`, filter: "drop-shadow(0 6px 10px rgba(14,26,58,0.3))" }}>
         <path d="M4 2l15 9.5-6.6 1.3 3.9 7.4-2.9 1.5-3.9-7.4L4 19z" fill={C.navy} stroke="#fff" strokeWidth={1.4} strokeLinejoin="round" />
       </svg>
@@ -152,7 +164,7 @@ const Cursor: React.FC = () => {
   );
 };
 
-const Feature: React.FC<{ x: number; y: number; at: number; label: string; stars?: boolean; k: number }> = ({ x, y, at, label, stars, k }) => {
+const Feature: React.FC<{ x: number; y: number; at: number; label: string; google?: boolean; k: number }> = ({ x, y, at, label, google, k }) => {
   const t = useT();
   const { fps } = useVideoConfig();
   const p = springAt(t, at, fps, { damping: 14, stiffness: 130, mass: 0.8 });
@@ -181,11 +193,14 @@ const Feature: React.FC<{ x: number; y: number; at: number; label: string; stars
         filter: `blur(${(1 - Math.min(1, p)) * 6 + out * 8}px)`,
       }}
     >
-      <Check size={50} />
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-        {label}
-        {stars && <StarRow size={26} at={at + 0.25} gap={4} />}
-      </div>
+      {google ? (
+        <div style={{ width: 50, height: 50, borderRadius: "50%", background: "#F1F4FA", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <GoogleG size={30} />
+        </div>
+      ) : (
+        <Check size={50} />
+      )}
+      {label}
     </div>
   );
 };
@@ -229,7 +244,7 @@ const EndCard: React.FC = () => {
         <Sparkle x={210} y={520} at={21.3} size={38} />
         <Sparkle x={880} y={590} at={21.5} size={28} />
         <Sparkle x={840} y={860} at={21.75} size={34} />
-        <Title lines={["Tes avis. Ton site.", [{ w: "Une seule " }, { w: "équipe.", accent: true }]]} at={21.55} top={920} size={74} />
+        <Title lines={["Un beau site,", [{ w: "bien placé " }, { w: "sur Google.", accent: true }]]} at={21.55} top={920} size={70} />
         <div style={{ position: "absolute", left: 0, right: 0, top: 1200, display: "flex", flexDirection: "column", alignItems: "center", gap: 26 }}>
           <div style={{ transform: `scale(${cta})`, opacity: Math.min(1, cta * 1.5) }}>
             <Pill dark style={{ fontSize: 40, padding: "26px 56px", position: "relative", overflow: "hidden", boxShadow: "0 24px 50px -16px rgba(65,102,176,0.6)" }}>
@@ -254,14 +269,14 @@ export const SitesWeb: React.FC = () => {
   const { fps } = useVideoConfig();
 
   // caméra : léger travelling, zoom sur les avis, puis plongée dans le téléphone
-  const push = tw(t, [3.6, 7.5], [0, 0.05], EASE.inOut) * (1 - tw(t, [7.5, 8.4], [0, 1], EASE.inOut));
-  const z = tw(t, [7.55, 8.45], [0, 1], EASE.inOut) - tw(t, [9.6, 10.4], [0, 1], EASE.inOut);
+  const push = tw(t, [3.6, 7.5], [0, 0.05], EASE.inOut) * (1 - tw(t, [8.65, 9.45], [0, 1], EASE.inOut));
+  const z = tw(t, [8.65, 9.45], [0, 1], EASE.inOut) - tw(t, [9.85, 10.45], [0, 1], EASE.inOut);
   const e = tw(t, [19.9, 20.6], [0, 1], EASE.in);
-  const focus = REVIEWS;
-  const camS = 1 + push + 0.55 * z + 2.6 * e;
+  const focus = RESULT;
+  const camS = 1 + push + 0.42 * z + 2.6 * e;
   const fx = lerp(540, focus.x, z);
   const fy = lerp(1080, focus.y, z);
-  const tx = lerp(540, 640, z);
+  const tx = lerp(540, 548, z);
   const ty = lerp(1080, 1250, z);
 
   const pill = springAt(t, 0.08, fps, { damping: 14, stiffness: 150, mass: 0.7 });
@@ -275,11 +290,11 @@ export const SitesWeb: React.FC = () => {
       <div style={{ position: "absolute", top: 600, left: 0, right: 0, display: "flex", justifyContent: "center", opacity: Math.min(1, pill * 1.4) * (1 - pillOut), transform: `scale(${pill}) translateY(${-pillOut * 30}px)`, filter: `blur(${pillOut * 8}px)` }}>
         <Pill dark style={{ fontSize: 30 }}>
           <span style={{ width: 10, height: 10, borderRadius: "50%", background: C.star }} />
-          Nouveau chez Review Maker
+          Nouveau · Review Maker crée ton site
         </Pill>
       </div>
-      <Title lines={["Tu nous connais", ["pour tes ", { w: "avis Google.", accent: true }].map((p) => (typeof p === "string" ? { w: p } : p))]} at={0.15} out={1.75} top={720} size={84} />
-      <Title lines={["Maintenant,", "on crée aussi", [{ w: "ton site internet.", accent: true }]]} at={1.95} out={3.35} top={700} size={90} stagger={0.07} />
+      <Title lines={["Ton commerce mérite", [{ w: "un site " }, { w: "qui en jette.", accent: true }]]} at={0.15} out={1.75} top={720} size={84} />
+      <Title lines={["Beau, pro,", "et surtout", [{ w: "visible sur Google.", accent: true }]]} at={1.95} out={3.35} top={700} size={90} stagger={0.07} />
 
       {/* Monde filmé par la caméra */}
       <AbsoluteFill style={{ transformOrigin: "0 0", transform: `translate(${tx - fx * camS}px, ${ty - fy * camS}px) scale(${camS})` }}>
@@ -287,12 +302,12 @@ export const SitesWeb: React.FC = () => {
         <Cursor />
         <Feature x={40} y={740} at={16.4} label="Design sur-mesure" k={0} />
         <Feature x={570} y={1030} at={16.8} label="Adapté au mobile" k={1.7} />
-        <Feature x={50} y={1300} at={17.2} label="Tes avis en avant" stars k={3.1} />
+        <Feature x={50} y={1300} at={17.2} label="Visible sur Google" google k={3.1} />
       </AbsoluteFill>
 
       {/* Titres des scènes (hors caméra, toujours lisibles) */}
-      <Title lines={[[{ w: "Un site " }, { w: "pro,", accent: true }], "à ton image."]} at={3.85} out={7.3} />
-      <Title lines={[[{ w: "Tes " }, { w: "avis Google", accent: true }], "mis en avant."]} at={7.55} out={11.45} />
+      <Title lines={["Un design", [{ w: "qui donne envie.", accent: true }]]} at={3.85} out={7.3} />
+      <Title lines={["Mis en avant", [{ w: "sur Google.", accent: true }]]} at={7.55} out={11.45} />
       <Title lines={["Parfait sur", [{ w: "mobile.", accent: true }]]} at={11.65} out={15.55} />
       <Title lines={["Tout pour", [{ w: "attirer " }, { w: "des clients.", accent: true }]]} at={15.85} out={19.75} />
 

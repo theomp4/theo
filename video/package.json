@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "studio": "remotion studio",
-    "render": "remotion render SitesWeb out/ReviewMaker-SitesWeb.mp4"
+    "render": "remotion render SitesWeb out/ReviewMaker-SitesWeb-v2.mp4"
   },
   "dependencies": {
     "@fontsource/poppins": "^5.3.0",

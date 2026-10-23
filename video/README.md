@@ -12,3 +12,13 @@ npm install
 npm run studio   # aperçu
 npm run render   # → out/ReviewMaker-SitesWeb.mp4
 ```
+
+## V3 (montage dynamique, DA sombre)
+
+- `src/v3/` : scènes calées sur une musique 128 BPM (`core.tsx` = grille rythmique, flou de mouvement, grain, flashs)
+- `scripts/make_soundtrack.py` : compose la musique + les effets → `public/audio/soundtrack.wav`
+- Photos des sites d'exemple : Unsplash (licence Unsplash, usage commercial autorisé)
+
+```
+npm run render:v3
+```

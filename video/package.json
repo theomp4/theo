@@ -4,7 +4,8 @@
   "scripts": {
     "studio": "remotion studio",
     "render": "remotion render SitesWeb out/ReviewMaker-SitesWeb-v2.mp4",
-    "render:v3": "python3 scripts/make_soundtrack.py && remotion render SitesV3 out/ReviewMaker-SitesWeb-v3.mp4"
+    "render:v3": "python3 scripts/make_soundtrack.py && remotion render SitesV3 out/ReviewMaker-SitesWeb-v3.mp4",
+    "render:v4": "python3 scripts/make_soundtrack_v4.py && remotion render SitesV4 out/ReviewMaker-SitesWeb-v4-master.mp4"
   },
   "dependencies": {
     "@fontsource/bebas-neue": "^5.3.0",

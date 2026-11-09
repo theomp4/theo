@@ -49,7 +49,9 @@ jusqu'au bout). Les messages d'erreur éventuels sont notés dans `data\journal.
    **Continuer** jusqu'à la fin (ton mot de passe Mac est demandé), puis relance
    `Lancer Review Maker.command`. L'installation du logiciel prend ensuite 3 à 5 minutes.
 4. Ton navigateur s'ouvre sur le logiciel, et un raccourci **Logiciel de prospection Review Maker**
-   apparaît sur ton Bureau : utilise-le les fois suivantes. Tu peux fermer la fenêtre du Terminal.
+   apparaît sur ton Bureau : utilise-le les fois suivantes.
+5. **Laisse la fenêtre du Terminal ouverte** pendant que tu utilises le logiciel : c'est lui qui tourne
+   dedans. Si le logiciel s'arrête à cause d'une erreur, elle s'affiche dans cette fenêtre.
 
 N'ouvre pas `Lancer Review Maker.bat` sur Mac : c'est le lanceur pour Windows.
 

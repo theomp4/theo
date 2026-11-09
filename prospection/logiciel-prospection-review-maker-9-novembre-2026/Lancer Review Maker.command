@@ -59,10 +59,19 @@ printf '#!/bin/bash\nexec "%s/Lancer Review Maker.command"\n' "$DOSSIER" > "$RAC
   && echo "Le raccourci « Logiciel de prospection Review Maker » est sur ton Bureau : utilise-le pour ouvrir le logiciel."
 
 # --- 4. Lancer ----------------------------------------------------------------------
-# Le logiciel s'arrête tout seul quand la page est fermée. Messages et erreurs : data/journal.txt.
+# Le logiciel tourne dans cette fenêtre : s'il y a une erreur, elle s'affiche ici.
+# Il s'arrête tout seul quand la page est fermée. Tout est aussi noté dans data/journal.txt.
 mkdir -p data
-echo "Le logiciel s'ouvre dans ton navigateur... Tu peux fermer cette fenêtre."
-nohup .venv/bin/python serveur.py >> data/journal.txt 2>&1 &
-disown
-sleep 2
+echo
+echo "Le logiciel s'ouvre dans ton navigateur : http://127.0.0.1:8765"
+echo "LAISSE CETTE FENÊTRE OUVERTE pendant que tu utilises le logiciel."
+echo
+.venv/bin/python -u serveur.py 2>&1 | tee -a data/journal.txt
+CODE=${PIPESTATUS[0]}
+if [ "$CODE" != "0" ]; then
+  erreur "Le logiciel s'est arrêté à cause d'une erreur (code $CODE), affichée juste au-dessus.
+Fais une capture d'écran de cette fenêtre et envoie-la à Claude."
+fi
+echo
+echo "Le logiciel est fermé. Tu peux fermer cette fenêtre."
 exit 0

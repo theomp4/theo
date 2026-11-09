@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chez Ennio · Trattoria italienne &amp; corse aux Clayes-sous-Bois</title>
+<meta name="description" content="Chez Ennio, trattoria italienne et corse aux Clayes-sous-Bois, à deux pas de Plaisir : pinsa romaine, pâtes, escalopes de veau, planches corses, vins d'Italie et terrasse. Réservation au 01 30 55 26 07.">
+<meta name="theme-color" content="#F3EEE4">
+<meta property="og:title" content="Chez Ennio · Trattoria">
+<meta property="og:description" content="Pinsa romaine, paste, piatti et planches corses. 40 rue Maurice Jouet, Les Clayes-sous-Bois.">
+<meta property="og:image" content="assets/img/fourchette.jpg">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="assets/img/fourchette.jpg">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="is-loading">
+
+<!-- Écran d'ouverture -->
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader__in">
+    <p class="loader__word"><span>Chez</span> <em>Ennio</em></p>
+    <span class="loader__bar"><i></i></span>
+    <p class="loader__sub">Trattoria · Les Clayes-sous-Bois</p>
+  </div>
+</div>
+
+<!-- Curseur -->
+<div class="cursor" id="cursor" aria-hidden="true"><span class="cursor__label"></span></div>
+
+<!-- ============ HEADER ============ -->
+<header class="head" id="head">
+  <div class="wrap head__in">
+    <a class="brand" href="#top" aria-label="Chez Ennio, accueil">
+      <span class="brand__name">Chez <em>Ennio</em></span>
+      <span class="brand__sub">Trattoria</span>
+    </a>
+    <nav class="head__nav" aria-label="Navigation principale">
+      <a href="#carte">La carte</a>
+      <a href="#pinsa">La pinsa</a>
+      <a href="#terrasse">Terrasse</a>
+      <a href="#avis">Avis</a>
+      <a href="#infos">Infos</a>
+    </nav>
+    <a class="btn btn--ink head__cta" href="tel:+33130552607" data-magnetic><span>Réserver · 01 30 55 26 07</span></a>
+    <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="menu" id="menu" aria-hidden="true">
+  <nav class="wrap menu__in">
+    <a href="#carte"><small>01</small>La carte</a>
+    <a href="#pinsa"><small>02</small>La pinsa</a>
+    <a href="#terrasse"><small>03</small>Terrasse</a>
+    <a href="#avis"><small>04</small>Avis</a>
+    <a href="#infos"><small>05</small>Infos</a>
+    <a class="btn btn--tomato btn--lg" href="tel:+33130552607"><span>Réserver une table</span></a>
+  </nav>
+</div>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap hero__grid">
+    <div class="hero__text">
+      <p class="eyebrow" data-hero="fade">Trattoria italienne &amp; corse · Les Clayes-sous-Bois</p>
+      <h1 class="hero__title" aria-label="Chez Ennio">
+        <span class="hero__l1" data-split>Chez</span>
+        <span class="hero__l2" data-split>Ennio</span>
+      </h1>
+      <p class="hero__lead" data-hero="fade">Pinsa romaine, paste, escalopes de veau et planches d'Italie et de Corse. Une vraie trattoria, à deux pas de Plaisir.</p>
+      <div class="hero__actions" data-hero="fade">
+        <a class="btn btn--tomato btn--lg" href="tel:+33130552607" data-magnetic><span>Réserver une table</span></a>
+        <a class="btn btn--line btn--lg" href="#carte" data-magnetic><span>Découvrir la carte</span></a>
+      </div>
+      <a class="hero__rating" href="#avis" data-hero="fade">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2c-2 1.5-4.5 2.4-7.2 2.4-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>
+        <strong>4,3</strong><span class="stars">★★★★★</span><span>621 avis Google</span>
+      </a>
+    </div>
+
+    <div class="hero__visual">
+      <figure class="hero__img" data-hero="img" data-cursor="Buon appetito">
+        <img src="assets/img/fourchette.jpg" alt="Spaghetti à la tomate enroulés sur une fourchette" fetchpriority="high">
+      </figure>
+      <div class="seal" data-hero="fade" aria-hidden="true">
+        <svg viewBox="0 0 200 200">
+          <defs><path id="circ" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
+          <text><textPath href="#circ">Pinsa romana · Paste · Piatti · Dolci · Vini ·</textPath></text>
+        </svg>
+        <span class="seal__mid">dal<br><em>forno</em></span>
+      </div>
+      <img class="hero__ill" src="assets/ill/pinsa.png" alt="" aria-hidden="true" data-hero="fade">
+    </div>
+  </div>
+  <a class="scroll-cue" href="#manifesto" aria-label="Défiler vers le bas"><span></span></a>
+</section>
+
+<!-- ============ BANDEAU ============ -->
+<div class="marquee marquee--ink" aria-hidden="true">
+  <div class="marquee__track" data-marquee="1">
+    <span>Pinsa romana</span><i>✦</i><span><em>Paste</em></span><i>✦</i><span>Piatti</span><i>✦</i><span><em>Dolci</em></span><i>✦</i><span>Planches corses</span><i>✦</i><span><em>Vini d'Italia</em></span><i>✦</i>
+  </div>
+</div>
+
+<!-- ============ MANIFESTO ============ -->
+<section class="manifesto" id="manifesto">
+  <div class="wrap manifesto__grid">
+    <p class="kicker" data-reveal>La maison</p>
+    <p class="manifesto__text" data-words>Ici, on cuisine comme <em>à la maison.</em> Une pâte à pinsa travaillée longuement, du veau au marsala, une tagliata sur lit de roquette, et des planches venues d'<em>Italie</em> et de <em>Corse.</em> On s'attable, on partage, on reprend un café Florio.</p>
+    <figure class="manifesto__img manifesto__img--a" data-speed="-0.12" data-cursor="Fatto in casa">
+      <img src="assets/img/ingredients.jpg" alt="Pâtes fraîches, tomates cerises et basilic" loading="lazy" data-clip>
+    </figure>
+    <figure class="manifesto__img manifesto__img--b" data-speed="0.14">
+      <img src="assets/img/vin.jpg" alt="Amis trinquant avec des verres de vin rouge" loading="lazy" data-clip>
+    </figure>
+    <img class="manifesto__ill" src="assets/ill/planche.png" alt="" aria-hidden="true" data-reveal>
+  </div>
+</section>
+
+<!-- ============ PINSA ============ -->
+<section class="pinsa" id="pinsa">
+  <div class="pinsa__pin">
+    <div class="wrap pinsa__head">
+      <div>
+        <p class="kicker kicker--light" data-reveal>La spécialité</p>
+        <h2 class="h2" data-lines>La Pinsa. <em>Kesako ?</em></h2>
+      </div>
+      <p class="pinsa__intro" data-reveal>Originaire de la tradition romaine, la pinsa est une version plus légère et plus digeste de la pizza. Sa pâte, travaillée longuement, est croustillante dehors et moelleuse dedans.</p>
+    </div>
+    <div class="pinsa__viewport">
+      <div class="pinsa__track" id="pinsaTrack">
+        <article class="pcard pcard--photo" data-cursor="Croustillante">
+          <img src="assets/img/roquette.jpg" alt="Pinsa garnie de roquette et de tomates" loading="lazy">
+          <div class="pcard__body"><span class="pcard__n">La signature</span><h3>Burrata</h3><p>Sauce tomate, burrata, pastrami, mozzarella, roquette, huile d'olive, pesto</p><span class="pcard__p">16,90 €</span></div>
+        </article>
+        <article class="pcard"><span class="pcard__n">01</span><h3>Napolitaine</h3><p>Sauce tomate, mozzarella, anchois, câpres, origan, huile d'olive, pesto</p><span class="pcard__p">12,90 €</span></article>
+        <article class="pcard"><span class="pcard__n">02</span><h3>Margarita</h3><p>Sauce tomate, mozzarella, origan</p><span class="pcard__p">12,40 €</span></article>
+        <article class="pcard pcard--photo" data-cursor="Filante">
+          <img src="assets/img/filante.jpg" alt="Part de pinsa au fromage filant" loading="lazy">
+          <div class="pcard__body"><span class="pcard__n">03</span><h3>Quattro Formaggi</h3><p>Crème fraîche, mozzarella, scamorza, bleu, cheddar, origan, huile d'olive, pesto</p><span class="pcard__p">14,50 €</span></div>
+        </article>
+        <article class="pcard"><span class="pcard__n">04</span><h3>Mortadella</h3><p>Sauce tomate, mortadella, pistacchio, pesto</p><span class="pcard__p">14,90 €</span></article>
+        <article class="pcard"><span class="pcard__n">05</span><h3>Romaine</h3><p>Sauce tomate, mozzarella, jambon, origan, huile d'olive, pesto</p><span class="pcard__p">13,50 €</span></article>
+        <article class="pcard"><span class="pcard__n">06</span><h3>Chorizo</h3><p>Sauce tomate, mozzarella, jambon, chorizo, olives, origan, huile d'olive, pesto</p><span class="pcard__p">15,10 €</span></article>
+        <article class="pcard pcard--photo" data-cursor="Dal forno">
+          <img src="assets/img/margherita.jpg" alt="Pizza tomate, mozzarella et basilic sortant du four" loading="lazy">
+          <div class="pcard__body"><span class="pcard__n">07</span><h3>Végétarienne</h3><p>Sauce tomate, mozzarella, artichaut, tomate, champignons, origan, huile d'olive, pesto</p><span class="pcard__p">14,30 €</span></div>
+        </article>
+        <article class="pcard"><span class="pcard__n">08</span><h3>Salmon</h3><p>Crème fraîche, mozzarella, saumon fumé, origan, huile d'olive, pesto</p><span class="pcard__p">15,70 €</span></article>
+        <article class="pcard pcard--end">
+          <img src="assets/ill/pinsa.png" alt="" aria-hidden="true">
+          <h3>Sur place<br>ou <em>à emporter.</em></h3>
+          <a class="btn btn--tomato" href="tel:+33130552607" data-magnetic><span>Commander une pinsa</span></a>
+        </article>
+      </div>
+    </div>
+    <div class="wrap pinsa__progress" aria-hidden="true"><span><i id="pinsaBar"></i></span></div>
+  </div>
+</section>
+
+<!-- ============ LA CARTE ============ -->
+<section class="carte" id="carte">
+  <div class="wrap">
+    <div class="carte__head">
+      <p class="kicker" data-reveal>Il menu</p>
+      <h2 class="h2 h2--xl" data-lines>La <em>carte.</em></h2>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Rubriques de la carte" data-reveal>
+      <button role="tab" aria-selected="true" data-tab="paste">Paste</button>
+      <button role="tab" aria-selected="false" data-tab="piatti">Piatti</button>
+      <button role="tab" aria-selected="false" data-tab="insalate">Antipasti &amp; insalate</button>
+      <button role="tab" aria-selected="false" data-tab="planches">Planches</button>
+      <button role="tab" aria-selected="false" data-tab="dolci">Dolci</button>
+      <span class="tabs__ink" aria-hidden="true"></span>
+    </div>
+
+    <div class="carte__body">
+      <div class="carte__lists">
+        <div class="panel is-active" data-panel="paste" role="tabpanel">
+          <ul class="dishes">
+            <li><div><h4>Rigatoni all'arrabbiata</h4><p>Sauce tomate à l'ail, au piment et au basilic, pecorino</p></div><span>12,90</span></li>
+            <li><div><h4>Linguine alla Carbonara</h4><p>Bacon, crème, parmesan et jaune d'œuf</p></div><span>13,90</span></li>
+            <li><div><h4>Linguine Polpette</h4><p>Boulettes de bœuf, sauce tomate et basilic</p></div><span>14,50</span></li>
+            <li><div><h4>Trofie al Pesto e Gambero</h4><p>Pesto et crevettes</p></div><span>15,90</span></li>
+            <li><div><h4>Lasagne alla bolognese</h4><p>Sauce bolognaise, gratinée au four</p></div><span>15,90</span></li>
+          </ul>
+        </div>
+        <div class="panel" data-panel="piatti" role="tabpanel" hidden>
+          <ul class="dishes">
+            <li><div><h4>Mozzarella in Carrozza</h4><p>Le sandwich frit à la mozzarella filandreuse</p></div><span>13,90</span></li>
+            <li><div><h4>Risotto Tartufo</h4><p>Truffe d'été, crème de truffe, champignons, crème fraîche</p></div><span>17,50</span></li>
+            <li><div><h4>Burger – Frites <small>nouveau chaque semaine</small></h4><p>Le hamburger italiano du moment</p></div><span>17,50</span></li>
+            <li><div><h4>Cotoletta alla Milanese</h4><p>Escalope de veau panée, sauce tomate, servie avec des pâtes</p></div><span>17,50</span></li>
+            <li><div><h4>Piccata Marsala</h4><p>Escalopes de veau au marsala, champignons, crème, pâtes</p></div><span>17,80</span></li>
+            <li><div><h4>Bocconcini</h4><p>Petites escalopes de veau, jambon blanc, aubergine, mozzarella, sauce tomate, pâtes</p></div><span>17,90</span></li>
+            <li><div><h4>Osso Buco</h4><p>Jarret de veau braisé au vin blanc, oignons, céleri, carottes, riz safrané</p></div><span>19,90</span></li>
+            <li><div><h4>Tagliata di Manzo</h4><p>Bœuf tranché sur lit de roquette poivrée, parmesan, tomates cerises, huile d'olive</p></div><span>20,90</span></li>
+            <li><div><h4>Pièce du boucher</h4><p>Selon arrivage</p></div><span class="slate">Voir ardoise</span></li>
+          </ul>
+        </div>
+        <div class="panel" data-panel="insalate" role="tabpanel" hidden>
+          <ul class="dishes">
+            <li><div><h4>Barattolo de billes de mozzarella</h4><p>Et tomates cerises marinées</p></div><span>8,90</span></li>
+            <li><div><h4>Focaccia La Gusto</h4><p>Servie tranchée avec un assortiment de sauces</p></div><span>10,90</span></li>
+            <li><div><h4>Bruschetta chèvre</h4><p>Chèvre, miel et noix</p></div><span>11,90</span></li>
+            <li><div><h4>Bruschetta jambon cru</h4><p>Jambon cru, boursin, tomates confites</p></div><span>14,90</span></li>
+            <li><div><h4>Salade Caprese &amp; Burrata</h4><p>Tomates, burrata, huile d'olive, crème balsamique, basilic</p></div><span>14,90</span></li>
+            <li><div><h4>Salade Caesar</h4><p>Filets de poulet panés, parmesan, romaine, croûtons, pignons de pin, sauce césar</p></div><span>15,60</span></li>
+            <li><div><h4>Salade Capricciosa</h4><p>Salade, tomate, pecorino, jambon cru, artichaut, croûtons</p></div><span>15,90</span></li>
+          </ul>
+        </div>
+        <div class="panel" data-panel="planches" role="tabpanel" hidden>
+          <ul class="dishes">
+            <li><div><h4>Terrine de figatellu</h4><p>Terrine de sanglier corse</p></div><span>13,50</span></li>
+            <li><div><h4>Planche de fromages</h4><p>Italiens et corses</p></div><span>20,00</span></li>
+            <li><div><h4>Planche mixte</h4><p>Fromages &amp; charcuteries italiens et corses</p></div><span>22,00</span></li>
+            <li><div><h4>Planche de charcuteries</h4><p>Italiennes et corses</p></div><span>25,00</span></li>
+          </ul>
+          <img class="panel__ill" src="assets/ill/planche.png" alt="" aria-hidden="true">
+        </div>
+        <div class="panel" data-panel="dolci" role="tabpanel" hidden>
+          <ul class="dishes">
+            <li><div><h4>Mousse au chocolat</h4><p>Pour les gourmands</p></div><span>5,90</span></li>
+            <li><div><h4>Crema alla flamma</h4><p>Crème vanille brûlée à la flamme</p></div><span>6,20</span></li>
+            <li><div><h4>Capovolta di mele façon Tatin</h4><p>Tarte renversée aux pommes, caramel et mascarpone</p></div><span>6,90</span></li>
+            <li><div><h4>Panna cotta</h4><p>Douce et tremblotante</p></div><span>6,90</span></li>
+            <li><div><h4>Affogato vanille ou caramel</h4><p>Expresso, boule de glace, crème fouettée, amaretti ou éclats de caramel</p></div><span>7,50</span></li>
+            <li><div><h4>Baba al rum</h4><p>Imbibé comme il se doit</p></div><span>7,90</span></li>
+            <li><div><h4>Rumellino</h4><p>Petits cannelés à la Mandarine Impériale et à la vanille, crème fouettée</p></div><span>7,90</span></li>
+            <li><div><h4>Tiramisu café &amp; Marsala</h4><p>Le classique, servi à la cuillère</p></div><span>7,90</span></li>
+          </ul>
+        </div>
+        <p class="carte__note">Prix en euros, d'après la carte en vigueur. Demandez l'ardoise du jour.</p>
+      </div>
+
+      <div class="carte__visual" data-cursor="Assaggia">
+        <img class="is-active" data-for="paste" src="assets/img/arrabbiata.jpg" alt="Penne à la sauce tomate et parmesan" loading="lazy">
+        <img data-for="piatti" src="assets/img/tagliata.jpg" alt="Pâtes au bœuf dans une poêle" loading="lazy">
+        <img data-for="insalate" src="assets/img/ingredients.jpg" alt="Tomates cerises, basilic et pâtes fraîches" loading="lazy">
+        <img data-for="planches" src="assets/img/service.jpg" alt="Table dressée au restaurant" loading="lazy">
+        <img data-for="dolci" src="assets/img/tiramisu.jpg" alt="Part de tiramisu saupoudrée de cacao" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALERIE ============ -->
+<section class="gallery" aria-label="La cucina en images">
+  <div class="gallery__title" aria-hidden="true">
+    <span data-gx="-1">La cucina</span>
+  </div>
+  <div class="gallery__grid">
+    <figure class="g g1" data-speed="0.08"><img src="assets/img/carbonara.jpg" alt="Linguine alla carbonara" loading="lazy" data-clip></figure>
+    <figure class="g g2" data-speed="-0.1"><img src="assets/img/lasagne.jpg" alt="Lasagne gratinées" loading="lazy" data-clip></figure>
+    <figure class="g g3" data-speed="0.16"><img src="assets/img/assiette.jpg" alt="Assiette de spaghetti servie à table" loading="lazy" data-clip></figure>
+    <figure class="g g4" data-speed="-0.06"><img src="assets/img/tiramisu.jpg" alt="Tiramisu" loading="lazy" data-clip></figure>
+    <figure class="g g5" data-speed="0.1"><img src="assets/img/margherita.jpg" alt="Pizza margherita" loading="lazy" data-clip></figure>
+  </div>
+</section>
+
+<!-- ============ VINI ============ -->
+<section class="vini" id="vini">
+  <div class="wrap vini__grid">
+    <div class="vini__text">
+      <p class="kicker kicker--light" data-reveal>Vini, birre &amp; caffè</p>
+      <h2 class="h2" data-lines>De l'Italie <em>à la Corse,</em> dans le verre.</h2>
+      <div class="vini__cols">
+        <div data-reveal>
+          <h3>Vini</h3>
+          <ul><li>Chianti Torre delle Grazie</li><li>Valpolicella Classico</li><li>Nero d'Avola</li><li>Bardolino Chiaretto</li><li>Lambrusco &amp; Prosecco</li></ul>
+        </div>
+        <div data-reveal>
+          <h3>Birre corse</h3>
+          <ul><li>Pietra Ambrée</li><li>Pietra Rossa</li><li>Pietra IPA</li><li>Pietra Blonde bio</li><li>Colomba blanche</li></ul>
+        </div>
+        <div data-reveal>
+          <h3>Dopo cena</h3>
+          <ul><li>Limoncello &amp; amaretto</li><li>Grappa</li><li>Espresso Florio</li><li>Italian coffee</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="vini__visual">
+      <figure data-cursor="Salute !"><img src="assets/img/vin.jpg" alt="Verres de vin rouge levés pour trinquer" loading="lazy" data-clip></figure>
+      <img class="vini__ill" src="assets/ill/raisin.png" alt="" aria-hidden="true" data-speed="-0.2">
+    </div>
+  </div>
+</section>
+
+<!-- ============ TERRASSE ============ -->
+<section class="terrasse" id="terrasse">
+  <div class="wrap terrasse__grid">
+    <div class="terrasse__text">
+      <p class="kicker" data-reveal>Fuori</p>
+      <h2 class="h2" data-lines>La terrasse, <em>à l'abri</em> derrière la trattoria.</h2>
+      <p class="lead" data-reveal>Une pergola en bois, un bar taillé dans un combi, les bières corses à l'ardoise et le drapeau à tête de Maure. Aux beaux jours, c'est ici que tout le monde veut s'asseoir.</p>
+      <ul class="chips" data-reveal>
+        <li>Terrasse ombragée</li><li>Climatisation</li><li>Repas de groupe</li><li>À emporter</li><li>Accès PMR</li>
+      </ul>
+    </div>
+    <figure class="terrasse__img" data-cursor="Fuori">
+      <img src="assets/img/terrasse.jpg" alt="La terrasse couverte de Chez Ennio, avec son bar en combi et le drapeau corse" loading="lazy">
+    </figure>
+    <figure class="terrasse__small" data-speed="-0.15">
+      <img src="assets/img/spritz.jpg" alt="Spritz servi en terrasse" loading="lazy" data-clip>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ AVIS ============ -->
+<section class="avis" id="avis">
+  <div class="wrap avis__head">
+    <div class="avis__score">
+      <span class="avis__big"><span data-count="4.3">4,3</span></span>
+      <div><span class="stars stars--lg">★★★★★</span><p><span data-count="621" data-int>621</span> avis Google</p></div>
+    </div>
+    <h2 class="h2" data-lines>Ils en <em>parlent.</em></h2>
+  </div>
+  <div class="reviews" aria-label="Extraits d'avis Google">
+    <div class="reviews__track" data-marquee="-1">
+      <blockquote class="rev"><span class="stars">★★★★★</span><p>« Les pinsas, c'est délicieux ! »</p><footer>Caroline &amp; Mikaël M.</footer></blockquote>
+      <blockquote class="rev rev--ink"><span class="stars">★★★★★</span><p>« Une vraie valeur sûre ! »</p><footer>M.</footer></blockquote>
+      <blockquote class="rev"><span class="stars">★★★★★</span><p>« Très bel endroit, ambiance cosy. »</p><footer>Sofia</footer></blockquote>
+      <blockquote class="rev rev--tomato"><span class="stars">★★★★★</span><p>« Quel plaisir de venir dans notre restaurant préféré ! »</p><footer>Blandine P.</footer></blockquote>
+      <blockquote class="rev"><span class="stars">★★★★★</span><p>« Un vrai délice ! »</p><footer>Patricia D.</footer></blockquote>
+      <blockquote class="rev rev--ink"><span class="stars">★★★★★</span><p>« Nous reviendrons avec d'autres personnes ! »</p><footer>Corinne T.</footer></blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BANDEAU 2 ============ -->
+<div class="marquee marquee--tomato" aria-hidden="true">
+  <div class="marquee__track" data-marquee="-1">
+    <span>Prenotate</span><i>✦</i><span><em>Réservez</em></span><i>✦</i><span>01 30 55 26 07</span><i>✦</i><span><em>Buon appetito</em></span><i>✦</i>
+  </div>
+</div>
+
+<!-- ============ INFOS ============ -->
+<section class="infos" id="infos">
+  <div class="wrap infos__grid">
+    <div class="infos__main">
+      <p class="kicker kicker--light" data-reveal>Venir chez Ennio</p>
+      <h2 class="h2" data-lines>Une table <em>vous attend.</em></h2>
+      <a class="infos__phone" href="tel:+33130552607" data-reveal>01 30 55 26 07</a>
+      <div class="infos__cols">
+        <div data-reveal>
+          <small>Adresse</small>
+          <p>40 rue Maurice Jouet<br>78340 Les Clayes-sous-Bois</p>
+          <a class="ulink" href="https://www.google.com/maps/dir/?api=1&amp;destination=Chez+Ennio+40+rue+Maurice+Jouet+78340+Les+Clayes-sous-Bois" target="_blank" rel="noopener">Itinéraire</a>
+        </div>
+        <div data-reveal>
+          <small>Horaires</small>
+          <table class="hours">
+            <tr><td>Mardi – Jeudi</td><td>12h – 14h30 · 19h – 22h30</td></tr>
+            <tr><td>Vendredi – Samedi</td><td>12h – 14h30 · 19h – 23h</td></tr>
+            <tr><td>Dimanche – Lundi</td><td>Fermé</td></tr>
+          </table>
+          <p class="open" id="openState"></p>
+        </div>
+      </div>
+      <div class="map" data-reveal>
+        <iframe title="Plan d'accès à Chez Ennio" src="https://maps.google.com/maps?q=Chez%20Ennio%2C%2040%20rue%20Maurice%20Jouet%2C%2078340%20Les%20Clayes-sous-Bois&amp;z=15&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+
+    <form class="resa" name="reservation" method="POST" action="merci.html" data-netlify="true" netlify-honeypot="bot-field" data-reveal>
+      <input type="hidden" name="form-name" value="reservation">
+      <p hidden><label>Ne pas remplir <input name="bot-field"></label></p>
+      <h3>Demande de <em>réservation</em></h3>
+      <p class="resa__sub">Nous vous rappelons pour confirmer votre table.</p>
+      <div class="row2">
+        <label class="f"><span>Nom</span><input name="nom" autocomplete="name" required></label>
+        <label class="f"><span>Téléphone</span><input name="telephone" type="tel" autocomplete="tel" required></label>
+      </div>
+      <div class="row3">
+        <label class="f"><span>Date</span><input name="date" type="date" required></label>
+        <label class="f"><span>Heure</span>
+          <select name="heure"><option>12h00</option><option>12h30</option><option>13h00</option><option>13h30</option><option>19h00</option><option>19h30</option><option selected>20h00</option><option>20h30</option><option>21h00</option><option>21h30</option></select>
+        </label>
+        <label class="f"><span>Couverts</span><input name="couverts" type="number" min="1" max="40" value="2"></label>
+      </div>
+      <label class="f"><span>Un mot pour nous</span><textarea name="message" rows="3" placeholder="Terrasse, anniversaire, allergie…"></textarea></label>
+      <button class="btn btn--tomato btn--lg btn--block" type="submit" data-magnetic><span>Envoyer ma demande</span></button>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__top">
+    <div class="foot__links">
+      <a href="#carte">La carte</a><a href="#pinsa">La pinsa</a><a href="#terrasse">Terrasse</a><a href="#avis">Avis</a><a href="#infos">Infos</a>
+    </div>
+    <a class="foot__phone" href="tel:+33130552607">01 30 55 26 07</a>
+  </div>
+  <div class="foot__word" aria-hidden="true"><span>Chez</span><em>Ennio</em></div>
+  <div class="wrap foot__base">
+    <span>© <span id="year">2026</span> Chez Ennio · Trattoria · 40 rue Maurice Jouet, Les Clayes-sous-Bois</span>
+    <span>Photographies d'ambiance : Unsplash</span>
+  </div>
+</footer>
+
+<div class="actionbar">
+  <a class="btn btn--tomato" href="tel:+33130552607"><span>Réserver</span></a>
+  <a class="btn btn--line" href="#carte"><span>La carte</span></a>
+</div>
+
+<script src="assets/vendor/gsap.min.js" defer></script>
+<script src="assets/vendor/ScrollTrigger.min.js" defer></script>
+<script src="assets/vendor/lenis.min.js" defer></script>
+<script src="assets/main.js" defer></script>
+</body>
+</html>

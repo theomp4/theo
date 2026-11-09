@@ -38,6 +38,21 @@ s'ouvre en quelques secondes, sans fenêtre noire. Quand tu as fini, ferme simpl
 le logiciel s'arrête tout seul dans les secondes qui suivent (une recherche en cours va toujours
 jusqu'au bout). Les messages d'erreur éventuels sont notés dans `data\journal.txt`.
 
+### Sur Mac
+
+1. Double-clique sur le ZIP : le Mac crée le dossier du logiciel. Range-le dans Documents.
+2. Dans ce dossier, fais un **clic droit** sur **`Lancer Review Maker.command`** > **Ouvrir** > **Ouvrir**.
+   (Le premier lancement doit se faire par clic droit : sinon le Mac dit « développeur non identifié ».)
+   Si le Mac refuse quand même : **Réglages Système** > **Confidentialité et sécurité** > en bas,
+   **Ouvrir quand même**.
+3. La première fois, si Python n'est pas installé, son installateur officiel s'ouvre : clique sur
+   **Continuer** jusqu'à la fin (ton mot de passe Mac est demandé), puis relance
+   `Lancer Review Maker.command`. L'installation du logiciel prend ensuite 3 à 5 minutes.
+4. Ton navigateur s'ouvre sur le logiciel, et un raccourci **Logiciel de prospection Review Maker**
+   apparaît sur ton Bureau : utilise-le les fois suivantes. Tu peux fermer la fenêtre du Terminal.
+
+N'ouvre pas `Lancer Review Maker.bat` sur Mac : c'est le lanceur pour Windows.
+
 ---
 
 ## 2. Créer ta clé Google (une seule fois, environ 20 minutes)

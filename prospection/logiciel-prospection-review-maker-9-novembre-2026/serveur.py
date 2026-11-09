@@ -639,7 +639,16 @@ def version_deja_lancee():
 
 
 def arreter_ancien_logiciel():
-    """Ferme le programme qui occupe le port (une ancienne version encore ouverte), sous Windows."""
+    """Ferme le programme qui occupe le port (une ancienne version encore ouverte)."""
+    if sys.platform == "darwin":  # Mac
+        try:
+            pids = subprocess.run(["lsof", "-ti", f"tcp:{PORT}", "-sTCP:LISTEN"],
+                                  capture_output=True, text=True).stdout.split()
+        except OSError:
+            return
+        for pid in pids:
+            subprocess.run(["kill", pid], capture_output=True)
+        return
     if sys.platform != "win32":
         return
     try:

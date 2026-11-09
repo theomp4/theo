@@ -1,11 +1,10 @@
-# M.R.C Auto 78 · message de prospection
+M.R.C AUTO 78
+Site en ligne : https://gentle-rabanadas-7aa338.netlify.app
+Contact : 09 55 63 46 35 · 16 rue de Liège, 78990 Élancourt
 
-**Destinataire :** Rachid (gérant), M.R.C Auto 78, 16 rue de Liège, 78990 Élancourt · 09 55 63 46 35
-
----
-
-## Version Instagram / Facebook / SMS
-
+============================================================
+MESSAGE À ENVOYER (copier-coller)
+============================================================
 Bonjour Rachid,
 
 Je suis passé sur vos avis Google : 5,0 sur 162 avis, c'est rare pour un garage. Ce qui revient le plus, c'est que vous expliquez la panne, que vous réparez au lieu de remplacer et que vous ne gonflez pas la facture.
@@ -20,16 +19,17 @@ Je vous joins aussi quelques captures. Si ça vous plaît, je le mets en ligne a
 
 Théo
 
----
-
-## Version courte (relance)
-
+============================================================
+RELANCE (quelques jours plus tard)
+============================================================
 Bonjour Rachid, je me permets de vous relancer pour la maquette de site que j'ai faite pour M.R.C Auto 78 : https://gentle-rabanadas-7aa338.netlify.app. Elle se regarde en 30 secondes sur téléphone. Dites-moi ce que vous en pensez !
 
----
+============================================================
+PHOTOS À JOINDRE (dossier « photos »)
+============================================================
+1. 01-accueil-ordinateur.jpg : la première impression
+2. 03-filtre-a-particules.jpg : la section FAP avec le comparateur avant/après
+3. 07-mobile-accueil.jpg : la version téléphone
+4. 04-avis-clients.jpg : ses avis mis en valeur
 
-## Captures à joindre (dossier `mrc-auto-78-captures/`)
-1. `01-accueil-ordinateur.jpg` : la première impression
-2. `03-filtre-a-particules.jpg` : la section FAP avec le comparateur avant/après
-3. `07-mobile-accueil.jpg` : la version téléphone
-4. `04-avis-clients.jpg` : ses avis mis en valeur
+Le dossier « site » est celui à glisser sur Netlify (app.netlify.com/drop).

@@ -1,12 +1,10 @@
-# Chez Ennio · message de prospection
+CHEZ ENNIO – TRATTORIA
+Site en ligne : https://coruscating-zuccutto-6d6acc.netlify.app/
+Contact : 01 30 55 26 07 · 40 rue Maurice Jouet, 78340 Les Clayes-sous-Bois
 
-**Destinataire :** Chez Ennio – Trattoria, 40 rue Maurice Jouet, 78340 Les Clayes-sous-Bois · 01 30 55 26 07
-**Canal conseillé :** Facebook (facebook.com/Chez.Ennio) ou en direct au restaurant
-
----
-
-## Version Facebook / Instagram / SMS
-
+============================================================
+MESSAGE À ENVOYER (copier-coller)
+============================================================
 Bonjour,
 
 J'ai vu votre nouvelle carte : la pinsa romaine, les escalopes au marsala, les planches corses… et la terrasse avec le bar en combi, elle est superbe.
@@ -21,16 +19,18 @@ Je vous joins aussi quelques captures. Si ça vous plaît, je le mets en ligne a
 
 Théo
 
----
-
-## Version courte (relance)
-
+============================================================
+RELANCE (quelques jours plus tard)
+============================================================
 Bonjour, je me permets de vous relancer pour la maquette de site que j'ai faite pour Chez Ennio : https://coruscating-zuccutto-6d6acc.netlify.app. Elle se regarde en 30 secondes sur téléphone. Dites-moi ce que vous en pensez !
 
----
+============================================================
+PHOTOS À JOINDRE (dossier « photos »)
+============================================================
+1. 01-accueil.jpg : la première impression
+2. 03-la-pinsa.jpg : la pinsa en défilement horizontal
+3. 05-la-terrasse.jpg : leur terrasse mise en valeur
+4. 08-mobile-accueil.jpg : la version téléphone
 
-## Captures à joindre (dossier `chez-ennio-captures/`)
-1. `01-accueil.jpg` : la première impression
-2. `03-la-pinsa.jpg` : la pinsa en défilement horizontal
-3. `05-la-terrasse.jpg` : leur terrasse mise en valeur
-4. `08-mobile-accueil.jpg` : la version téléphone
+Le dossier « site » est celui à glisser sur Netlify (app.netlify.com/drop).
+Canal conseillé : Facebook (facebook.com/Chez.Ennio) ou en direct au restaurant.

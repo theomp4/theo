@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taanneef Resto · Restaurant sénégalais à Carrières-sous-Poissy</title>
+<meta name="description" content="Taanneef Resto, restaurant sénégalais à Carrières-sous-Poissy : thieb, mafé, yassa, dibi grillé au feu de bois, pastels, brunch le dimanche et soirées live. Ouvert 7j/7. 09 82 65 60 09.">
+<meta name="theme-color" content="#1C2A1B">
+<meta property="og:title" content="Taanneef Resto · La teranga sénégalaise">
+<meta property="og:description" content="Thieb, mafé, yassa, dibi au feu de bois et pastels. 19 place Saint-Exupéry, Carrières-sous-Poissy.">
+<meta property="og:image" content="assets/img/salle.jpg">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="assets/img/salle.jpg">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<!-- Écran d'ouverture -->
+<div class="loader" id="loader" aria-hidden="true">
+  <svg class="loader__leaf" viewBox="0 0 120 200"><path d="M60 196C58 150 20 128 14 84 8 40 40 10 60 4c20 6 52 36 46 80-6 44-44 66-46 112Z"/><path class="vein" d="M60 196V8"/></svg>
+  <p class="loader__word" data-loader-word>Taanneef</p>
+  <p class="loader__sub">Dalal ak jàmm · Bienvenue</p>
+</div>
+
+<div class="cursor" id="cursor" aria-hidden="true"><span class="cursor__label"></span></div>
+
+<!-- ============ HEADER ============ -->
+<header class="head" id="head">
+  <div class="wrap head__in">
+    <a class="brand" href="#top" aria-label="Taanneef Resto, accueil">
+      <svg class="brand__leaf" viewBox="0 0 120 200" aria-hidden="true"><path d="M60 196C58 150 20 128 14 84 8 40 40 10 60 4c20 6 52 36 46 80-6 44-44 66-46 112Z"/><path class="vein" d="M60 196V8"/></svg>
+      <span><span class="brand__name">Taanneef</span><span class="brand__sub">Resto · Sénégal</span></span>
+    </a>
+    <nav class="head__nav" aria-label="Navigation principale">
+      <a href="#grillades">Grillades</a>
+      <a href="#carte">La carte</a>
+      <a href="#lieu">Le lieu</a>
+      <a href="#moments">Brunch &amp; soirées</a>
+      <a href="#infos">Infos</a>
+    </nav>
+    <a class="btn btn--gold head__cta" href="tel:+33982656009" data-magnetic><span>Réserver · 09 82 65 60 09</span></a>
+    <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="menu" id="menu" aria-hidden="true">
+  <nav class="wrap menu__in">
+    <a href="#grillades"><small>01</small>Grillades</a>
+    <a href="#carte"><small>02</small>La carte</a>
+    <a href="#lieu"><small>03</small>Le lieu</a>
+    <a href="#moments"><small>04</small>Brunch &amp; soirées</a>
+    <a href="#infos"><small>05</small>Infos</a>
+    <a class="btn btn--gold btn--lg" href="tel:+33982656009"><span>Réserver une table</span></a>
+  </nav>
+</div>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero__media" aria-hidden="true"><img src="assets/img/salle.jpg" alt="" fetchpriority="high"></div>
+  <div class="hero__shade" aria-hidden="true"></div>
+  <div class="leaves" aria-hidden="true">
+    <svg class="lf lf1" viewBox="0 0 120 200"><path d="M60 196C58 150 20 128 14 84 8 40 40 10 60 4c20 6 52 36 46 80-6 44-44 66-46 112Z"/><path class="vein" d="M60 196V8"/></svg>
+    <svg class="lf lf2" viewBox="0 0 120 200"><path d="M60 196C58 150 20 128 14 84 8 40 40 10 60 4c20 6 52 36 46 80-6 44-44 66-46 112Z"/><path class="vein" d="M60 196V8"/></svg>
+    <svg class="lf lf3" viewBox="0 0 120 200"><path d="M60 196C58 150 20 128 14 84 8 40 40 10 60 4c20 6 52 36 46 80-6 44-44 66-46 112Z"/><path class="vein" d="M60 196V8"/></svg>
+  </div>
+
+  <div class="wrap hero__in">
+    <p class="eyebrow" data-hero><span class="pulse"></span>Restaurant sénégalais · Carrières-sous-Poissy · Ouvert 7j/7</p>
+    <h1 class="hero__title"><span class="hero__name" data-split>Taanneef</span><span class="hero__tag" data-hero>La <em>teranga</em> sénégalaise, à votre table.</span></h1>
+    <p class="hero__lead" data-hero>Thieb, mafé, yassa, dibi grillé au feu de bois et pastels croustillants. Le goût de Dakar, à deux pas de Poissy.</p>
+    <div class="hero__actions" data-hero>
+      <a class="btn btn--gold btn--lg" href="tel:+33982656009" data-magnetic><span>Réserver une table</span></a>
+      <a class="btn btn--glass btn--lg" href="#carte" data-magnetic><span>Découvrir la carte</span></a>
+    </div>
+    <a class="hero__rating" href="#avis" data-hero>
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2c-2 1.5-4.5 2.4-7.2 2.4-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>
+      <strong>4,5</strong><span class="stars">★★★★★</span><span>301 avis Google</span>
+    </a>
+  </div>
+  <div class="hero__dish" data-hero="dish" data-cursor="Pastels !">
+    <img src="assets/img/plats/pastel-viande.jpg" alt="Pastels à la viande et sauce tomate">
+  </div>
+</section>
+
+<!-- ============ BANDEAU ============ -->
+<div class="marquee marquee--gold" aria-hidden="true">
+  <div class="marquee__track" data-marquee="1">
+    <span><em>Dalal ak jàmm</em></span><i>✺</i><span>Thieb</span><i>✺</i><span>Mafé</span><i>✺</i><span>Yassa</span><i>✺</i><span><em>Dibi</em></span><i>✺</i><span>Pastels</span><i>✺</i><span>Bissap</span><i>✺</i><span><em>Teranga</em></span><i>✺</i>
+  </div>
+</div>
+
+<!-- ============ TERANGA ============ -->
+<section class="teranga" id="teranga">
+  <div class="wrap teranga__grid">
+    <p class="kicker" data-reveal>Teranga</p>
+    <p class="teranga__text" data-words>Au Sénégal, la <em>teranga</em> c'est l'art de recevoir. Ici, le riz mijote dans sa sauce tomate, l'agneau grille au <em>feu de bois</em>, les pastels sortent dorés et croustillants, et le bissap est servi bien frais. Installez-vous, on s'occupe du reste.</p>
+    <figure class="teranga__img teranga__img--a" data-speed="-0.1" data-cursor="Thieb poulet"><img src="assets/img/plats/thieb-poulet.jpg" alt="Thieb poulet : riz rouge, cuisse de poulet grillée et légumes" loading="lazy" data-clip></figure>
+    <figure class="teranga__img teranga__img--b" data-speed="0.12" data-cursor="Bissap"><img src="assets/img/bissap.jpg" alt="Deux verres de bissap et des cacahuètes sur une table du restaurant" loading="lazy" data-clip></figure>
+    <ul class="facts" data-reveal>
+      <li><strong>Halal</strong><span>viandes halal</span></li>
+      <li><strong>7j/7</strong><span>midi et soir</span></li>
+      <li><strong>Sans alcool</strong><span>bissap, gingembre, bouye</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ GRILLADES ============ -->
+<section class="grill" id="grillades">
+  <canvas class="embers" id="embers" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="grill__head">
+      <p class="kicker kicker--gold" data-reveal>La spécialité</p>
+      <h2 class="h2" data-lines>Grillades <em>au feu de bois.</em></h2>
+    </div>
+    <figure class="grill__hero" data-cursor="Dibi agneau">
+      <img src="assets/img/plats/dibi-agneau.jpg" alt="Dibi d'agneau grillé au feu de bois avec oignons" loading="lazy">
+      <figcaption class="grill__price"><span>Dibi agneau</span><strong>19,90 €</strong></figcaption>
+    </figure>
+    <blockquote class="grill__quote" data-reveal>« Du feu de charbons de bois, des épices et du goût… Ici, la viande ne passe pas au grill, elle devient une <em>légende</em>&nbsp;! »</blockquote>
+    <div class="grill__list">
+      <article class="gitem" data-reveal><img src="assets/img/plats/dibi-poulet.jpg" alt="Dibi poulet" loading="lazy"><div><h3>Dibi poulet</h3><p>Poulet mariné et braisé, tendre à souhait, salade fraîche et sauce verte maison.</p></div><span>15,90</span></article>
+      <article class="gitem" data-reveal><img src="assets/img/plats/poulet-braise.jpg" alt="Demi-poulet braisé" loading="lazy"><div><h3>½ poulet braisé</h3><p>Mariné et grillé au feu de bois, aux notes fumées, salade et sauce verte maison.</p></div><span>17,90</span></article>
+      <article class="gitem" data-reveal><img src="assets/img/plats/grillade-mixte.jpg" alt="Grillade mixte" loading="lazy"><div><h3>Grillade mixte</h3><p>Poulet, agneau et saucisses grillés au feu de bois, salade et sauce verte maison.</p></div><span>24,90</span></article>
+    </div>
+    <p class="grill__note" data-reveal>Un accompagnement au choix : riz blanc ou frites. Alloco, attiéké, frites de patate douce ou riz rouge : +2 €. Comptez environ 20 minutes de cuisson.</p>
+  </div>
+</section>
+
+<!-- ============ LA CARTE ============ -->
+<section class="carte" id="carte">
+  <div class="wrap">
+    <div class="carte__head">
+      <div>
+        <p class="kicker" data-reveal>La carte</p>
+        <h2 class="h2" data-lines>Les saveurs <em>du Sénégal.</em></h2>
+      </div>
+      <div class="filters" role="tablist" aria-label="Filtrer la carte" data-reveal>
+        <button class="is-on" data-filter="all">Tout</button>
+        <button data-filter="entree">Entrées</button>
+        <button data-filter="plat">Plats</button>
+        <button data-filter="accomp">Accompagnements</button>
+      </div>
+    </div>
+
+    <div class="dishes" id="dishes">
+      <article class="dish" data-cat="entree" data-cursor="Croustillant"><figure><img src="assets/img/plats/pastel-viande.jpg" alt="Pastels à la viande" loading="lazy"></figure><div class="dish__body"><span class="dish__cat">Entrée</span><h3>Pastel viande</h3><p>Le fataya sénégalais : croustillant dehors, viande hachée épicée dedans.</p></div><span class="dish__price">5,00 €</span></article>
+      <article class="dish" data-cat="entree"><figure><img src="assets/img/plats/pastel-thon.jpg" alt="Pastels au thon" loading="lazy"></figure><div class="dish__body"><span class="dish__cat">Entrée</span><h3>Pastel thon</h3><p>Beignets fourrés au thon, sauce rouge aux oignons.</p></div><span class="dish__price">5,00 €</span></article>
+      <article class="dish" data-cat="entree"><figure><img src="assets/img/plats/accras.jpg" alt="Accras de morue" loading="lazy"></figure><div class="dish__body"><span class="dish__cat">Entrée</span><h3>Accras de morue</h3><p>Croustillants, moelleux et parfumés aux épices.</p></div><span class="dish__price">5,50 €</span></article>
+      <article class="dish" data-cat="entree"><figure><img src="assets/img/plats/brochettes.jpg" alt="Brochettes d'allocos et de crevettes" loading="lazy"></figure><div class="dish__body"><span class="dish__cat">Entrée</span><h3>Brochettes allocos &amp; crevettes</h3><p>Servies avec une salade et une sauce tomate.</p></div><span class="dish__price">8,50 €</span></article>
+
+      <article class="dish dish--wide" data-cat="plat" data-cursor="Le classique"><figure><img src="assets/img/plats/thieb-poulet.jpg" alt="Thieb poulet" loading="lazy"></figure><div class="dish__body"><span class="dish__cat">Plat</span><h3>Thieb poulet</h3><p>Riz mijoté à base de légumes et de sauce tomate, poulet grillé.</p></div><span class="dish__price">13,90 €</span></article>
+      <article class="dish" data-cat="plat"><figure><img src="assets/img/plats/yassa-poulet.jpg" alt="Yassa poulet" loading="lazy"></figure><div class="dish__body"><span class="dish__cat">Plat</span><h3>Yassa poulet</h3><p>Riz blanc, sauce aux oignons, moutarde, olives et citron.</p></div><span class="dish__price">13,00 €</span></article>
+      <article class="dish" data-cat="plat"><figure><img src="assets/img/plats/mafe-poulet.jpg" alt="Mafé poulet" loading="lazy"></figure><div class="dish__body"><span class="dish__cat">Plat</span><h3>Mafé poulet</h3><p>Riz blanc, sauce arachide et sa cuisse de poulet.</p></div><span class="dish__price">13,90 €</span></article>
+      <article class="dish" data-cat="plat"><figure><img src="assets/img/plats/mafe-boeuf.jpg" alt="Mafé bœuf" loading="lazy"></figure><div class="dish__body"><span class="dish__cat">Plat</span><h3>Mafé bœuf</h3><p>Riz blanc, sauce arachide, viande de bœuf.</p></div><span class="dish__price">14,90 €</span></article>
+      <article class="dish" data-cat="plat"><figure><img src="assets/img/plats/thieb-vegetarien.jpg" alt="Thieb végétarien" loading="lazy"></figure><div class="dish__body"><span class="dish__cat">Plat · végétarien</span><h3>Thieb végétarien</h3><p>Riz rouge, légumes, alloco, sauce oignon rouge.</p></div><span class="dish__price">14,90 €</span></article>
+      <article class="dish" data-cat="plat" data-cursor="Dorade"><figure><img src="assets/img/plats/attieke-poisson.jpg" alt="Attiéké poisson" loading="lazy"></figure><div class="dish__body"><span class="dish__cat">Plat</span><h3>Attiéké poisson</h3><p>Semoule de manioc, dorade, sauce crudités et sauce tomate maison. Existe en version poulet à 14,50 €.</p></div><span class="dish__price">16,50 €</span></article>
+      <article class="dish" data-cat="plat"><figure><img src="assets/img/plats/yassa-poisson.jpg" alt="Yassa poisson" loading="lazy"></figure><div class="dish__body"><span class="dish__cat">Plat</span><h3>Yassa poisson</h3><p>Riz blanc, sauce oignons, moutarde, olives, citron, dorade.</p></div><span class="dish__price">16,50 €</span></article>
+      <article class="dish" data-cat="plat"><figure><img src="assets/img/plats/afro-burger.jpg" alt="Afro chicken burger" loading="lazy"></figure><div class="dish__body"><span class="dish__cat">Plat</span><h3>Afro chicken burger</h3><p>Brioche, poulet pané, sauce yassa, cheddar, allocos, frites.</p></div><span class="dish__price">12,90 €</span></article>
+
+      <article class="dish" data-cat="accomp"><figure><img src="assets/img/plats/allocos.jpg" alt="Allocos" loading="lazy"></figure><div class="dish__body"><span class="dish__cat">Accompagnement</span><h3>Allocos</h3><p>Bananes plantain frites.</p></div><span class="dish__price">5,00 €</span></article>
+      <article class="dish" data-cat="accomp"><figure><img src="assets/img/plats/patate-douce.jpg" alt="Frites de patate douce" loading="lazy"></figure><div class="dish__body"><span class="dish__cat">Accompagnement</span><h3>Frites de patate douce</h3><p>Servies en cornet.</p></div><span class="dish__price">5,00 €</span></article>
+      <article class="dish" data-cat="accomp"><figure><img src="assets/img/plats/riz-rouge.jpg" alt="Riz rouge" loading="lazy"></figure><div class="dish__body"><span class="dish__cat">Accompagnement</span><h3>Riz rouge</h3><p>Le riz du thieb, à la tomate.</p></div><span class="dish__price">4,00 €</span></article>
+    </div>
+    <p class="carte__note" data-reveal>Aussi : riz blanc, attiéké ou frites (4 €), sauce yassa ou mafé (5 €), sauce rouge ou verte (0,70 €). Allergènes : demandez la carte à la caisse.</p>
+  </div>
+</section>
+
+<!-- ============ LE LIEU ============ -->
+<section class="lieu" id="lieu">
+  <div class="lieu__stage">
+    <figure class="lieu__frame" id="lieuFrame"><img src="assets/img/salle-2.jpg" alt="La salle de Taanneef : banquettes en velours vert, fauteuils moutarde et suspensions en rotin" loading="lazy"></figure>
+    <div class="lieu__over">
+      <p class="kicker kicker--gold">Le lieu</p>
+      <h2 class="h2" data-lines>Velours, rotin <em>et feuillages.</em></h2>
+      <p class="lieu__lead">Banquettes vert émeraude, fauteuils moutarde, suspensions en rotin et papier peint tropical : une salle chaleureuse pour les familles, les amis et les amoureux.</p>
+    </div>
+  </div>
+  <div class="wrap lieu__grid">
+    <figure class="lg lg1" data-speed="-0.08"><img src="assets/img/salle-3.jpg" alt="Coin de la salle avec banquette verte" loading="lazy" data-clip></figure>
+    <figure class="lg lg2" data-speed="0.1"><img src="assets/img/banquette.jpg" alt="Tables dressées devant la fresque tropicale" loading="lazy" data-clip></figure>
+    <figure class="lg lg3" data-speed="-0.04"><img src="assets/img/table.jpg" alt="Pastels, brochettes de crevettes et bissap sur une table" loading="lazy" data-clip></figure>
+  </div>
+</section>
+
+<!-- ============ MOMENTS ============ -->
+<section class="moments" id="moments">
+  <div class="wrap">
+    <p class="kicker" data-reveal>Pour chaque occasion</p>
+    <h2 class="h2 moments__title" data-lines>Midi, soir <em>et dimanche.</em></h2>
+    <div class="stack">
+      <article class="scard scard--1">
+        <div class="scard__txt"><span class="scard__n">01</span><h3>Le brunch du dimanche</h3><p>Le dimanche, de 10h à 15h, on prend son temps : brunch sénégalais à partager en famille ou entre amis.</p><a class="btn btn--ink" href="tel:+33982656009"><span>Réserver le brunch</span></a></div>
+        <figure><img src="assets/img/thieb-table.jpg" alt="Assiette de thieb, poulet et pastels servis à table" loading="lazy"></figure>
+      </article>
+      <article class="scard scard--2">
+        <div class="scard__txt"><span class="scard__n">02</span><h3>Les soirées live</h3><p>Certains soirs, la musique s'invite en salle. Suivez le compte Instagram pour connaître les prochaines dates.</p><a class="btn btn--gold" href="https://www.instagram.com/resto_taanneef/" target="_blank" rel="noopener"><span>Voir l'Instagram</span></a></div>
+        <figure><img src="assets/img/salle.jpg" alt="La salle illuminée par les suspensions en rotin" loading="lazy"></figure>
+      </article>
+      <article class="scard scard--3">
+        <div class="scard__txt"><span class="scard__n">03</span><h3>Une salle privatisable</h3><p>Anniversaires, repas de famille, repas d'affaires ou événements d'entreprise : la salle peut être privatisée.</p><a class="btn btn--ink" href="#infos"><span>Demander un devis</span></a></div>
+        <figure><img src="assets/img/banquette.jpg" alt="Banquettes en velours vert" loading="lazy"></figure>
+      </article>
+      <article class="scard scard--4">
+        <div class="scard__txt"><span class="scard__n">04</span><h3>À emporter &amp; en livraison</h3><p>Tous les plats se commandent à emporter au comptoir, ou se font livrer via Uber Eats.</p><a class="btn btn--gold" href="tel:+33982656009"><span>Commander par téléphone</span></a></div>
+        <figure><img src="assets/img/plats/brochettes.jpg" alt="Brochettes d'allocos et de crevettes" loading="lazy"></figure>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AVIS ============ -->
+<section class="avis" id="avis">
+  <div class="wrap avis__head">
+    <div class="avis__score">
+      <span class="avis__big" data-count="4.5">4,5</span>
+      <div><span class="stars stars--lg">★★★★★</span><p><span data-count="301" data-int>301</span> avis Google</p></div>
+    </div>
+    <h2 class="h2" data-lines>On vous <em>raconte ?</em></h2>
+  </div>
+  <div class="reviews">
+    <div class="reviews__track" data-marquee="-1">
+      <blockquote class="rev"><span class="stars">★★★★★</span><p>« Une véritable pépite ! Cuisine africaine exceptionnelle, saveurs authentiques. »</p><footer>Moustapha D.</footer></blockquote>
+      <blockquote class="rev rev--green"><span class="stars">★★★★★</span><p>« Magnifique restaurant sénégalais, nous nous sommes régalés entre amies. »</p><footer>Nawale N.</footer></blockquote>
+      <blockquote class="rev"><span class="stars">★★★★★</span><p>« Première découverte et clairement pas la dernière ! »</p><footer>Mohammad U.</footer></blockquote>
+      <blockquote class="rev rev--gold"><span class="stars">★★★★★</span><p>« Les pastels, le thieb poulet et le dibi poulet étaient délicieux. »</p><footer>Nolwen D.</footer></blockquote>
+      <blockquote class="rev"><span class="stars">★★★★★</span><p>« La pâte est fine et légère. »</p><footer>Elodie, à propos des pastels</footer></blockquote>
+      <blockquote class="rev rev--green"><span class="stars">★★★★★</span><p>« Une belle découverte ! »</p><footer>Arame G.</footer></blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INFOS ============ -->
+<section class="infos" id="infos">
+  <div class="wrap infos__grid">
+    <div>
+      <p class="kicker kicker--gold" data-reveal>Nous trouver</p>
+      <h2 class="h2" data-lines>Dalal <em>ak jàmm.</em></h2>
+      <p class="infos__trad" data-reveal>« Bienvenue », en wolof.</p>
+      <a class="infos__phone" href="tel:+33982656009" data-reveal>09 82 65 60 09</a>
+      <div class="infos__cols">
+        <div data-reveal>
+          <small>Adresse</small>
+          <p>19 place Saint-Exupéry<br>78955 Carrières-sous-Poissy</p>
+          <a class="ulink" href="https://www.google.com/maps/dir/?api=1&amp;destination=Taanneef+Resto+19+place+Saint-Exup%C3%A9ry+78955+Carri%C3%A8res-sous-Poissy" target="_blank" rel="noopener">Itinéraire</a>
+          <p class="infos__small">Parking à proximité</p>
+        </div>
+        <div data-reveal>
+          <small>Horaires</small>
+          <table class="hours">
+            <tr><td>Lundi – Jeudi</td><td>11h30 – 14h30 · 18h30 – 22h</td></tr>
+            <tr><td>Vendredi – Samedi</td><td>11h30 – 14h30 · 18h30 – minuit</td></tr>
+            <tr><td>Dimanche</td><td>10h – 15h · 18h – 21h</td></tr>
+          </table>
+          <p class="open" id="openState"></p>
+        </div>
+      </div>
+      <div class="map" data-reveal><iframe title="Plan d'accès à Taanneef Resto" src="https://maps.google.com/maps?q=Taanneef%20Resto%2C%2019%20place%20Saint-Exup%C3%A9ry%2C%2078955%20Carri%C3%A8res-sous-Poissy&amp;z=15&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+    </div>
+
+    <form class="resa" name="reservation" method="POST" action="merci.html" data-netlify="true" netlify-honeypot="bot-field" data-reveal>
+      <input type="hidden" name="form-name" value="reservation">
+      <p hidden><label>Ne pas remplir <input name="bot-field"></label></p>
+      <h3>Réserver <em>une table</em></h3>
+      <p class="resa__sub">Ou privatiser la salle. Nous vous rappelons pour confirmer.</p>
+      <div class="row2">
+        <label class="f"><span>Nom</span><input name="nom" autocomplete="name" required></label>
+        <label class="f"><span>Téléphone</span><input name="telephone" type="tel" autocomplete="tel" required></label>
+      </div>
+      <div class="row3">
+        <label class="f"><span>Date</span><input name="date" type="date" required></label>
+        <label class="f"><span>Heure</span><select name="heure"><option>12h00</option><option>12h30</option><option>13h00</option><option>13h30</option><option>19h00</option><option>19h30</option><option selected>20h00</option><option>20h30</option><option>21h00</option><option>21h30</option></select></label>
+        <label class="f"><span>Personnes</span><input name="personnes" type="number" min="1" max="80" value="2"></label>
+      </div>
+      <label class="f"><span>Occasion</span><select name="occasion"><option>Repas</option><option>Brunch du dimanche</option><option>Anniversaire</option><option>Privatisation de la salle</option><option>Repas d'affaires</option></select></label>
+      <label class="f"><span>Message</span><textarea name="message" rows="3" placeholder="Allergie, chaise bébé, demande particulière…"></textarea></label>
+      <button class="btn btn--gold btn--lg btn--block" type="submit" data-magnetic><span>Envoyer ma demande</span></button>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__top">
+    <div class="foot__links"><a href="#grillades">Grillades</a><a href="#carte">La carte</a><a href="#lieu">Le lieu</a><a href="#moments">Brunch &amp; soirées</a><a href="https://www.instagram.com/resto_taanneef/" target="_blank" rel="noopener">Instagram</a></div>
+    <a class="foot__phone" href="tel:+33982656009">09 82 65 60 09</a>
+  </div>
+  <div class="foot__word" aria-hidden="true">Taanneef</div>
+  <div class="wrap foot__base">
+    <span>© <span id="year">2026</span> Taanneef Resto · 19 place Saint-Exupéry, Carrières-sous-Poissy</span>
+    <span>Cuisine sénégalaise · Halal · Sur place, à emporter, livraison</span>
+  </div>
+</footer>
+
+<div class="actionbar">
+  <a class="btn btn--gold" href="tel:+33982656009"><span>Réserver</span></a>
+  <a class="btn btn--glass" href="#carte"><span>La carte</span></a>
+</div>
+
+<script src="assets/vendor/gsap.min.js" defer></script>
+<script src="assets/vendor/ScrollTrigger.min.js" defer></script>
+<script src="assets/vendor/lenis.min.js" defer></script>
+<script src="assets/main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+TAANNEEF RESTO
+Site en ligne : [LIEN NETLIFY]
+Contact : 09 82 65 60 09 · 19 place Saint-Exupéry, 78955 Carrières-sous-Poissy
+Instagram : @resto_taanneef
+
+============================================================
+MESSAGE À ENVOYER (copier-coller)
+============================================================
+Bonjour,
+
+Je suis tombé sur Taanneef en regardant les avis Google : 4,5 sur 301 avis, et une salle magnifique avec le velours vert, les suspensions en rotin et le papier peint tropical. Les photos de vos plats donnent vraiment faim (le dibi au feu de bois…).
+
+Par contre, Taanneef n'a pas de site internet : quand quelqu'un cherche « restaurant sénégalais Poissy » ou « brunch Carrières-sous-Poissy », il ne trouve que des annuaires, sans votre carte, ni vos soirées, ni la salle privatisable.
+
+Je vous ai donc préparé une maquette de site à vos couleurs, avec toute votre carte et vos prix, les grillades au feu de bois, le brunch du dimanche, la salle privatisable, vos avis et un formulaire de réservation :
+
+👉 [LIEN NETLIFY]
+
+Je vous joins aussi quelques captures. Si ça vous plaît, je le mets en ligne à votre nom. Je peux passer vous le montrer au restaurant ou vous appeler 5 minutes cette semaine ?
+
+Théo
+
+============================================================
+RELANCE (quelques jours plus tard)
+============================================================
+Bonjour, je me permets de vous relancer pour la maquette de site que j'ai faite pour Taanneef : [LIEN NETLIFY]. Elle se regarde en 30 secondes sur téléphone. Dites-moi ce que vous en pensez !
+
+============================================================
+PHOTOS À JOINDRE (dossier « photos »)
+============================================================
+1. 01-accueil.jpg : la première impression, avec leur salle
+2. 02-grillades.jpg : les grillades au feu de bois
+3. 03-la-carte.jpg : la carte complète avec leurs photos de plats
+4. 08-mobile-accueil.jpg : la version téléphone
+
+Le dossier « site » est celui à glisser sur Netlify (app.netlify.com/drop).
+Canal conseillé : message privé Instagram (@resto_taanneef) ou en direct au restaurant.

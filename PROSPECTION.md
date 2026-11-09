@@ -18,3 +18,4 @@ prêt à glisser sur Netlify Drop, des captures de la maquette et un message de 
 |---|---|---|
 | M.R.C Auto 78 (garage, Élancourt) | `prospects/mrc-auto-78/` | https://gentle-rabanadas-7aa338.netlify.app |
 | Chez Ennio (trattoria, Les Clayes-sous-Bois) | `prospects/chez-ennio/` | https://coruscating-zuccutto-6d6acc.netlify.app |
+| Taanneef Resto (sénégalais, Carrières-sous-Poissy) | `prospects/taanneef-resto/` | à déployer |

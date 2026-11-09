@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Marketing · Planning · Review Maker</title>
-<link rel="icon" href="/assets/logiciel-prospection.ico">
 <style>
 /* Rubrique Marketing du logiciel : planning TikTok / Instagram sur 26 semaines.
    Les couleurs suivent le thème (sombre / clair) et la couleur principale choisis dans Réglages. */
@@ -179,11 +178,15 @@ tr.done td:not(:first-child) { color: var(--mute); }
     if (a) { document.documentElement.style.setProperty("--accent", a[0]); document.documentElement.style.setProperty("--accent-fg", a[1]); }
   } catch (e) { /* thème par défaut */ }
 
+  // Le logiciel s'arrête tout seul quand plus aucune page ne lui parle : cette page lui fait signe.
+  setInterval(() => fetch("/api/etat").catch(() => {}), 15000);
+  addEventListener("pagehide", () => navigator.sendBeacon("/api/quitter", "{}"));
+
   let DATA, FAIT = {};
   try {
     DATA = await (await fetch("/web/marketing/planning.json")).json();
   } catch (e) {
-    $("days").innerHTML = `<p>Le fichier du planning (web/marketing/planning.json) est introuvable. Recopie le dossier « web » de la mise à jour.</p>`;
+    $("days").innerHTML = `<p>Le fichier du planning (web/marketing/planning.json) est introuvable. Retélécharge le logiciel complet.</p>`;
     return;
   }
   try { FAIT = (await (await fetch("/api/marketing")).json()).fait || {}; } catch (e) { FAIT = {}; }

@@ -15,7 +15,7 @@ Mais aujourd'hui, quand on cherche « restaurant italien Plaisir » ou « Les Cl
 
 Je vous ai donc préparé une maquette de site, dans le style de votre carte (noir et blanc, typo élégante, vos gravures) : la pinsa expliquée, toute la carte avec les prix, la terrasse, vos avis et un formulaire de réservation.
 
-👉 [LIEN NETLIFY]
+👉 https://coruscating-zuccutto-6d6acc.netlify.app
 
 Je vous joins aussi quelques captures. Si ça vous plaît, je le mets en ligne avec vos propres photos de plats. Je peux passer vous le montrer sur place, ou vous appeler 5 minutes cette semaine ?
 
@@ -25,7 +25,7 @@ Théo
 
 ## Version courte (relance)
 
-Bonjour, je me permets de vous relancer pour la maquette de site que j'ai faite pour Chez Ennio : [LIEN NETLIFY]. Elle se regarde en 30 secondes sur téléphone. Dites-moi ce que vous en pensez !
+Bonjour, je me permets de vous relancer pour la maquette de site que j'ai faite pour Chez Ennio : https://coruscating-zuccutto-6d6acc.netlify.app. Elle se regarde en 30 secondes sur téléphone. Dites-moi ce que vous en pensez !
 
 ---
 

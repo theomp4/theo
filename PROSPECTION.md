@@ -13,4 +13,4 @@ prêt à glisser sur Netlify Drop, des captures de la maquette et un message de 
 | Commerce | Dossier | En ligne |
 |---|---|---|
 | M.R.C Auto 78 (garage, Élancourt) | `mrc-auto-78/` | https://gentle-rabanadas-7aa338.netlify.app |
-| Chez Ennio (trattoria, Les Clayes-sous-Bois) | `chez-ennio/` | à déployer |
+| Chez Ennio (trattoria, Les Clayes-sous-Bois) | `chez-ennio/` | https://coruscating-zuccutto-6d6acc.netlify.app |

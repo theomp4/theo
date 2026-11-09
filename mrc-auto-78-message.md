@@ -14,7 +14,7 @@ Par contre, quand quelqu'un cherche « garage Élancourt » ou « nettoyage FAP 
 
 Je vous ai donc préparé une maquette de site, à vos couleurs, avec votre spécialité FAP mise en avant (garantie 1 an), vos vrais avis, un bouton pour appeler et un formulaire de rendez-vous :
 
-👉 [LIEN NETLIFY]
+👉 https://gentle-rabanadas-7aa338.netlify.app
 
 Je vous joins aussi quelques captures. Si ça vous plaît, je le mets en ligne avec votre logo et des photos de votre atelier. Est-ce que je peux vous appeler 5 minutes cette semaine ?
 
@@ -24,7 +24,7 @@ Théo
 
 ## Version courte (relance)
 
-Bonjour Rachid, je me permets de vous relancer pour la maquette de site que j'ai faite pour M.R.C Auto 78 : [LIEN NETLIFY]. Elle se regarde en 30 secondes sur téléphone. Dites-moi ce que vous en pensez !
+Bonjour Rachid, je me permets de vous relancer pour la maquette de site que j'ai faite pour M.R.C Auto 78 : https://gentle-rabanadas-7aa338.netlify.app. Elle se regarde en 30 secondes sur téléphone. Dites-moi ce que vous en pensez !
 
 ---
 

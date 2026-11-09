@@ -167,3 +167,16 @@ def test_travail_en_equipe(tmp_path):
         assert tuple(c) == ("Contacté", "rappeler jeudi", "2026-11-10")
         h = conn.execute("SELECT auteur FROM historique").fetchall()
         assert [r[0] for r in h] == ["Théo"]
+
+
+def test_dossier_partage_windows_retrouve_sur_mac(tmp_path, monkeypatch):
+    from pathlib import Path
+    from rm_prospect import equipe
+    monkeypatch.setenv("HOME", str(tmp_path))
+    monkeypatch.delenv("USERPROFILE", raising=False)
+    dossier = tmp_path / "Library" / "CloudStorage" / "GoogleDrive-moi@exemple.fr" / "Mon Drive" / "Review Maker équipe"
+    dossier.mkdir(parents=True)
+    assert str(dossier.parent) in equipe.dossiers_detectes()
+    assert equipe.adapter_chemin("G:\\Mon Drive\\Review Maker équipe") == str(dossier)
+    assert equipe.adapter_chemin("G:\\Mon Drive\\Autre dossier") is None
+    assert Path(equipe.adapter_chemin(str(dossier))) == dossier

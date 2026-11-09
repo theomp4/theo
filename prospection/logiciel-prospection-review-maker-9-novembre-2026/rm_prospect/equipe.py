@@ -144,8 +144,28 @@ def importer(conn, dossier, poste, deja_lus):
     return modifiees, coequipiers
 
 
+def adapter_chemin(chemin):
+    """Retrouve sur cet ordinateur un dossier partagé noté avec le chemin d'un autre ordinateur.
+    Ex. « G:\\Mon Drive\\Review Maker équipe » (Windows) devient, sur Mac,
+    « ~/Library/CloudStorage/GoogleDrive-…/Mon Drive/Review Maker équipe ». None si introuvable."""
+    morceaux = [m for m in re.split(r"[\\/]+", chemin or "") if m]
+    for i, morceau in enumerate(morceaux):
+        if morceau.lower() in ("mon drive", "my drive", "google drive", "onedrive", "dropbox"):
+            reste = morceaux[i + 1:]
+            for racine in dossiers_detectes():
+                if Path(racine).name.lower() in ("mon drive", "my drive", "google drive") or \
+                        Path(racine).name.lower().startswith(morceau.lower().split()[0]):
+                    cible = Path(racine).joinpath(*reste)
+                    try:
+                        if cible.is_dir():
+                            return str(cible)
+                    except OSError:
+                        continue
+    return None
+
+
 def dossiers_detectes():
-    """Dossiers Google Drive, OneDrive et Dropbox présents sur cet ordinateur (Windows)."""
+    """Dossiers Google Drive, OneDrive et Dropbox présents sur cet ordinateur (Windows ou Mac)."""
     profil = Path(os.environ.get("USERPROFILE") or Path.home())
     candidats = []
     for lettre in "GHIJKLMNOPQRSTUVWXYZDEF":
@@ -156,6 +176,12 @@ def dossiers_detectes():
         if os.environ.get(variable):
             candidats.append(Path(os.environ[variable]))
     candidats += [profil / "OneDrive", profil / "Dropbox"]
+    # Mac : Google Drive pour ordinateur range le Drive dans ~/Library/CloudStorage/GoogleDrive-<adresse>/Mon Drive
+    # (ou /Volumes/GoogleDrive/Mon Drive avec les anciennes versions).
+    stockage = Path.home() / "Library" / "CloudStorage"
+    for racine in sorted(stockage.glob("GoogleDrive-*")) + sorted(Path("/Volumes").glob("GoogleDrive*")):
+        candidats += [racine / "Mon Drive", racine / "My Drive"]
+    candidats += sorted(stockage.glob("OneDrive*")) + sorted(stockage.glob("Dropbox*"))
     vus, trouves = set(), []
     for p in candidats:
         try:

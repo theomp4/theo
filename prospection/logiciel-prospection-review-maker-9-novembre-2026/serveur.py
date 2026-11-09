@@ -34,7 +34,7 @@ if sys.stdout is None or sys.stderr is None:
 ICI = Path(__file__).resolve().parent
 WEB = ICI / "web"
 PORT = int(os.environ.get("RM_PORT", "8765"))  # RM_PORT : tests
-VERSION = "9 novembre 2026 (Marketing, v2)"  # affichée dans Réglages : permet de vérifier que la mise à jour est bien installée
+VERSION = "9 novembre 2026 (Marketing, v3)"  # affichée dans Réglages : permet de vérifier que la mise à jour est bien installée
 EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$")
 
 
@@ -136,8 +136,14 @@ def synchroniser(c_conn, etat):
         SYNCHRO.update(coequipiers=[], erreur="")
         return
     if not Path(dossier).is_dir():
-        SYNCHRO["erreur"] = "Dossier partagé introuvable : Google Drive est-il bien ouvert sur cet ordinateur ?"
-        return
+        # Chemin noté sur un autre ordinateur (ex. G:\\Mon Drive\\… sous Windows) : on le retrouve ici.
+        ici = equipe.adapter_chemin(dossier)
+        if not ici:
+            SYNCHRO["erreur"] = ("Dossier partagé introuvable : ouvre Google Drive pour ordinateur, puis dans Réglages, "
+                                 "clique sur « Choisir… » et sélectionne le dossier « Review Maker équipe ».")
+            return
+        db.set_reglage(c_conn, "equipe_dossier", ici)
+        dossier = ici
     poste = db.get_reglage(c_conn, "poste")
     try:
         modifiees, SYNCHRO["coequipiers"] = equipe.importer(c_conn, dossier, poste, etat.setdefault("lus", {}))

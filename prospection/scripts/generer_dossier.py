@@ -279,7 +279,9 @@ def main():
 
     # page planning
     with open(os.path.join(ROOT, "weeks.json"), "w", encoding="utf-8") as f:
-        json.dump(dict(weeks=weeks, collabs=collabs), f, ensure_ascii=False)
+        seqs = {nom: [dict(etape=e, delai=dl, canal=c, objet=o, message=msg) for e, dl, c, o, msg in seq]
+                for nom, seq in (("influenceurs", SEQ_INFLU), ("commercants", SEQ_COMMERCANTS))}
+        json.dump(dict(weeks=weeks, collabs=collabs, sequences=seqs), f, ensure_ascii=False)
 
     # 1. calendrier des publications
     rows = []

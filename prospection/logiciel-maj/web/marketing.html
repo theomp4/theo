@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marketing · Planning · Review Maker</title>
+<link rel="icon" href="/assets/logiciel-prospection.ico">
+<style>
+/* Rubrique Marketing du logiciel : planning TikTok / Instagram sur 26 semaines.
+   Les couleurs suivent le thème (sombre / clair) et la couleur principale choisis dans Réglages. */
+:root {
+  --bg: #0B0F1A; --panel: #131A2B; --panel-2: #1A2338; --line: rgba(255,255,255,0.10);
+  --fg: #EEF1F7; --mute: #9AA4BC; --accent: #D9A441; --accent-fg: #111;
+  --theo: #5B86E5; --luke: #F2A65A; --tiktok: #FF4D7A; --reel: #B57CFF; --vitrine: #7FB3FF; --ok: #2FA866;
+  color-scheme: dark;
+}
+:root[data-theme="clair"] {
+  --bg: #F5F6FA; --panel: #FFFFFF; --panel-2: #EEF1F7; --line: rgba(15,23,42,0.10);
+  --fg: #141A2A; --mute: #5D6782; --tiktok: #E0245E; --reel: #8A4FE0; --vitrine: #2F6FDB;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.5 "Segoe UI", system-ui, -apple-system, sans-serif; padding: 24px 16px 60px; }
+.wrap { max-width: 1180px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; }
+a { color: inherit; }
+h1, h2, h3 { margin: 0; line-height: 1.2; text-wrap: balance; }
+h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
+h2 { font-size: 19px; }
+p { margin: 0; }
+.mute { color: var(--mute); }
+.top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.back { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--mute); font-weight: 600; font-size: 14px; }
+.back:hover { color: var(--fg); }
+.tabs { display: flex; gap: 4px; padding: 4px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; width: fit-content; max-width: 100%; overflow-x: auto; }
+.tabs button, .seg button { border: 0; background: transparent; color: var(--mute); font: inherit; font-weight: 700; font-size: 14px; padding: 9px 16px; border-radius: 9px; cursor: pointer; white-space: nowrap; }
+.tabs button[aria-selected="true"], .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); }
+button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.bar { display: flex; flex-wrap: wrap; gap: 12px 18px; align-items: center; justify-content: space-between; padding: 12px 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; }
+.week { display: flex; align-items: center; gap: 10px; }
+.icon-btn { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 10px; border: 1px solid var(--line); background: var(--panel-2); color: var(--fg); cursor: pointer; }
+.icon-btn:disabled { opacity: .35; cursor: default; }
+.small-btn { border: 1px solid var(--line); background: transparent; color: var(--mute); font: inherit; font-size: 13px; padding: 8px 12px; border-radius: 10px; cursor: pointer; }
+.small-btn:hover { color: var(--fg); }
+.seg { display: flex; gap: 4px; padding: 4px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+.stat { padding: 14px 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; display: flex; flex-direction: column; gap: 8px; }
+.stat strong { font-size: 22px; font-variant-numeric: tabular-nums; }
+.meter { height: 6px; border-radius: 3px; background: var(--panel-2); overflow: hidden; }
+.meter i { display: block; height: 100%; background: var(--ok); border-radius: 3px; transition: width .3s; }
+.banner { display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel); }
+.banner > :last-child { flex: 1; min-width: 0; }
+.chip { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
+.chip.tiktok { color: var(--tiktok); } .chip.reel { color: var(--reel); } .chip.vitrine { color: var(--vitrine); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--mute); }
+.legend span { display: inline-flex; align-items: center; gap: 7px; }
+.dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.days { display: flex; flex-direction: column; gap: 12px; }
+.day { display: grid; grid-template-columns: 90px 1fr 1fr; gap: 12px; }
+.day-name { padding-top: 12px; display: flex; flex-direction: column; }
+.day-name strong { font-size: 16px; }
+.day-name small { color: var(--mute); font-variant-numeric: tabular-nums; }
+.day.today .day-name strong { color: var(--accent); }
+.post { min-width: 0; padding: 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; display: flex; flex-direction: column; gap: 9px; transition: opacity .2s; }
+.post.dim { opacity: .3; }
+.post.done { border-color: color-mix(in srgb, var(--ok) 55%, transparent); }
+.post.done h3 { text-decoration: line-through; text-decoration-color: var(--ok); }
+.post-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.who { display: inline-flex; align-items: center; gap: 7px; font-weight: 700; font-size: 13px; }
+.avatar { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; font-weight: 800; color: #0B0F1A; }
+.post h3 { font-size: 16px; }
+.subject { font-size: 14px; padding: 8px 10px; border-radius: 9px; background: var(--panel-2); }
+.subject b { color: var(--accent); }
+dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 5px 12px; font-size: 13.5px; }
+dt { color: var(--mute); white-space: nowrap; }
+dd { margin: 0; min-width: 0; }
+.check { display: inline-flex; align-items: center; gap: 9px; font-weight: 700; font-size: 14px; cursor: pointer; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel-2); width: fit-content; }
+.check input { width: 18px; height: 18px; accent-color: var(--ok); margin: 0; }
+.post.done .check { color: var(--ok); }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+thead th { color: var(--mute); font-weight: 600; font-size: 13px; }
+tbody tr:last-child td, tbody tr:last-child th { border-bottom: 0; }
+tbody th { white-space: nowrap; text-transform: capitalize; }
+tr.done td:not(:first-child) { color: var(--mute); }
+.msgs { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+.msg { padding: 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; display: flex; flex-direction: column; gap: 8px; }
+.msg pre { margin: 0; white-space: pre-wrap; font: inherit; font-size: 14px; padding: 10px 12px; border-radius: 10px; background: var(--panel-2); }
+.toast { position: fixed; right: 16px; bottom: 16px; padding: 10px 14px; border-radius: 10px; background: var(--panel); border: 1px solid var(--line); box-shadow: 0 10px 30px rgba(0,0,0,.3); font-size: 14px; }
+@media (max-width: 860px) { .day { grid-template-columns: 1fr; } .day-name { flex-direction: row; gap: 10px; align-items: baseline; padding-top: 0; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="/">
+      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Retour à la prospection
+    </a>
+    <div class="tabs" role="tablist" aria-label="Rubriques marketing">
+      <button role="tab" id="t-planning" aria-selected="true">Planning</button>
+      <button role="tab" id="t-collabs" aria-selected="false">Collabs influenceurs</button>
+      <button role="tab" id="t-messages" aria-selected="false">Messages de prospection</button>
+    </div>
+  </div>
+  <header>
+    <h1>Marketing · Planning</h1>
+    <p class="mute" id="lede">Un post par jour sur TikTok et sur Instagram, partagés entre Théo et Luke. Coche chaque post quand il est publié : c'est enregistré dans le logiciel.</p>
+  </header>
+
+  <section id="p-planning" style="display:flex;flex-direction:column;gap:16px">
+    <div class="bar">
+      <div class="week">
+        <button class="icon-btn" id="prev" aria-label="Semaine précédente"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div><strong id="weekTitle">Semaine</strong><br><small class="mute" id="weekDates"></small></div>
+        <button class="icon-btn" id="next" aria-label="Semaine suivante"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="small-btn" id="today">Cette semaine</button>
+      </div>
+      <div class="seg" role="group" aria-label="Afficher les posts de">
+        <button id="f-all" aria-pressed="true">Tous</button>
+        <button id="f-theo" aria-pressed="false">Théo</button>
+        <button id="f-luke" aria-pressed="false">Luke</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><span class="mute">Théo cette semaine</span><strong id="sTheo">0 / 7</strong><div class="meter"><i id="mTheo" style="width:0"></i></div></div>
+      <div class="stat"><span class="mute">Luke cette semaine</span><strong id="sLuke">0 / 7</strong><div class="meter"><i id="mLuke" style="width:0"></i></div></div>
+      <div class="stat"><span class="mute">Depuis le début</span><strong id="sAll">0 / 0</strong><div class="meter"><i id="mAll" style="width:0"></i></div></div>
+      <div class="stat"><span class="mute">En retard (pas cochés)</span><strong id="sLate">0</strong><small class="mute" id="sLateWho"></small></div>
+    </div>
+
+    <div id="tempsFort" class="banner" hidden><span class="chip" style="color:var(--luke)">Temps fort</span><p id="tempsFortText"></p></div>
+    <div id="collabNow" class="banner" hidden><span class="chip" style="color:var(--accent)">Collab en cours</span><div><strong id="collabNowTitle"></strong><p class="mute" id="collabNowText" style="font-size:14px"></p></div></div>
+
+    <div class="legend">
+      <span><span class="dot" style="background:var(--tiktok)"></span>TikTok (marketing)</span>
+      <span><span class="dot" style="background:var(--reel)"></span>Reel Instagram (marketing, pas dans la grille)</span>
+      <span><span class="dot" style="background:var(--vitrine)"></span>Vitrine Instagram (grille, même DA)</span>
+    </div>
+    <div class="days" id="days"></div>
+  </section>
+
+  <section id="p-collabs" hidden style="display:flex;flex-direction:column;gap:14px">
+    <p class="mute">Une collab par mois : on crée ou on refait le site du business d'un créateur, on filme, et il republie. Théo pilote les mois impairs, Luke les mois pairs. Un site offert ou à prix réduit contre une publication est un partenariat : il doit être signalé (« collaboration commerciale »).</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th scope="col">Fait</th><th scope="col">Mois</th><th scope="col">Pilote</th><th scope="col">Étape</th><th scope="col">Dates</th><th scope="col">Détail</th></tr></thead>
+        <tbody id="collabRows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="p-messages" hidden style="display:flex;flex-direction:column;gap:14px">
+    <p class="mute">Séquences prêtes à copier. Remplace les variables entre accolades et les passages entre crochets pour chaque prospect.</p>
+    <h2>Créateurs / influenceurs</h2>
+    <div class="msgs" id="seqInflu"></div>
+    <h2>Commerçants</h2>
+    <div class="msgs" id="seqComm"></div>
+  </section>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(async () => {
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const toast = (t) => { const el = $("toast"); el.textContent = t; el.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => (el.hidden = true), 2400); };
+
+  // Thème et couleur principale du logiciel
+  const ACCENTS = { "or": ["#D9A441", "#111"], "émeraude": ["#2BB673", "#08140D"], "emeraude": ["#2BB673", "#08140D"], "corail": ["#F2735A", "#1A0B07"], "violet": ["#8B6CF0", "#fff"] };
+  try {
+    const etat = await (await fetch("/api/etat")).json();
+    if (etat.theme === "clair") document.documentElement.dataset.theme = "clair";
+    const a = ACCENTS[(etat.accent || "or").toLowerCase()];
+    if (a) { document.documentElement.style.setProperty("--accent", a[0]); document.documentElement.style.setProperty("--accent-fg", a[1]); }
+  } catch (e) { /* thème par défaut */ }
+
+  let DATA, FAIT = {};
+  try {
+    DATA = await (await fetch("/web/marketing/planning.json")).json();
+  } catch (e) {
+    $("days").innerHTML = `<p>Le fichier du planning (web/marketing/planning.json) est introuvable. Recopie le dossier « web » de la mise à jour.</p>`;
+    return;
+  }
+  try { FAIT = (await (await fetch("/api/marketing")).json()).fait || {}; } catch (e) { FAIT = {}; }
+
+  const WEEKS = DATA.weeks, COLLABS = DATA.collabs;
+  const DAY_MS = 86400000;
+  const PEOPLE = { "Théo": { color: "var(--theo)", initial: "T", key: "theo" }, "Luke": { color: "var(--luke)", initial: "L", key: "luke" } };
+  const parse = (iso) => { const [y, m, d] = iso.split("-").map(Number); return new Date(y, m - 1, d); };
+  const fmt = (d) => d.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+  const fmtShort = (d) => d.toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+  const START = parse(WEEKS[0].lundi);
+  const now = new Date();
+  const TODAY = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const todayIso = `${TODAY.getFullYear()}-${String(TODAY.getMonth() + 1).padStart(2, "0")}-${String(TODAY.getDate()).padStart(2, "0")}`;
+  const currentIdx = () => Math.min(WEEKS.length - 1, Math.max(0, Math.floor((TODAY - START) / (7 * DAY_MS))));
+  const postId = (p) => `${p.date}-${p.reseau === "TikTok" ? "tt" : "ig"}`;
+  const collabId = (c) => `collab-${c.debut}`;
+  let offset = currentIdx();
+  let filter = "all";
+  try { filter = localStorage.getItem("rm-marketing-filtre") || "all"; } catch (e) {}
+
+  async function cocher(id, fait) {
+    try {
+      const r = await fetch("/api/marketing_fait", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, fait }) });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.erreur || "Erreur");
+      FAIT = j.fait;
+      toast(fait ? "Marqué comme fait." : "Remis à faire.");
+    } catch (e) {
+      toast(`Pas enregistré : ${e.message}`);
+    }
+    render();
+  }
+
+  function card(p) {
+    const person = PEOPLE[p.responsable];
+    const id = postId(p);
+    const done = !!FAIT[id];
+    const chip = p.kind === "tiktok" ? "TikTok" : p.kind === "reel" ? "Reel Instagram" : "Vitrine Instagram";
+    const dim = filter !== "all" && filter !== person.key ? " dim" : "";
+    return `<article class="post${done ? " done" : ""}${dim}">
+      <div class="post-top"><span class="chip ${p.kind}">${chip}</span>
+        <span class="who"><span class="avatar" style="background:${person.color}">${person.initial}</span>${p.responsable}</span></div>
+      <h3>${esc(p.format)}</h3>
+      <p class="subject"><b>Sujet :</b> ${esc(p.sujet)}</p>
+      <dl><dt>Accroche</dt><dd><b>${esc(p.accroche)}</b></dd><dt>Comment</dt><dd>${esc(p.comment)}</dd>
+        <dt>Durée</dt><dd>${esc(p.duree)}</dd><dt>Fin</dt><dd>${esc(p.fin)}</dd></dl>
+      <label class="check"><input type="checkbox" data-id="${id}" ${done ? "checked" : ""}> ${done ? "Publié" : "Marquer comme publié"}</label>
+    </article>`;
+  }
+
+  function render() {
+    const wk = WEEKS[offset];
+    const monday = parse(wk.lundi);
+    const sunday = new Date(monday.getTime() + 6 * DAY_MS);
+    $("weekTitle").textContent = `Semaine ${offset + 1}/${WEEKS.length} · ${wk.lettre}`;
+    $("weekDates").textContent = `du ${fmtShort(monday)} au ${fmt(sunday)}${offset === currentIdx() ? " · cette semaine" : ""}`;
+    $("prev").disabled = offset === 0;
+    $("next").disabled = offset === WEEKS.length - 1;
+    $("tempsFort").hidden = !wk.temps_fort;
+    $("tempsFortText").textContent = wk.temps_fort;
+    const col = COLLABS.find((c) => parse(c.debut) <= monday && monday <= parse(c.fin));
+    $("collabNow").hidden = !col;
+    if (col) {
+      $("collabNowTitle").textContent = `Collab de ${col.mois} · ${col.etape}`;
+      $("collabNowText").textContent = `${col.format}. ${col.detail} Pilotée par ${col.responsable}.`;
+    }
+
+    let html = "";
+    for (let d = 0; d < 7; d++) {
+      const tk = wk.posts.find((p) => p.day === d && p.reseau === "TikTok");
+      const ig = wk.posts.find((p) => p.day === d && p.reseau === "Instagram");
+      html += `<div class="day${tk.date === todayIso ? " today" : ""}">
+        <div class="day-name"><strong>${tk.jour}</strong><small>${fmtShort(parse(tk.date))}</small></div>
+        ${card(tk)}${card(ig)}</div>`;
+    }
+    $("days").innerHTML = html;
+    $("days").querySelectorAll("input[data-id]").forEach((c) => c.addEventListener("change", () => cocher(c.dataset.id, c.checked)));
+
+    // compteurs
+    const count = (posts, who) => { const l = posts.filter((p) => !who || p.responsable === who); return [l.filter((p) => FAIT[postId(p)]).length, l.length]; };
+    const setMeter = (sid, mid, [a, b]) => { $(sid).textContent = `${a} / ${b}`; $(mid).style.width = b ? `${(a / b) * 100}%` : "0"; };
+    setMeter("sTheo", "mTheo", count(wk.posts, "Théo"));
+    setMeter("sLuke", "mLuke", count(wk.posts, "Luke"));
+    const passes = WEEKS.flatMap((w) => w.posts).filter((p) => p.date <= todayIso);
+    setMeter("sAll", "mAll", count(passes));
+    const late = passes.filter((p) => p.date < todayIso && !FAIT[postId(p)]);
+    $("sLate").textContent = late.length;
+    const lt = late.filter((p) => p.responsable === "Théo").length;
+    $("sLateWho").textContent = late.length ? `Théo ${lt} · Luke ${late.length - lt}` : "Tout est à jour.";
+
+    // collabs
+    $("collabRows").innerHTML = COLLABS.map((c) => {
+      const id = collabId(c), done = !!FAIT[id], p = PEOPLE[c.responsable];
+      return `<tr class="${done ? "done" : ""}">
+        <td><input type="checkbox" aria-label="Étape faite" data-cid="${id}" ${done ? "checked" : ""} style="width:18px;height:18px;accent-color:var(--ok)"></td>
+        <th scope="row">${esc(c.mois)}</th>
+        <td><span class="who"><span class="avatar" style="background:${p.color}">${p.initial}</span>${c.responsable}</span></td>
+        <td><b>${esc(c.etape)}</b><br><span class="mute">${esc(c.format)}</span></td>
+        <td style="white-space:nowrap">${fmtShort(parse(c.debut))} → ${fmtShort(parse(c.fin))}</td>
+        <td>${esc(c.detail)}</td></tr>`;
+    }).join("");
+    $("collabRows").querySelectorAll("input[data-cid]").forEach((c) => c.addEventListener("change", () => cocher(c.dataset.cid, c.checked)));
+  }
+
+  function sequences() {
+    const bloc = (s) => `<div class="msg">
+      <div class="post-top"><strong>Message ${s.etape} · J+${s.delai}</strong><span class="mute">${esc(s.canal)}</span></div>
+      ${s.objet ? `<p><span class="mute">Objet :</span> ${esc(s.objet)}</p>` : ""}
+      <pre>${esc(s.message)}</pre>
+      <button class="small-btn" data-copy="${esc(s.message)}" style="width:fit-content">Copier le message</button></div>`;
+    $("seqInflu").innerHTML = DATA.sequences.influenceurs.map(bloc).join("");
+    $("seqComm").innerHTML = DATA.sequences.commercants.map(bloc).join("");
+    document.querySelectorAll("[data-copy]").forEach((b) => b.addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(b.dataset.copy); toast("Message copié."); }
+      catch (e) { const pre = b.previousElementSibling; const r = document.createRange(); r.selectNodeContents(pre); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast("Texte sélectionné : Ctrl+C pour copier."); }
+    }));
+  }
+
+  const setFilter = (f) => {
+    filter = ["all", "theo", "luke"].includes(f) ? f : "all";
+    ["all", "theo", "luke"].forEach((k) => $(`f-${k}`).setAttribute("aria-pressed", String(k === filter)));
+    try { localStorage.setItem("rm-marketing-filtre", filter); } catch (e) {}
+    render();
+  };
+  $("f-all").onclick = () => setFilter("all");
+  $("f-theo").onclick = () => setFilter("theo");
+  $("f-luke").onclick = () => setFilter("luke");
+  $("prev").onclick = () => { if (offset > 0) { offset--; render(); } };
+  $("next").onclick = () => { if (offset < WEEKS.length - 1) { offset++; render(); } };
+  $("today").onclick = () => { offset = currentIdx(); render(); };
+
+  const TABS = ["planning", "collabs", "messages"];
+  const showTab = (t) => {
+    TABS.forEach((k) => { $(`t-${k}`).setAttribute("aria-selected", String(k === t)); $(`p-${k}`).hidden = k !== t; });
+  };
+  TABS.forEach((k) => ($(`t-${k}`).onclick = () => showTab(k)));
+
+  sequences();
+  setFilter(filter);
+})();
+</script>
+</body>
+</html>

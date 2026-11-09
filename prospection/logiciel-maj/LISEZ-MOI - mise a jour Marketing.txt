@@ -1,0 +1,15 @@
+MISE À JOUR : rubrique « Marketing · Planning »
+
+1. Ferme le logiciel (ferme l'onglet du navigateur).
+2. Ouvre le dossier du logiciel (celui qui contient « Lancer Review Maker.bat »).
+3. Copie dedans le contenu de ce ZIP et accepte de REMPLACER les fichiers :
+     serveur.py
+     README.md
+     web\marketing.html            (nouveau)
+     web\marketing-menu.js         (nouveau)
+     web\marketing\planning.json   (nouveau)
+   Ne touche pas au dossier « data » : tes prospects restent tels quels.
+4. Double-clique sur l'icône « Logiciel de prospection Review Maker » du Bureau.
+5. Dans le menu, une nouvelle entrée « Marketing · Planning » apparaît juste avant « Réglages ».
+   Si tu ne la vois pas, un bouton « Marketing · Planning » apparaît en bas à gauche de l'écran.
+   Tu peux aussi ouvrir directement http://127.0.0.1:8765/marketing

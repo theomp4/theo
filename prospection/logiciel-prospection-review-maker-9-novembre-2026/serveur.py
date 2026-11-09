@@ -34,7 +34,7 @@ if sys.stdout is None or sys.stderr is None:
 ICI = Path(__file__).resolve().parent
 WEB = ICI / "web"
 PORT = int(os.environ.get("RM_PORT", "8765"))  # RM_PORT : tests
-VERSION = "9 novembre 2026 (Marketing)"  # affichée dans Réglages : permet de vérifier que la mise à jour est bien installée
+VERSION = "9 novembre 2026 (Marketing, v2)"  # affichée dans Réglages : permet de vérifier que la mise à jour est bien installée
 EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$")
 
 
@@ -51,7 +51,7 @@ def recuperer_ancienne_version():
     if anciennes:
         plus_recente = max(anciennes, key=lambda b: b.stat().st_mtime)
         db.DATA_DIR.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(plus_recente, db.DB_PATH)
+        shutil.copyfile(plus_recente, db.DB_PATH)  # copie neuve : jamais en lecture seule
         print(f"{datetime.now():%d/%m %H:%M} Prospects repris de {plus_recente.parent.parent.name}.")
 
 
@@ -260,7 +260,7 @@ def job_enrichir(job, c_conn, lot):
 
 def api_etat(q):
     return {
-        "fond": R("fond", "salon"), "espaces": db.ESPACES, "statuts": db.STATUTS, "version": VERSION,
+        "fond": R("fond", "salon"), "espaces": db.ESPACES, "statuts": db.STATUTS, "version": VERSION, "dossier": str(ICI),
         "requetes": db.requetes_du_mois(conn), "limite_google": int(R("limite_google", "900")),
         "equipe": SYNCHRO,
     }
@@ -598,6 +598,9 @@ class Gestionnaire(BaseHTTPRequestHandler):
         except ErreurAPI as e:
             return self._json(400, {"erreur": str(e)})
         except Exception as e:
+            if "readonly" in str(e):
+                return self._json(500, {"erreur": "Le logiciel ne peut pas enregistrer : ferme la fenêtre du Terminal "
+                                                  "(ou redémarre l'ordinateur), puis relance le logiciel."})
             return self._json(500, {"erreur": f"Erreur inattendue : {e}"})
         if isinstance(resultat, bytes):
             return self._repondre(200, resultat, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -630,11 +633,12 @@ class Gestionnaire(BaseHTTPRequestHandler):
 
 
 def version_deja_lancee():
-    """Version du logiciel qui occupe déjà le port, ou None (ancienne version sans numéro)."""
+    """Version et dossier du logiciel qui occupe déjà le port, ou None (ancienne version sans numéro)."""
     try:
-        return requests.get(f"http://127.0.0.1:{PORT}/api/etat", timeout=3,
-                            proxies={"http": None, "https": None}).json().get("version")
-    except (requests.RequestException, ValueError):
+        etat = requests.get(f"http://127.0.0.1:{PORT}/api/etat", timeout=3,
+                            proxies={"http": None, "https": None}).json()
+        return etat.get("version"), etat.get("dossier")
+    except (requests.RequestException, ValueError, AttributeError):
         return None
 
 
@@ -668,10 +672,11 @@ def main():
     try:
         serveur = ThreadingHTTPServer(("127.0.0.1", PORT), Gestionnaire)
     except OSError:
-        if version_deja_lancee() == VERSION:
+        if version_deja_lancee() == (VERSION, str(ICI)):  # même version, même dossier
             webbrowser.open(adresse)  # déjà ouvert : on rouvre simplement la page
             return
-        # Une ancienne version tourne encore : on la ferme pour lancer celle-ci.
+        # Une autre version (ou une copie dans un autre dossier, peut-être supprimé) tourne encore :
+        # on la ferme pour lancer celle-ci.
         print(f"{datetime.now():%d/%m %H:%M} Ancienne version encore ouverte : fermeture.")
         arreter_ancien_logiciel()
         for _ in range(20):

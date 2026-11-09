@@ -5,6 +5,7 @@ peut être prospect dans les deux espaces : chaque fiche a donc une clé « espa
 """
 import json
 import os
+import shutil
 import sqlite3
 import uuid
 from datetime import datetime, timedelta
@@ -78,11 +79,51 @@ MIGRATIONS = [
 ]
 
 
+def _rendre_modifiable(path):
+    """Enlève la protection « lecture seule » du dossier data et de la base (fichier copié depuis
+    une autre version, un ZIP, une clé USB, un autre ordinateur…)."""
+    for p in (path.parent, path, Path(f"{path}-journal"), Path(f"{path}-wal"), Path(f"{path}-shm")):
+        try:
+            if p.exists() and not os.access(p, os.W_OK):
+                os.chmod(p, p.stat().st_mode | (0o700 if p.is_dir() else 0o600))
+        except OSError:
+            pass
+
+
+def _ecriture_possible(conn):
+    try:
+        conn.execute("CREATE TABLE IF NOT EXISTS test_ecriture (x)")
+        conn.execute("INSERT INTO test_ecriture VALUES (1)")
+        conn.execute("DELETE FROM test_ecriture")
+        conn.commit()
+        return True
+    except sqlite3.OperationalError:
+        conn.rollback()
+        return False
+
+
+def _ouvrir(path):
+    conn = sqlite3.connect(path, check_same_thread=False, timeout=20)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+
 def connect(path=None):
     path = Path(path) if path else DB_PATH
     path.parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(path, check_same_thread=False, timeout=20)
-    conn.row_factory = sqlite3.Row
+    _rendre_modifiable(path)
+    conn = _ouvrir(path)
+    if path.exists() and not _ecriture_possible(conn):
+        # Toujours en lecture seule : on recrée le fichier (une copie neuve nous appartient).
+        conn.close()
+        copie = path.with_name(path.name + ".copie")
+        shutil.copyfile(path, copie)
+        os.replace(copie, path)
+        conn = _ouvrir(path)
+        if not _ecriture_possible(conn):
+            raise RuntimeError(
+                f"Impossible d'écrire dans {path}. Déplace le dossier du logiciel dans Documents "
+                "(pas dans iCloud, une clé USB ou Téléchargements), puis relance-le.")
     conn.executescript(SCHEMA)
     for table, colonne, type_ in MIGRATIONS:
         if colonne not in {r[1] for r in conn.execute(f"PRAGMA table_info({table})")}:

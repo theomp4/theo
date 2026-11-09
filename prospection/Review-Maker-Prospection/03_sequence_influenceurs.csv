@@ -1,0 +1,19 @@
+Étape,Délai (jours après le 1er message),Canal,Objet (email),Message
+1,0,DM Instagram,,"Salut {{firstName}} ! On suit ce que tu fais avec {{companyName}}, c'est top.
+On est Théo et Luke de Review Maker, on crée des sites pour les commerces et les marques.
+On a regardé ton site et on a plein d'idées pour le rendre encore plus beau (et mieux trouvé sur Google).
+On te propose de te le refaire et de filmer la création + ta réaction, pour un post en collab.
+Ça te dit qu'on t'envoie une maquette ?"
+2,3,DM Instagram,,"Re {{firstName}} ! Pour que tu voies à quoi ça ressemblerait, voici un aperçu de la page d'accueil qu'on imagine pour {{companyName}} 👇
+[capture de la maquette]
+Dis-nous si ça te parle, on peut en discuter 10 min cette semaine."
+3,7,Email (si disponible),Une idée pour le site de {{companyName}},"Bonjour {{firstName}},
+
+Je vous ai écrit sur Instagram, je me permets de vous recontacter ici.
+Avec Luke, on crée des sites pour les commerces et les marques (Review Maker). On aimerait refaire celui de {{companyName}} et filmer la création pour un post en collaboration.
+
+Vous trouverez la maquette de la page d'accueil en pièce jointe. Si l'idée vous plaît, on peut s'appeler 10 minutes.
+
+Belle journée,
+Théo – Review Maker"
+4,14,DM Instagram,,"Dernier message promis {{firstName}} 🙂 Si ce n'est pas le bon moment, aucun souci. La proposition reste valable si tu changes d'avis, et on continuera à suivre {{companyName}} !"

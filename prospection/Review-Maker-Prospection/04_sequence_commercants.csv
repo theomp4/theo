@@ -1,0 +1,26 @@
+Étape,Délai (jours après le 1er message),Canal,Objet (email),Message
+1,0,DM Instagram / Email,Le site de {{companyName}},"Bonjour {{firstName}},
+
+Je suis tombé sur {{companyName}} en cherchant un(e) {{metier}} à {{city}}. Vos clients ont l'air ravis, mais en ligne on ne trouve [pas de site / un site difficile à lire sur téléphone].
+
+Avec Luke, on crée des sites pour les commerces (Review Maker) : beaux, pensés pour le téléphone et faciles à trouver sur Google.
+On a préparé un aperçu de ce que pourrait être le vôtre. Je vous l'envoie ?
+
+Théo – Review Maker"
+2,3,DM Instagram / Email,Re : le site de {{companyName}},"Re {{firstName}},
+
+Voici l'aperçu dont je vous parlais 👇
+[capture de la maquette]
+
+En 30 secondes, on vous montre comment vos clients vous trouveraient sur Google et réserveraient depuis leur téléphone. Ça vous dit d'en parler 10 minutes ?"
+3,7,DM Instagram / Email,Avant / après,"Bonjour {{firstName}},
+
+Pour vous donner une idée concrète, voici une vidéo avant / après d'un site qu'on a refait : [lien vers votre vidéo avant / après].
+On peut faire la même chose pour {{companyName}}. Je vous appelle quand ?"
+4,14,DM Instagram / Email,Je ne vous embête plus,"Bonjour {{firstName}},
+
+Je ne veux pas vous déranger plus longtemps : si ce n'est pas le moment, aucun souci.
+Le jour où vous voulez un site pour {{companyName}}, répondez simplement à ce message.
+
+Bonne continuation,
+Théo – Review Maker"

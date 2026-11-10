@@ -242,13 +242,13 @@
   let sealed = false;
   const build = gsap.timeline({ defaults: { ease: 'power2.out' },
     scrollTrigger: { trigger: '.build', start: 'top top', end: '+=420%', pin: '.build__pin', scrub: .8, anticipatePin: 1,
-      onUpdate: s => {
-        gsap.set('#buildBar', { scaleX: s.progress });
-        const t = build.time();
-        setStep(t < 1 ? 0 : t < 2 ? 1 : t < 3.2 ? 2 : t < 4.2 ? 3 : 4);
-        if (t > 5.55 && !sealed) { sealed = true; const r = $('#galette').getBoundingClientRect(); burst(r.left + r.width / 2, r.top + r.height / 2, 200, 13); kick(); }
-        if (t < 4.6) sealed = false;
-      } } });
+      onUpdate: s => gsap.set('#buildBar', { scaleX: s.progress }) },
+    onUpdate: () => {
+      const t = build.time();
+      setStep(t < 1 ? 0 : t < 2 ? 1 : t < 3.2 ? 2 : t < 4.2 ? 3 : 4);
+      if (t > 5.55 && !sealed) { sealed = true; const r = $('#galette').getBoundingClientRect(); burst(r.left + r.width / 2, r.top + r.height / 2, 200, 13); kick(); }
+      if (t < 4.6) sealed = false;
+    } });
   build
     .to('#butter', { opacity: .28, duration: .45 }, 0).to('#butter', { opacity: 0, duration: .45 }, .5)
     .to('#billig', { scale: 1.03, transformOrigin: '300px 300px', duration: .5, yoyo: true, repeat: 1 }, 0)

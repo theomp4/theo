@@ -135,7 +135,7 @@ html:not(.js) .intro{display:none}
 .hero__w{display:block}
 .hero__w1{font-size:clamp(64px,13.5vw,230px)}
 .hero__w2{font-size:clamp(64px,13.5vw,230px)}
-.hero__w .chw{display:inline-block;overflow:hidden;padding:.24em 0 .08em;margin:-.24em 0 -.08em;vertical-align:top}
+.hero__w .chw{display:inline-block;overflow:hidden;vertical-align:top;margin:-.2em 0 -.06em}
 .hero__w .ch{display:inline-block;background:inherit;background-size:inherit;-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero__w .ch{background:linear-gradient(180deg,#FFF6C9 0%,#F2C24E 40%,#A8761C 78%,#F7D774 100%);-webkit-background-clip:text;background-clip:text}
 .hero__lead{max-width:640px;margin-top:26px;font-family:var(--serif);font-size:clamp(20px,1.9vw,27px);line-height:1.35;color:rgba(244,234,213,.92)}
@@ -348,3 +348,7 @@ html:not(.js) .intro{display:none}
 .foot__word .ch{background:linear-gradient(180deg,#FFF6C9 0%,#F2C24E 40%,#A8761C 78%,#F7D774 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero__w{background:none;animation:none}
 .hero__w .ch{background:linear-gradient(115deg,#A8761C 0%,#F2C24E 22%,#FFF6C9 40%,#F2C24E 55%,#A8761C 78%,#F7D774 100%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;animation:shine 7s linear infinite}
+
+.hero__w .ch{padding:.22em 0 .04em;line-height:1}
+.hero__title{line-height:1}
+@media (max-width:760px){.hero__w1,.hero__w2{font-size:16.5vw}.hero__moon{left:auto;right:10%;top:9%}}

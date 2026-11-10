@@ -30,9 +30,9 @@ Bonjour, je me permets de vous relancer pour la maquette de site que j'ai faite 
 PHOTOS À JOINDRE (dossier « photos »)
 ============================================================
 1. 01-accueil.jpg : le phare et le titre en or
-2. 03-la-complete.jpg : la galette qui se monte au scroll
-3. 06-carte-au-tresor.jpg : la carte au trésor jusqu'à la crêperie
-4. 08-mobile-accueil.jpg : la version téléphone
+2. 04-la-complete-pliee.jpg : la galette qui se monte au scroll
+3. 07-carte-au-tresor.jpg : la carte au trésor jusqu'à la crêperie
+4. 09-mobile-accueil.jpg : la version téléphone
 
 Sur Netlify (app.netlify.com/drop), glisser UNIQUEMENT le dossier « A-GLISSER-SUR-NETLIFY » (pas le dossier entier, sinon « Page not found »).
 Canal conseillé : message privé Instagram (@tresor.breton) ou Facebook, ou en direct à la crêperie.

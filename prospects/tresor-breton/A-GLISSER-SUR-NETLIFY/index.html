@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trésor Breton · Crêperie à Conflans-Sainte-Honorine</title>
+<meta name="description" content="Crêperie Trésor Breton à Conflans-Sainte-Honorine : galettes au sarrasin bio, crêpes de froment, cidre et terrasse ombragée, à deux pas de la gare. Réservation au 01 72 54 44 08.">
+<meta name="theme-color" content="#061224">
+<meta property="og:title" content="Trésor Breton · Crêperie">
+<meta property="og:description" content="Le trésor n'est pas enfoui : il est dans l'assiette. Galettes au sarrasin bio à Conflans-Sainte-Honorine.">
+<meta property="og:image" content="assets/img/complete.jpg">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<!-- Symboles réutilisés -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gGold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFF1B8"/><stop offset=".3" stop-color="#F2C24E"/><stop offset=".6" stop-color="#B9831F"/><stop offset="1" stop-color="#F7D774"/>
+    </linearGradient>
+    <symbol id="triskel" viewBox="-60 -60 120 120">
+      <g fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round">
+        <path id="arm" d="M0 0C-2-18 12-34 28-30 42-26 46-8 36 2 28 10 16 8 13 0 11-7 17-12 22-10"/>
+        <use href="#arm" transform="rotate(120)"/><use href="#arm" transform="rotate(240)"/>
+      </g>
+    </symbol>
+    <symbol id="hermine" viewBox="-20 -30 40 60">
+      <path fill="currentColor" d="M0-28c5 6 5 11 0 15-5-4-5-9 0-15Zm-9 12c6 1 9 5 8 10-6 0-9-4-8-10Zm18 0c1 6-2 10-8 10-1-5 2-9 8-10ZM0-6c3 10 9 20 16 32-6-3-10-3-12 2-2-4-6-4-8 0-2-5-6-5-12-2C-9 14-3 4 0-6Z"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ============ INTRO : LA PIÈCE D'OR ============ -->
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro__coin" id="coin">
+    <div class="coin__face coin__face--a"><svg viewBox="-60 -60 120 120"><use href="#triskel"/></svg></div>
+    <div class="coin__face coin__face--b"><svg viewBox="-20 -30 40 60"><use href="#hermine"/></svg></div>
+  </div>
+  <p class="intro__txt">Un trésor vous attend…</p>
+</div>
+
+<canvas class="dust" id="dust" aria-hidden="true"></canvas>
+
+<!-- Boussole de progression -->
+<div class="compass" id="compass" aria-hidden="true">
+  <svg viewBox="-50 -50 100 100">
+    <circle r="46" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <circle r="38" fill="none" stroke="currentColor" stroke-width=".6" stroke-dasharray="1 5"/>
+    <g id="needle"><path d="M0-34 7 0 0 6-7 0Z" fill="#E8B84A"/><path d="M0 34 7 0 0-6-7 0Z" fill="currentColor" opacity=".5"/></g>
+    <text y="-39" text-anchor="middle" font-size="8" fill="currentColor">N</text>
+  </svg>
+</div>
+
+<!-- ============ HEADER ============ -->
+<header class="head" id="head">
+  <div class="wrap head__in">
+    <a class="brand" href="#top" aria-label="Trésor Breton, accueil">
+      <svg class="brand__ico" viewBox="-60 -60 120 120"><use href="#triskel"/></svg>
+      <span class="brand__txt"><b>Trésor Breton</b><small>Crêperie</small></span>
+    </a>
+    <nav class="head__nav" aria-label="Navigation principale">
+      <a href="#histoire">La maison</a>
+      <a href="#complete">La complète</a>
+      <a href="#carte">La carte</a>
+      <a href="#cidre">Le cidre</a>
+      <a href="#carte-tresor">Nous trouver</a>
+    </nav>
+    <a class="btn btn--gold head__cta" href="tel:+33172544408" data-magnetic><span>01 72 54 44 08</span></a>
+    <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="menu" id="menu" aria-hidden="true">
+  <nav class="wrap menu__in">
+    <a href="#histoire">La maison</a>
+    <a href="#complete">La complète</a>
+    <a href="#carte">La carte</a>
+    <a href="#cidre">Le cidre</a>
+    <a href="#carte-tresor">Nous trouver</a>
+    <a class="btn btn--gold btn--lg" href="tel:+33172544408"><span>Réserver une table</span></a>
+  </nav>
+</div>
+
+<main id="top">
+
+<!-- ============ HERO : NUIT BRETONNE ============ -->
+<section class="hero" id="hero">
+  <canvas class="hero__stars" id="stars" aria-hidden="true"></canvas>
+  <div class="hero__moon" aria-hidden="true"></div>
+
+  <div class="hero__light" aria-hidden="true">
+    <div class="beam" id="beam"></div>
+    <svg class="phare" viewBox="0 0 120 300">
+      <path d="M30 300 42 96h36l12 204Z" fill="#F4EAD5"/>
+      <path d="M40 130h40l2 34H38Zm-4 68h48l2 34H34Zm-4 68h56l2 34H30Z" fill="#C8432B"/>
+      <rect x="34" y="84" width="52" height="12" rx="2" fill="#0B1E36"/>
+      <rect x="44" y="52" width="32" height="32" fill="#FFE9A0"/>
+      <path d="M44 52h32M52 52v32M60 52v32M68 52v32" stroke="#0B1E36" stroke-width="2"/>
+      <path d="M38 52 60 28l22 24Z" fill="#C8432B"/>
+      <circle cx="60" cy="22" r="4" fill="#E8B84A"/>
+      <circle class="phare__glow" cx="60" cy="68" r="26" fill="#FFE9A0" opacity=".35"/>
+    </svg>
+    <svg class="rock" viewBox="0 0 400 120" preserveAspectRatio="none"><path d="M0 120C20 70 60 40 110 34c30-22 80-30 120-10 50-8 110 20 130 50 20 18 34 32 40 46Z" fill="#040C18"/></svg>
+  </div>
+
+  <div class="wrap hero__in">
+    <p class="hero__eyebrow" data-hero><svg viewBox="-20 -30 40 60"><use href="#hermine"/></svg>Crêperie · Conflans-Sainte-Honorine<svg viewBox="-20 -30 40 60"><use href="#hermine"/></svg></p>
+    <h1 class="hero__title" aria-label="Trésor Breton">
+      <span class="hero__w hero__w1" data-split>Trésor</span>
+      <span class="hero__w hero__w2" data-split>Breton</span>
+    </h1>
+    <p class="hero__lead" data-hero>Le trésor n'est pas enfoui : <em>il est dans l'assiette.</em><br>Galettes au sarrasin bio, crêpes de froment et cidre, à deux pas de la gare.</p>
+    <div class="hero__actions" data-hero>
+      <a class="btn btn--gold btn--lg" href="tel:+33172544408" data-magnetic><span>Réserver une table</span></a>
+      <a class="btn btn--line btn--lg" href="#complete" data-magnetic><span>Ouvrir le coffre</span></a>
+    </div>
+    <a class="hero__rating" href="#avis" data-hero>
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2c-2 1.5-4.5 2.4-7.2 2.4-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>
+      <strong>4,7</strong><span class="stars">★★★★★</span><span>463 avis Google</span>
+    </a>
+  </div>
+
+  <figure class="hero__plate" data-hero="plate" data-cursor="Miam">
+    <img src="assets/img/complete.jpg" alt="Galette complète : jambon, œuf et emmental" fetchpriority="high">
+  </figure>
+
+  <div class="sea" aria-hidden="true">
+    <svg class="wave wave--3" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 80c120-50 240-50 360 0s240 50 360 0 240-50 360 0 240 50 360 0 240-50 360 0 240 50 360 0 240-50 360 0 240 50 360 0v120H0Z"/></svg>
+    <svg class="wave wave--2" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 90c120-40 240-40 360 0s240 40 360 0 240-40 360 0 240 40 360 0 240-40 360 0 240 40 360 0 240-40 360 0 240 40 360 0v110H0Z"/></svg>
+    <svg class="wave wave--1" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 100c120-30 240-30 360 0s240 30 360 0 240-30 360 0 240 30 360 0 240-30 360 0 240 30 360 0 240-30 360 0 240 30 360 0v100H0Z"/></svg>
+  </div>
+</section>
+
+<!-- ============ MARINIÈRE ============ -->
+<div class="stripe" aria-hidden="true">
+  <div class="stripe__track" data-marquee="1">
+    <span>Degemer mat</span><i><svg viewBox="-60 -60 120 120"><use href="#triskel"/></svg></i><span>Galettes</span><i><svg viewBox="-60 -60 120 120"><use href="#triskel"/></svg></i><span>Crêpes</span><i><svg viewBox="-60 -60 120 120"><use href="#triskel"/></svg></i><span>Cidre</span><i><svg viewBox="-60 -60 120 120"><use href="#triskel"/></svg></i><span>Sarrasin bio</span><i><svg viewBox="-60 -60 120 120"><use href="#triskel"/></svg></i><span>Kenavo</span><i><svg viewBox="-60 -60 120 120"><use href="#triskel"/></svg></i>
+  </div>
+</div>
+
+<!-- ============ LA MAISON ============ -->
+<section class="histoire" id="histoire">
+  <div class="wrap histoire__grid">
+    <p class="kicker" data-reveal>La maison</p>
+    <p class="histoire__text" data-words>En Bretagne, on dit que chaque crêpier garde un <em>secret.</em> Le nôtre tient en trois choses : une farine de <em>sarrasin bio,</em> un tour de main, et un billig bien chaud. Le reste, c'est du beurre, du temps, et l'envie de vous voir <em>revenir.</em></p>
+    <figure class="histoire__img histoire__img--a" data-speed="-0.12" data-cursor="Saint-Jacques"><img src="assets/img/stjacques.jpg" alt="Galette aux noix de Saint-Jacques, pignons et citron vert" loading="lazy" data-clip></figure>
+    <figure class="histoire__img histoire__img--b" data-speed="0.14"><img src="assets/img/falaise.jpg" alt="Falaises et lumière sur la côte" loading="lazy" data-clip></figure>
+    <ul class="gems" data-reveal>
+      <li><b>Bio</b><span>farines de sarrasin et de froment</span></li>
+      <li><b>Minute</b><span>galettes tournées à la commande</span></li>
+      <li><b>Terrasse</b><span>ombragée, aux beaux jours</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ LA COMPLÈTE, ÉTAPE PAR ÉTAPE ============ -->
+<section class="build" id="complete">
+  <div class="build__pin">
+    <div class="wrap build__grid">
+      <div class="build__txt">
+        <p class="kicker kicker--gold">La pièce maîtresse</p>
+        <h2 class="h2">La complète, <em>geste après geste.</em></h2>
+        <ol class="steps" id="steps">
+          <li class="is-on"><b>01</b><div><strong>Le billig</strong><p>La plaque en fonte, bien chaude et beurrée.</p></div></li>
+          <li><b>02</b><div><strong>La pâte</strong><p>Une louche de sarrasin bio, étalée d'un tour de rozell.</p></div></li>
+          <li><b>03</b><div><strong>Jambon &amp; emmental</strong><p>Le jambon d'abord, le fromage qui fond par-dessus.</p></div></li>
+          <li><b>04</b><div><strong>L'œuf</strong><p>Cassé au centre, le jaune encore coulant.</p></div></li>
+          <li><b>05</b><div><strong>Le pliage</strong><p>Quatre bords rabattus : le trésor est scellé.</p></div></li>
+        </ol>
+      </div>
+      <div class="build__stage">
+        <svg class="galette" id="galette" viewBox="0 0 600 600" aria-label="Animation : montage d'une galette complète">
+          <defs>
+            <radialGradient id="gBillig" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#3a3f47"/><stop offset=".8" stop-color="#15181d"/><stop offset="1" stop-color="#0a0c0f"/></radialGradient>
+            <pattern id="pGrain" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(23)"><rect width="14" height="14" fill="#9A6A3A"/><circle cx="3" cy="4" r="1.1" fill="#6E4520"/><circle cx="10" cy="9" r=".9" fill="#7d5226"/><circle cx="7" cy="1" r=".6" fill="#b98550"/><circle cx="12" cy="3" r=".7" fill="#6E4520" opacity=".7"/></pattern>
+            <radialGradient id="gYolk" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#FFD76A"/><stop offset="1" stop-color="#F09A1A"/></radialGradient>
+          </defs>
+          <g id="ring" style="transform-origin:300px 300px"><circle cx="300" cy="300" r="286" fill="none" stroke="url(#gGold)" stroke-width="3" stroke-dasharray="2 14" stroke-linecap="round"/></g>
+          <circle id="billig" cx="300" cy="300" r="262" fill="url(#gBillig)" stroke="#000" stroke-width="6"/>
+          <circle id="butter" cx="300" cy="300" r="240" fill="#F7D774" opacity="0"/>
+          <g id="batter" style="transform-origin:300px 300px">
+            <rect x="180" y="180" width="240" height="240" fill="url(#pGrain)"/>
+          </g>
+          <g id="ham">
+            <path d="M190 200c40-24 96-20 124 8 18 30-4 70-44 78-44 8-90-10-96-44-2-16 4-32 16-42Z" fill="#E79A9A"/>
+            <path d="M300 300c36-20 86-10 104 22 12 30-14 62-52 66-40 4-74-16-74-48 0-16 8-30 22-40Z" fill="#EFA8A6"/>
+            <path d="M196 330c30-16 70-8 84 18 10 26-10 52-42 56-34 2-60-14-60-40 0-14 6-26 18-34Z" fill="#E28E90"/>
+          </g>
+          <g id="cheese" fill="#F6CF57">
+            <rect x="210" y="210" width="46" height="8" rx="4" transform="rotate(20 233 214)"/><rect x="330" y="230" width="52" height="8" rx="4" transform="rotate(-30 356 234)"/>
+            <rect x="250" y="370" width="50" height="8" rx="4" transform="rotate(12 275 374)"/><rect x="350" y="350" width="44" height="8" rx="4" transform="rotate(-50 372 354)"/>
+            <rect x="200" y="290" width="48" height="8" rx="4" transform="rotate(70 224 294)"/><rect x="300" y="200" width="40" height="8" rx="4" transform="rotate(-8 320 204)"/>
+            <rect x="370" y="290" width="46" height="8" rx="4" transform="rotate(40 393 294)"/><rect x="290" y="400" width="42" height="8" rx="4" transform="rotate(-20 311 404)"/>
+            <rect x="240" y="250" width="44" height="8" rx="4" transform="rotate(-60 262 254)"/><rect x="320" y="330" width="40" height="8" rx="4" transform="rotate(80 340 334)"/>
+          </g>
+          <g id="egg" style="transform-origin:300px 300px">
+            <path d="M300 232c44-6 80 22 78 62-2 42-40 74-84 70-40-4-68-34-64-72 4-32 32-56 70-60Z" fill="#FFFDF6"/>
+            <circle id="yolk" cx="302" cy="298" r="34" fill="url(#gYolk)"/>
+            <ellipse cx="292" cy="286" rx="10" ry="6" fill="#fff" opacity=".6"/>
+          </g>
+          <g id="chives" fill="#4E8B3A">
+            <rect x="250" y="262" width="12" height="4" rx="2" transform="rotate(30 256 264)"/><rect x="340" y="270" width="12" height="4" rx="2" transform="rotate(-40 346 272)"/>
+            <rect x="330" y="340" width="12" height="4" rx="2" transform="rotate(70 336 342)"/><rect x="262" y="336" width="12" height="4" rx="2" transform="rotate(-15 268 338)"/>
+            <rect x="300" y="244" width="12" height="4" rx="2" transform="rotate(10 306 246)"/><rect x="356" y="310" width="12" height="4" rx="2" transform="rotate(50 362 312)"/>
+          </g>
+        <g id="flaps" style="transform-origin:300px 300px">
+            <path class="flap" id="flapT" d="M118 180A218 218 0 0 1 482 180Z" fill="#9A6A3A"/>
+            <path class="flap" id="flapB" d="M482 420A218 218 0 0 1 118 420Z" fill="#9A6A3A"/>
+            <path class="flap" id="flapR" d="M420 118A218 218 0 0 1 420 482Z" fill="#9A6A3A"/>
+            <path class="flap" id="flapL" d="M180 482A218 218 0 0 1 180 118Z" fill="#9A6A3A"/>
+          </g>
+        </svg>
+        <p class="build__name" id="buildName">La Complète</p>
+      </div>
+    </div>
+    <div class="build__bar" aria-hidden="true"><i id="buildBar"></i></div>
+  </div>
+</section>
+
+<!-- ============ LA CARTE ============ -->
+<section class="carte" id="carte">
+  <div class="wrap">
+    <div class="carte__head">
+      <p class="kicker" data-reveal>Dans le coffre</p>
+      <h2 class="h2 h2--xl" data-lines>La <em>carte.</em></h2>
+    </div>
+    <div class="carte__cols">
+      <div class="col">
+        <h3 class="col__t" data-reveal><span>Salé</span>Les galettes <small>sarrasin bio</small></h3>
+        <ul class="items">
+          <li data-img="assets/img/complete.jpg"><div><h4>La Complète</h4><p>Jambon, œuf, emmental</p></div><svg viewBox="-60 -60 120 120"><use href="#triskel"/></svg></li>
+          <li data-img="assets/img/stjacques.jpg"><div><h4>La Saint-Jacques</h4><p>Noix de Saint-Jacques, pignons, herbes fraîches, citron vert</p></div><svg viewBox="-60 -60 120 120"><use href="#triskel"/></svg></li>
+          <li data-img="assets/img/complete.jpg"><div><h4>La Lard fumé</h4><p>Lard fumé grillé, œuf, emmental</p></div><svg viewBox="-60 -60 120 120"><use href="#triskel"/></svg></li>
+          <li data-img="assets/img/stjacques.jpg"><div><h4>La galette du moment</h4><p>Selon le marché et la saison, à l'ardoise</p></div><svg viewBox="-60 -60 120 120"><use href="#triskel"/></svg></li>
+        </ul>
+      </div>
+      <div class="col">
+        <h3 class="col__t" data-reveal><span>Sucré</span>Les crêpes <small>froment</small></h3>
+        <ul class="items">
+          <li data-img="assets/img/crepes.jpg"><div><h4>Beurre-sucre</h4><p>La première, la vraie</p></div><svg viewBox="-60 -60 120 120"><use href="#triskel"/></svg></li>
+          <li data-img="assets/img/crepes.jpg"><div><h4>Caramel au beurre salé</h4><p>Tiède, onctueux, breton</p></div><svg viewBox="-60 -60 120 120"><use href="#triskel"/></svg></li>
+          <li data-img="assets/img/crepes.jpg"><div><h4>Chocolat</h4><p>Chocolat fondu, chantilly si le cœur vous en dit</p></div><svg viewBox="-60 -60 120 120"><use href="#triskel"/></svg></li>
+          <li data-img="assets/img/crepes.jpg"><div><h4>La crêpe du moment</h4><p>Fruits de saison, à l'ardoise</p></div><svg viewBox="-60 -60 120 120"><use href="#triskel"/></svg></li>
+        </ul>
+      </div>
+    </div>
+    <p class="carte__note" data-reveal>Extrait de la carte. La carte complète et les prix sont à découvrir sur place.</p>
+  </div>
+  <div class="peek" id="peek" aria-hidden="true"><img src="assets/img/complete.jpg" alt=""></div>
+</section>
+
+<!-- ============ LE CIDRE ============ -->
+<section class="cidre" id="cidre">
+  <canvas class="bubbles" id="bubbles" aria-hidden="true"></canvas>
+  <div class="wrap cidre__grid">
+    <div>
+      <p class="kicker kicker--ink" data-reveal>À la bolée</p>
+      <h2 class="h2 h2--ink" data-lines>Et pour trinquer, <em>le cidre.</em></h2>
+      <p class="cidre__lead" data-reveal>Une galette sans cidre, c'est un phare sans lumière. Brut ou doux, servi bien frais, à la bolée comme en Bretagne.</p>
+      <p class="cidre__yec" data-reveal>Yec'hed mat&nbsp;! <span>« À votre santé », en breton.</span></p>
+    </div>
+    <svg class="bolee" viewBox="0 0 400 300" aria-hidden="true">
+      <defs><clipPath id="bowl"><path d="M40 90h320c0 100-60 170-160 170S40 190 40 90Z"/></clipPath></defs>
+      <path d="M40 90h320c0 100-60 170-160 170S40 190 40 90Z" fill="#FBF5E6"/>
+      <g clip-path="url(#bowl)"><rect id="liquid" x="0" y="90" width="400" height="200" fill="#D98A12"/><rect id="foam" x="0" y="84" width="400" height="16" fill="#FFF3C9"/></g>
+      <path d="M40 90h320" stroke="#0B1E36" stroke-width="6" stroke-linecap="round"/>
+      <path d="M356 110c40-4 44 60-12 66" fill="none" stroke="#FBF5E6" stroke-width="16" stroke-linecap="round"/>
+      <path d="M40 90h320c0 100-60 170-160 170S40 190 40 90Z" fill="none" stroke="#0B1E36" stroke-width="5"/>
+      <path d="M90 130c10 50 40 84 80 100" fill="none" stroke="#0B1E36" stroke-width="3" opacity=".25" stroke-linecap="round"/>
+      <ellipse cx="200" cy="268" rx="70" ry="8" fill="#0B1E36" opacity=".25"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ============ AVIS ============ -->
+<section class="avis" id="avis">
+  <div class="wrap">
+    <p class="kicker kicker--gold" data-reveal>Ce qu'on en dit</p>
+    <h2 class="h2" data-lines>Un trésor <em>bien gardé ?</em> Plus vraiment.</h2>
+    <div class="scores">
+      <div class="score" data-reveal><b><span data-count="4.7">4,7</span><small>/5</small></b><span class="stars">★★★★★</span><p>Google · 463 avis</p></div>
+      <div class="score" data-reveal><b><span data-count="4.8">4,8</span><small>/5</small></b><span class="stars">★★★★★</span><p>Tripadvisor · 79 avis</p></div>
+      <div class="score" data-reveal><b><span data-count="9.3">9,3</span><small>/10</small></b><span class="stars">★★★★★</span><p>TheFork</p></div>
+    </div>
+    <ul class="praise">
+      <li data-reveal><svg viewBox="-60 -60 120 120"><use href="#triskel"/></svg><h3>L'accueil</h3><p>Chaleureux et attentionné : c'est ce que les clients citent en premier.</p></li>
+      <li data-reveal><svg viewBox="-60 -60 120 120"><use href="#triskel"/></svg><h3>Les galettes</h3><p>Généreuses, garnies de produits frais, aussi bonnes en salé qu'en sucré.</p></li>
+      <li data-reveal><svg viewBox="-60 -60 120 120"><use href="#triskel"/></svg><h3>Le cadre</h3><p>Une salle au calme et une terrasse ombragée dès les beaux jours.</p></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ LA CARTE AU TRÉSOR ============ -->
+<section class="tmap" id="carte-tresor">
+  <div class="wrap">
+    <div class="tmap__head">
+      <p class="kicker kicker--ink" data-reveal>La carte au trésor</p>
+      <h2 class="h2 h2--ink" data-lines>Suivez <em>les pointillés.</em></h2>
+    </div>
+    <div class="parch">
+      <svg class="parch__svg" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <defs><mask id="mPath"><path id="pathMask" d="M110 400C220 300 260 460 380 380S520 180 640 250s140 190 260 120 120-190 190-230" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round"/></mask></defs>
+        <g opacity=".5" fill="none" stroke="#7A5B2E" stroke-width="1.2">
+          <path d="M0 470c150-40 260 30 420-10s300-60 460-20 220 20 320-10"/><path d="M0 60c200 30 320-30 520 0s360 40 680-10" opacity=".6"/>
+          <path d="M760 60c30 20 60 20 90 0m-70 22c20 14 40 14 60 0" /><path d="M180 130c20 14 40 14 60 0m-50 20c14 10 28 10 42 0"/>
+        </g>
+        <path d="M110 400C220 300 260 460 380 380S520 180 640 250s140 190 260 120 120-190 190-230" fill="none" stroke="#7A2E1A" stroke-width="5" stroke-dasharray="2 18" stroke-linecap="round" mask="url(#mPath)"/>
+        <g id="mStart"><circle cx="110" cy="400" r="12" fill="#0B1E36"/><text x="110" y="446" text-anchor="middle" class="parch__lbl">Gare de Conflans</text><text x="110" y="468" text-anchor="middle" class="parch__sub">Ligne J · à deux pas</text></g>
+        <g id="mMid"><path d="M640 196v40m-16-32 16-12 16 12" fill="none" stroke="#0B1E36" stroke-width="3"/><text x="640" y="296" text-anchor="middle" class="parch__sub">Avenue Carnot</text></g>
+        <g id="mX" style="transform-origin:1090px 140px"><path d="M1062 112l56 56m0-56-56 56" stroke="#B5281A" stroke-width="12" stroke-linecap="round"/><text x="1090" y="84" text-anchor="middle" class="parch__lbl">Le trésor</text></g>
+        <g transform="translate(980 400)" opacity=".8" fill="none" stroke="#7A5B2E" stroke-width="2"><circle r="44"/><path d="M0-58 10 0 0 58-10 0ZM-58 0 0-10 58 0 0 10Z" fill="#7A5B2E" fill-opacity=".25"/></g>
+      </svg>
+    </div>
+    <div class="tinfo">
+      <div data-reveal><small>Adresse</small><p>8 avenue Carnot<br>78700 Conflans-Sainte-Honorine</p><a class="ulink" href="https://www.google.com/maps/dir/?api=1&amp;destination=Cr%C3%AAperie+Tr%C3%A9sor+Breton+8+avenue+Carnot+78700+Conflans-Sainte-Honorine" target="_blank" rel="noopener">Lancer l'itinéraire</a></div>
+      <div data-reveal><small>Horaires</small><p>Du mardi au vendredi<br>12h – 13h30 · 19h – 21h</p><p class="tinfo__s">Réservation conseillée</p></div>
+      <div data-reveal><small>Sur place</small><p>Terrasse ombragée<br>Entrée de plain-pied · parking</p></div>
+      <div data-reveal><small>Réserver</small><a class="tinfo__tel" href="tel:+33172544408">01 72 54 44 08</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RÉSERVATION ============ -->
+<section class="resa" id="reserver">
+  <div class="wrap resa__grid">
+    <div>
+      <p class="kicker kicker--gold" data-reveal>À table</p>
+      <h2 class="h2" data-lines>Venez chercher <em>votre part.</em></h2>
+      <p class="resa__lead" data-reveal>Laissez-nous vos coordonnées : nous vous rappelons pour confirmer votre table.</p>
+      <div class="map" data-reveal><iframe title="Plan d'accès à la crêperie Trésor Breton" src="https://maps.google.com/maps?q=Cr%C3%AAperie%20Tr%C3%A9sor%20Breton%2C%208%20avenue%20Carnot%2C%2078700%20Conflans-Sainte-Honorine&amp;z=15&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+    </div>
+    <form class="form" name="reservation" method="POST" action="merci.html" data-netlify="true" netlify-honeypot="bot-field" data-reveal>
+      <input type="hidden" name="form-name" value="reservation">
+      <p hidden><label>Ne pas remplir <input name="bot-field"></label></p>
+      <h3>Réserver <em>une table</em></h3>
+      <div class="row2">
+        <label class="f"><span>Nom</span><input name="nom" autocomplete="name" required></label>
+        <label class="f"><span>Téléphone</span><input name="telephone" type="tel" autocomplete="tel" required></label>
+      </div>
+      <div class="row3">
+        <label class="f"><span>Date</span><input name="date" type="date" required></label>
+        <label class="f"><span>Heure</span><select name="heure"><option>12h00</option><option>12h30</option><option>13h00</option><option>19h00</option><option selected>19h30</option><option>20h00</option><option>20h30</option></select></label>
+        <label class="f"><span>Couverts</span><input name="couverts" type="number" min="1" max="30" value="2"></label>
+      </div>
+      <label class="f"><span>Un mot pour nous</span><textarea name="message" rows="3" placeholder="Terrasse, anniversaire, allergie…"></textarea></label>
+      <button class="btn btn--gold btn--lg btn--block" type="submit" data-magnetic><span>Envoyer ma demande</span></button>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="foot__word" aria-hidden="true">Kenavo</div>
+  <p class="foot__trad">« Au revoir », et à très vite.</p>
+  <div class="wrap foot__base">
+    <span>© <span id="year">2026</span> Crêperie Trésor Breton · 8 avenue Carnot, Conflans-Sainte-Honorine</span>
+    <span><a href="https://www.instagram.com/tresor.breton/" target="_blank" rel="noopener">Instagram</a> · <a href="tel:+33172544408">01 72 54 44 08</a> · Photos d'ambiance : Unsplash</span>
+  </div>
+  <div class="sea sea--foot" aria-hidden="true">
+    <svg class="wave wave--2" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 90c120-40 240-40 360 0s240 40 360 0 240-40 360 0 240 40 360 0 240-40 360 0 240 40 360 0 240-40 360 0 240 40 360 0v110H0Z"/></svg>
+    <svg class="wave wave--1" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 100c120-30 240-30 360 0s240 30 360 0 240-30 360 0 240 30 360 0 240-30 360 0 240 30 360 0 240-30 360 0 240 30 360 0v100H0Z"/></svg>
+  </div>
+</footer>
+
+<div class="actionbar">
+  <a class="btn btn--gold" href="tel:+33172544408"><span>Réserver</span></a>
+  <a class="btn btn--line" href="#carte"><span>La carte</span></a>
+</div>
+
+<div class="cursor" id="cursor" aria-hidden="true"><span class="cursor__label"></span></div>
+
+<script src="assets/vendor/gsap.min.js" defer></script>
+<script src="assets/vendor/ScrollTrigger.min.js" defer></script>
+<script src="assets/vendor/lenis.min.js" defer></script>
+<script src="assets/main.js" defer></script>
+</body>
+</html>

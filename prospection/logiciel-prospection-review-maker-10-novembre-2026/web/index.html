@@ -196,6 +196,36 @@ details summary::marker { color: var(--dim) }
 .funnel { display: grid; gap: 11px }
 .funnel div > p { display: flex; justify-content: space-between; font-size: 12.5px; margin-bottom: 5px } .funnel p b { font: 500 11.5px var(--mono); color: var(--muted) }
 
+/* marketing */
+.mk-bar { padding: 12px 14px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap }
+.mk-bar .t { margin-right: auto; min-width: 0 } .mk-bar .t b { display: block; font-weight: 500 } .mk-bar .t span { font-size: 12px; color: var(--muted) }
+.mk-days { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 16px }
+.mk-day { padding: 18px; display: grid; gap: 12px; align-content: start; transition: opacity .35s, transform .6s var(--spring), border-color .35s }
+.mk-day.dim { opacity: .35 }
+.mk-day.fait { border-color: rgb(110 231 183 / .45) }
+.mk-day header { display: flex; align-items: center; justify-content: space-between; gap: 8px }
+.mk-day header .j b { display: block; font-weight: 600; font-size: 15px } .mk-day header .j span { font-size: 12px; color: var(--muted) }
+.mk-day h2 { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3 }
+.mk-day .sujet { padding: 9px 12px; font-size: 13px } .mk-day .sujet b { font-weight: 500; color: var(--muted) }
+.mk-day dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; font-size: 13px }
+.mk-day dt { color: var(--dim); font-size: 12px; padding-top: 1px } .mk-day dd { margin: 0; min-width: 0 }
+.mk-day .reseaux { display: flex; gap: 6px; flex-wrap: wrap }
+.qui { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 500 }
+.qui i { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font: 600 10.5px var(--font); font-style: normal; color: var(--on-ink); background: var(--c) }
+.mk-check { width: 100%; justify-content: center; padding: 10px 16px }
+.mk-check svg { width: 16px; height: 16px; flex: none }
+.mk-check[aria-pressed=true] { background: var(--ok); color: #0B2318; border-color: transparent; font-weight: 600; box-shadow: 0 10px 26px -12px rgb(110 231 183 / .8) }
+.mk-msg { display: grid; gap: 8px; padding: 14px }
+.mk-msg header { display: flex; justify-content: space-between; gap: 8px; font-size: 13px } .mk-msg header span { color: var(--dim); font-size: 12px }
+.mk-collab { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 12px 14px; border-radius: 14px; transition: background .2s }
+.mk-collab:hover { background: var(--glass-hi) }
+.mk-collab .t b { display: block; font-size: 13.5px; font-weight: 500 } .mk-collab .t span { display: block; font-size: 12px; color: var(--muted) }
+.mk-collab.fait .t b { text-decoration: line-through; color: var(--muted) }
+.mk-tick { width: 30px; height: 30px; padding: 0; border-radius: 50%; flex: none }
+.mk-tick[aria-pressed=true] { background: var(--ok); color: #0B2318; border-color: transparent }
+.mk-tick svg { width: 14px; height: 14px }
+@media (max-width: 640px) { .mk-collab { grid-template-columns: auto minmax(0, 1fr) } .mk-collab > .qui { grid-column: 2 } }
+
 /* --- Animations --- */
 .enter .rise { animation: rise .85s var(--spring) both; animation-delay: calc(var(--i, 0) * 60ms) }
 @keyframes rise { 0% { opacity: 0; transform: translateY(28px) scale(.95); filter: blur(10px) } 60% { filter: blur(0) } 100% { opacity: 1 } }
@@ -237,8 +267,8 @@ details summary::marker { color: var(--dim) }
       <button class="nav-item" data-vue="accueil" role="tab" aria-selected="false" title="Raccourci : touche 1  ·  Accueil"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></span>Accueil</button>
       <button class="nav-item" data-vue="trouver" role="tab" aria-selected="false" title="Raccourci : touche 2  ·  Trouver des commerces"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>Trouver</button>
       <button class="nav-item" data-vue="prospects" role="tab" aria-selected="false" title="Raccourci : touche 3  ·  Mes prospects"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20"/><circle cx="10" cy="8" r="3.5"/><path d="M20 20v-1.5a3.5 3.5 0 0 0-2.5-3.35M15.5 4.6a3.5 3.5 0 0 1 0 6.8"/></svg></span>Prospects</button>
-      <a class="nav-item" href="/marketing" style="text-decoration:none" title="Marketing · Planning des posts TikTok et Instagram"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span>Marketing</a>
-      <button class="nav-item" data-vue="reglages" role="tab" aria-selected="false" title="Raccourci : touche 4  ·  Réglages"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span>Réglages</button>
+      <button class="nav-item" data-vue="marketing" role="tab" aria-selected="false" title="Raccourci : touche 4  ·  Marketing"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span>Marketing</button>
+      <button class="nav-item" data-vue="reglages" role="tab" aria-selected="false" title="Raccourci : touche 5  ·  Réglages"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span>Réglages</button>
     </div>
     <button class="ico plus" id="plus" aria-label="Trouver de nouveaux commerces" title="Trouver de nouveaux commerces"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span class="tip">Trouver de nouveaux commerces</span></button>
   </nav>
@@ -266,6 +296,7 @@ details summary::marker { color: var(--dim) }
     <section id="vue-accueil" class="vue" hidden></section>
     <section id="vue-trouver" class="vue" hidden></section>
     <section id="vue-prospects" class="vue" hidden></section>
+    <section id="vue-marketing" class="vue" hidden></section>
     <section id="vue-reglages" class="vue" hidden></section>
   </main>
 </div>
@@ -287,11 +318,13 @@ const VUES = {
   accueil: ["Accueil", "Où en est ta prospection, en un coup d'œil."],
   trouver: ["Trouver des commerces", "Le logiciel cherche sur Google, puis trouve les emails et comptes Instagram."],
   prospects: ["Mes prospects", "Tous tes commerces, du meilleur au moins bon. Clique sur un commerce pour ouvrir sa fiche."],
+  marketing: ["Marketing", "Un contenu par jour, publié sur TikTok et sur Instagram. Coche-le quand il est en ligne."],
   reglages: ["Réglages", "Ta clé Google, ton fond d'écran et tes messages prêts à copier."],
 };
 
 const lire = (k, d) => { try { return localStorage.getItem(k) ?? d; } catch { return d; } };
 const ecrire = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
+if (location.pathname === "/marketing") { ecrire("rm_vue", "marketing"); history.replaceState(null, "", "/"); }
 const S = { vue: lire("rm_vue", "accueil"), produit: lire("rm_produit2", "web"), etat: null, filtre: "tous", recherche: "", prospects: [] };
 if (!VUES[S.vue]) S.vue = "accueil";
 
@@ -763,10 +796,139 @@ document.addEventListener("keydown", e => {
     return;
   }
   if (champ || e.ctrlKey || e.metaKey || e.altKey) return;
-  const vues = ["accueil", "trouver", "prospects", "reglages"];
-  if (e.key >= "1" && e.key <= "4") go(vues[+e.key - 1]);
+  const vues = ["accueil", "trouver", "prospects", "marketing", "reglages"];
+  if (e.key >= "1" && e.key <= "5") go(vues[+e.key - 1]);
   else if (e.key === "/") { e.preventDefault(); $("#quick").focus(); }
 });
+
+// --- Marketing : un contenu par jour, publié sur TikTok et sur Instagram -----------
+// Le planning est dans web/marketing/planning.json ; ce qui est fait est enregistré dans la base.
+const MK = { data: null, fait: {}, onglet: lire("rm_mk_onglet", "planning"), filtre: lire("rm_mk_filtre", "tous"), semaine: null };
+const MK_GENS = { "Théo": { c: "var(--violet-hi)", i: "T", k: "theo" }, "Luke": { c: "var(--important)", i: "L", k: "luke" } };
+const MK_JOUR = 86400000;
+const mkDate = iso => { const [a, m, j] = iso.split("-").map(Number); return new Date(a, m - 1, j); };
+const mkCourt = d => d.toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+const mkAuj = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+const mkId = p => `${p.date}-tt`;            // même identifiant qu'avant : les cases déjà cochées restent cochées
+const mkCollabId = c => `collab-${c.debut}`;
+const mkQui = nom => { const g = MK_GENS[nom] || { c: "var(--wait)", i: "?" }; return `<span class="qui" style="--c:${g.c}"><i>${g.i}</i>${esc(nom)}</span>`; };
+const COCHE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>';
+function mkSemaineActuelle() {
+  const debut = mkDate(MK.data.weeks[0].lundi), n = Math.floor((mkDate(mkAuj()) - debut) / (7 * MK_JOUR));
+  return Math.min(MK.data.weeks.length - 1, Math.max(0, n));
+}
+
+async function rendreMarketing(el) {
+  if (!MK.data) {
+    const r = await fetch("/web/marketing/planning.json");
+    if (!r.ok) throw new Error("Le planning (web/marketing/planning.json) est introuvable : retélécharge le logiciel.");
+    MK.data = await r.json();
+  }
+  MK.fait = (await api("marketing")).fait || {};
+  if (MK.semaine === null) MK.semaine = mkSemaineActuelle();
+  $("#vueActions").innerHTML = `<div class="seg glass" id="mkOnglets">${[["planning", "Planning"], ["collabs", "Collabs influenceurs"], ["messages", "Messages"]]
+    .map(([k, n]) => `<button data-mk="${k}" aria-pressed="${k === MK.onglet}">${n}</button>`).join("")}</div>`;
+  $("#mkOnglets").querySelectorAll("[data-mk]").forEach(b => b.onclick = () => {
+    MK.onglet = b.dataset.mk; ecrire("rm_mk_onglet", MK.onglet);
+    $("#mkOnglets").querySelectorAll("[data-mk]").forEach(x => x.setAttribute("aria-pressed", x === b)); slide($("#mkOnglets"));
+    mkAfficher(el); replay(el);
+  });
+  slide($("#mkOnglets"));
+  mkAfficher(el);
+}
+
+function mkAfficher(el) {
+  if (MK.onglet === "collabs") return mkCollabs(el);
+  if (MK.onglet === "messages") return mkMessages(el);
+  mkPlanning(el);
+}
+
+async function mkCocher(id, fait, el) {
+  try { MK.fait = (await api("marketing_fait", { id, fait })).fait; toast(fait ? "Bravo, c'est noté comme publié." : "Remis à faire."); }
+  catch (e) { toast(`Pas enregistré : ${e.message}`); }
+  mkAfficher(el);
+}
+
+function mkPlanning(el) {
+  const S_ = MK.data.weeks, sem = S_[MK.semaine], lundi = mkDate(sem.lundi), dimanche = new Date(lundi.getTime() + 6 * MK_JOUR);
+  const auj = mkAuj(), actuelle = MK.semaine === mkSemaineActuelle();
+  const compte = (posts, qui) => { const l = posts.filter(p => !qui || p.responsable === qui); return [l.filter(p => MK.fait[mkId(p)]).length, l.length]; };
+  const passes = S_.flatMap(w => w.posts).filter(p => p.date <= auj);
+  const retard = passes.filter(p => p.date < auj && !MK.fait[mkId(p)]);
+  const retardTheo = retard.filter(p => p.responsable === "Théo").length;
+  const collab = MK.data.collabs.find(c => mkDate(c.debut) <= lundi && lundi <= mkDate(c.fin));
+  const stat = (titre, [a, b], cls = "") => `<div class="glass stat lift rise s3 ${cls}"><header>${titre}</header><b>${a} / ${b}</b>
+    <div class="progress" style="margin-top:8px"><i style="width:${b ? Math.round(a / b * 100) : 0}%"></i></div></div>`;
+  const carte = p => {
+    const g = MK_GENS[p.responsable] || {}, fait = !!MK.fait[mkId(p)], estAuj = p.date === auj;
+    const cache = MK.filtre !== "tous" && MK.filtre !== g.k;
+    return `<article class="glass mk-day rise ${estAuj ? "hl" : "lift"}${fait ? " fait" : ""}${cache ? " dim" : ""}">
+      <header><div class="j"><b>${esc(p.jour)}</b><span>${mkCourt(mkDate(p.date))}${estAuj ? " · aujourd'hui" : ""}</span></div>${mkQui(p.responsable)}</header>
+      <div class="reseaux"><span class="chip" style="--c:var(--rose)">TikTok</span><span class="chip" style="--c:var(--violet-hi)">Instagram</span>${fait ? `<span class="chip" style="--c:var(--ok)">Publié</span>` : ""}</div>
+      <h2>${esc(p.format)}</h2>
+      <div class="well sujet"><b>Sujet :</b> ${esc(p.sujet)}</div>
+      <dl><dt>Accroche</dt><dd><b style="font-weight:500">${esc(p.accroche)}</b></dd><dt>Comment</dt><dd>${esc(p.comment)}</dd>
+        <dt>Durée</dt><dd>${esc(p.duree)}</dd><dt>Fin</dt><dd>${esc(p.fin)}</dd></dl>
+      <button class="mk-check" data-id="${mkId(p)}" aria-pressed="${fait}">${fait ? COCHE + " Publié sur TikTok et Instagram" : "Marquer comme publié"}</button>
+    </article>`;
+  };
+  el.innerHTML = `<div class="bento">
+    <div class="glass mk-bar rise s12">
+      <button class="arrow" id="mkPrec" aria-label="Semaine précédente" ${MK.semaine === 0 ? "disabled" : ""}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button class="arrow" id="mkSuiv" aria-label="Semaine suivante" ${MK.semaine === S_.length - 1 ? "disabled" : ""}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+      <div class="t"><b>Semaine ${MK.semaine + 1} sur ${S_.length}</b><span>du ${mkCourt(lundi)} au ${mkCourt(dimanche)} ${dimanche.getFullYear()}${actuelle ? " · cette semaine" : ""}</span></div>
+      ${actuelle ? "" : `<button id="mkAuj">Cette semaine</button>`}
+      <div class="seg" id="mkFiltre">${[["tous", "Tous"], ["theo", "Théo"], ["luke", "Luke"]].map(([k, n]) => `<button data-f="${k}" aria-pressed="${k === MK.filtre}">${n}</button>`).join("")}</div>
+    </div>
+    ${stat("Théo cette semaine", compte(sem.posts, "Théo"))}
+    ${stat("Luke cette semaine", compte(sem.posts, "Luke"))}
+    ${stat("Depuis le début", compte(passes))}
+    <div class="glass stat lift rise s3"><header>En retard</header><b>${retard.length}</b><small>${retard.length ? `Théo ${retardTheo} · Luke ${retard.length - retardTheo}` : "Tout est à jour."}</small></div>
+    ${sem.temps_fort ? `<div class="banner rise s12" style="--c:var(--important)"><b>Temps fort</b> · ${esc(sem.temps_fort)}</div>` : ""}
+    ${collab ? `<div class="banner rise s12" style="--c:var(--violet)"><b>Collab de ${esc(collab.mois)} · ${esc(collab.etape)}</b> · ${esc(collab.detail)} Pilotée par ${esc(collab.responsable)}.</div>` : ""}
+    <div class="mk-days s12">${sem.posts.map(carte).join("")}</div>
+  </div>`;
+  el.querySelectorAll(".mk-check").forEach(b => b.onclick = () => mkCocher(b.dataset.id, b.getAttribute("aria-pressed") !== "true", el));
+  const changer = n => { MK.semaine = n; mkPlanning(el); replay(el); };
+  $("#mkPrec").onclick = () => changer(Math.max(0, MK.semaine - 1));
+  $("#mkSuiv").onclick = () => changer(Math.min(S_.length - 1, MK.semaine + 1));
+  if ($("#mkAuj")) $("#mkAuj").onclick = () => changer(mkSemaineActuelle());
+  $("#mkFiltre").querySelectorAll("[data-f]").forEach(b => b.onclick = () => { MK.filtre = b.dataset.f; ecrire("rm_mk_filtre", MK.filtre); mkPlanning(el); });
+  slide($("#mkFiltre"));
+}
+
+function mkCollabs(el) {
+  const auj = mkAuj(), parMois = {};
+  MK.data.collabs.forEach(c => (parMois[c.mois] ||= []).push(c));
+  el.innerHTML = `<div class="bento">
+    <div class="glass card rise s12"><h2>Une collab par mois</h2><p class="sub">On crée ou on refait le site du business d'un créateur, on filme, et il republie. Théo pilote les mois impairs, Luke les mois pairs.
+      Un site offert ou à prix réduit contre une publication est un partenariat : il doit être signalé (« collaboration commerciale »).</p></div>
+    ${Object.entries(parMois).map(([mois, etapes]) => {
+      const faits = etapes.filter(c => MK.fait[mkCollabId(c)]).length;
+      return `<div class="glass card lift rise s6"><div class="line" style="justify-content:space-between"><h2 style="font-size:15px;font-weight:600">${esc(mois[0].toUpperCase() + mois.slice(1))}</h2>${mkQui(etapes[0].responsable)}</div>
+        <p class="sub" style="margin-top:-4px">${esc(etapes[0].format)} · ${esc(etapes[0].format_detail || "")}</p>
+        <div class="progress"><i style="width:${Math.round(faits / etapes.length * 100)}%"></i></div>
+        <div class="rows">${etapes.map(c => { const f = !!MK.fait[mkCollabId(c)], encours = c.debut <= auj && auj <= c.fin;
+          return `<div class="mk-collab${f ? " fait" : ""}"><button class="mk-tick" data-cid="${mkCollabId(c)}" aria-pressed="${f}" aria-label="Étape faite">${f ? COCHE : ""}</button>
+            <div class="t"><b>${esc(c.etape)}</b><span>${mkCourt(mkDate(c.debut))} → ${mkCourt(mkDate(c.fin))} · ${esc(c.detail)}</span></div>
+            ${encours ? `<span class="chip" style="--c:var(--violet-hi)">En cours</span>` : "<span></span>"}</div>`; }).join("")}</div></div>`;
+    }).join("")}
+  </div>`;
+  el.querySelectorAll("[data-cid]").forEach(b => b.onclick = () => mkCocher(b.dataset.cid, b.getAttribute("aria-pressed") !== "true", el));
+}
+
+function mkMessages(el) {
+  const bloc = s => `<div class="well mk-msg"><header><b style="font-weight:500">Message ${s.etape} · J+${s.delai}</b><span>${esc(s.canal)}</span></header>
+    ${s.objet ? `<p style="font-size:12.5px"><span class="dim">Objet :</span> ${esc(s.objet)}</p>` : ""}
+    <div class="copybox" style="padding:0;max-height:none">${esc(s.message)}</div>
+    <button data-copie="${esc(s.message)}" style="width:fit-content">Copier le message</button></div>`;
+  const seq = MK.data.sequences;
+  el.innerHTML = `<div class="bento">
+    <div class="glass card rise s6"><h2>Créateurs / influenceurs</h2><p class="sub">Remplace les variables entre accolades et les passages entre crochets.</p>${seq.influenceurs.map(bloc).join("")}</div>
+    <div class="glass card rise s6"><h2>Commerçants</h2><p class="sub">Remplace les variables entre accolades et les passages entre crochets.</p>${seq.commercants.map(bloc).join("")}</div>
+  </div>`;
+  el.querySelectorAll("[data-copie]").forEach(b => b.onclick = () => copier(b.dataset.copie));
+}
 
 // --- Réglages -------------------------------------------------------------------
 async function rendreReglages(el) {
@@ -810,7 +972,7 @@ async function rendreReglages(el) {
   };
 }
 
-const RENDUS = { accueil: rendreAccueil, trouver: rendreTrouver, prospects: rendreProspects, reglages: rendreReglages };
+const RENDUS = { accueil: rendreAccueil, trouver: rendreTrouver, prospects: rendreProspects, marketing: rendreMarketing, reglages: rendreReglages };
 
 // --- Démarrage ------------------------------------------------------------------
 (async () => {

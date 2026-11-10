@@ -34,7 +34,7 @@ if sys.stdout is None or sys.stderr is None:
 ICI = Path(__file__).resolve().parent
 WEB = ICI / "web"
 PORT = int(os.environ.get("RM_PORT", "8765"))  # RM_PORT : tests
-VERSION = "9 novembre 2026 (Marketing, v3)"  # affichée dans Réglages : permet de vérifier que la mise à jour est bien installée
+VERSION = "10 novembre 2026 (Marketing intégré)"  # affichée dans Réglages : permet de vérifier que la mise à jour est bien installée
 EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$")
 
 
@@ -525,10 +525,8 @@ POST = {"recherche": api_recherche, "enrichir": api_enrichir, "prospect": api_ma
 
 def fichier_statique(chemin):
     """Fichiers servis : l'interface (web) et les photos de fond (fonds)."""
-    if chemin in ("/", "/index.html"):
+    if chemin in ("/", "/index.html", "/marketing"):  # /marketing : ouvre directement la rubrique Marketing
         return WEB / "index.html"
-    if chemin in ("/marketing", "/marketing.html"):
-        return WEB / "marketing.html"
     m = re.fullmatch(r"/fonds/([a-z]+)(-mini)?\.jpg", chemin)
     if m:
         return photo_fond(m.group(1), bool(m.group(2)))

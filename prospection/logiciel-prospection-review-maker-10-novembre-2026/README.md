@@ -90,7 +90,7 @@ s'arrête avant ta limite.
 Choisis d'abord l'espace en haut de l'écran : **Tags NFC** ou **Sites internet**. Le menu est la colonne
 à gauche : Accueil, Trouver, Prospects, Réglages.
 
-**Raccourcis clavier** : touches `1` à `4` pour changer de page, `/` pour chercher un prospect.
+**Raccourcis clavier** : touches `1` à `5` pour changer de page, `/` pour chercher un prospect.
 Dans une fiche : `←` `→` pour passer au commerce précédent ou suivant, `Échap` pour fermer.
 
 **Le plus rapide pour prospecter** : sur l'Accueil, clique sur **Contacter le meilleur prospect**.
@@ -146,19 +146,20 @@ Chaque fiche explique son score en une phrase.
 - L'**Accueil** montre tes chiffres, les commerces contactés par semaine, où en sont tes prospects,
   ton quota Google et les **relances du jour**.
 
-### Marketing · Planning (icône calendrier)
+### Marketing (icône calendrier, touche 4)
 
-Le planning des posts TikTok et Instagram pour l'espace **Sites internet** :
+La rubrique marketing est dans le logiciel, à côté de tes prospects :
 
-- **Planning** : 26 semaines (9 nov. 2026 → 9 mai 2027), un post par jour sur chaque réseau, partagés
-  entre Théo et Luke (les rôles s'inversent chaque semaine). Pour chaque post : le format, le sujet,
-  l'accroche, comment le tourner, la durée et la phrase de fin. Coche **Marquer comme publié** quand
-  c'est fait. Les compteurs montrent l'avancement de chacun et les posts en retard.
+- **Planning** : 26 semaines (9 nov. 2026 → 9 mai 2027), **un contenu par jour**, le même publié sur
+  TikTok et sur Instagram. Les jours alternent entre Théo et Luke (91 chacun). Pour chaque contenu :
+  le format, le sujet, l'accroche, comment le tourner, la durée et la phrase de fin. Clique sur
+  **Marquer comme publié** quand il est en ligne. Les compteurs montrent l'avancement de chacun et
+  les contenus en retard.
 - **Collabs influenceurs** : une collab par mois, en 4 étapes datées, à cocher au fur et à mesure.
-- **Messages de prospection** : les séquences pour les créateurs et pour les commerçants, à copier.
+- **Messages** : les séquences pour les créateurs et pour les commerçants, à copier.
 
 Le planning est dans `web/marketing/planning.json`. Les cases cochées sont dans `data/prospection.db`,
-sur ton ordinateur : elles ne sont pas partagées avec ton coéquipier (chacun coche ses propres posts).
+sur ton ordinateur : elles ne sont pas partagées avec ton coéquipier (chacun coche ses propres contenus).
 
 ### Réglages utiles
 

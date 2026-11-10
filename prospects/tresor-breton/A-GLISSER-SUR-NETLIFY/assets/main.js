@@ -254,6 +254,7 @@
     .to('#chives rect', { opacity: 1, y: 0, duration: .3, stagger: .04 }, 4)
     .to(['#flapT', '#flapB'], { scaleY: -.78, fill: '#7E5126', duration: .6, ease: 'power2.inOut' }, 4.4)
     .to(['#flapR', '#flapL'], { scaleX: -.78, fill: '#855629', duration: .6, ease: 'power2.inOut' }, 4.9)
+    .to('#cTBr', { attr: { x: 180, width: 240 }, duration: .45, ease: 'power2.inOut' }, 4.9)
     .to('#galette', { rotate: 8, scale: 1.04, transformOrigin: '50% 50%', duration: .5 }, 5.5)
     .to('#buildName', { opacity: 1, y: 0, scale: 1, duration: .5, ease: 'back.out(2)' }, 5.5)
     .to({}, { duration: .5 });

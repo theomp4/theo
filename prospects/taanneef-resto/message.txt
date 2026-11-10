@@ -33,5 +33,5 @@ PHOTOS À JOINDRE (dossier « photos »)
 3. 03-la-carte.jpg : la carte complète avec leurs photos de plats
 4. 08-mobile-accueil.jpg : la version téléphone
 
-Le dossier « site » est celui à glisser sur Netlify (app.netlify.com/drop).
+Sur Netlify (app.netlify.com/drop), glisser UNIQUEMENT le dossier « A-GLISSER-SUR-NETLIFY » (pas le dossier entier, sinon « Page not found »).
 Canal conseillé : message privé Instagram (@resto_taanneef) ou en direct au restaurant.

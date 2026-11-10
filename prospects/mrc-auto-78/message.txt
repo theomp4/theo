@@ -32,4 +32,4 @@ PHOTOS À JOINDRE (dossier « photos »)
 3. 07-mobile-accueil.jpg : la version téléphone
 4. 04-avis-clients.jpg : ses avis mis en valeur
 
-Le dossier « site » est celui à glisser sur Netlify (app.netlify.com/drop).
+Sur Netlify (app.netlify.com/drop), glisser UNIQUEMENT le dossier « A-GLISSER-SUR-NETLIFY » (pas le dossier entier, sinon « Page not found »).

@@ -32,5 +32,5 @@ PHOTOS À JOINDRE (dossier « photos »)
 3. 05-la-terrasse.jpg : leur terrasse mise en valeur
 4. 08-mobile-accueil.jpg : la version téléphone
 
-Le dossier « site » est celui à glisser sur Netlify (app.netlify.com/drop).
+Sur Netlify (app.netlify.com/drop), glisser UNIQUEMENT le dossier « A-GLISSER-SUR-NETLIFY » (pas le dossier entier, sinon « Page not found »).
 Canal conseillé : Facebook (facebook.com/Chez.Ennio) ou en direct au restaurant.

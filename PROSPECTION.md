@@ -9,7 +9,7 @@ prêt à glisser sur Netlify Drop, des captures de la maquette et un message de 
   défilants, parallaxe, défilement horizontal, curseur personnalisé, boutons magnétiques…
 - Dossier autonome (pas de build), formulaires Netlify Forms (penser à activer la détection des formulaires).
 - **Livraison : un seul dossier par commerce**, `prospects/<nom>/` (+ `prospects/<nom>.zip`) :
-  - `site/` : le dossier à glisser sur Netlify Drop
+  - `A-GLISSER-SUR-NETLIFY/` : le site, seul dossier à glisser sur Netlify Drop (glisser le dossier parent donne « Page not found »)
   - `photos/` : les captures de la maquette à joindre
   - `message.txt` : le message à copier-coller, la relance et la liste des photos à joindre
 

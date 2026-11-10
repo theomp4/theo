@@ -1,4 +1,5 @@
 /* ============ TRÉSOR BRETON ============ */
+.is-off,.is-off *,.is-off *::before,.is-off *::after{animation-play-state:paused!important}
 :root{
   --night:#061224;
   --night-2:#0B1E36;

@@ -20,6 +20,12 @@
   $$('#menu a').forEach(a => a.addEventListener('click', () => setMenu(false)));
   const y = $('#year'); if (y) y.textContent = new Date().getFullYear();
 
+  // pause des animations des sections hors écran
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('is-off', !e.isIntersecting)), { rootMargin: '100px' });
+    $$('.hero, .stripe, .build, .cidre, .foot, .carte, .avis').forEach(el => io.observe(el));
+  }
+
   /* ---------- poussière d'or (traînée + explosions) ---------- */
   const dust = $('#dust'), dctx = dust.getContext('2d');
   let DW, DH, motes = [];

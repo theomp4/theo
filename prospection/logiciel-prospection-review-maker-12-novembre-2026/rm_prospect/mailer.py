@@ -19,7 +19,7 @@ from email.header import decode_header
 from email.message import EmailMessage
 from email.utils import formataddr, make_msgid, parseaddr
 
-from . import db
+from . import audit, db
 
 # Modèles par défaut : MODELES_DEFAUT[espace][langue][etape]. Courts (60 mots max), humains,
 # sans proposer de visite (tout se fait à distance), et qui invitent à poser des questions.
@@ -69,17 +69,19 @@ MODELES_DEFAUT = {
     "web": {
         "fr": {
             "premier": {
-                "sujets": "Le site internet de {nom}\nUne question pour {nom}\n{nom} sur Google",
-                "corps": "Bonjour,\n\nJ'ai vu {nom} sur Google : {note} et {nb_avis} avis, bravo. {phrase_site}\n\n"
-                         "Je crée des sites simples pour les commerces : horaires, photos, avis Google et un bouton "
-                         "pour vous appeler. Je m'occupe de tout, à distance.\n\n{prix}, prêt en {delai}.\n\n"
-                         "Une question ? Répondez simplement à cet email.\n\n{signature}",
+                "sujets": "Audit gratuit du site de {nom}\nVotre site internet, {nom}\n{nom} sur Google",
+                "corps": "Bonjour,\n\nJ'ai vu {nom} sur Google : {note} et {nb_avis} avis, bravo. En ligne, j'ai "
+                         "relevé des points qui vous font perdre des clients :\n{analyse_site}\n\nJe vous ai préparé "
+                         "un audit gratuit, en pièce jointe, avec les corrections.\n\nJe crée des sites modernes pour "
+                         "les PME, à distance. {prix}, prêt en {delai}.\n\nUne question ? Répondez simplement à cet "
+                         "email.\n\n{signature}",
             },
             "relance1": {
-                "sujets": "Re: Le site internet de {nom}",
-                "corps": "Bonjour,\n\nJe me permets de vous relancer.\n\nUn site clair aide les clients qui vous "
-                         "cherchent sur Google à vous appeler. Je m'occupe de tout pour {nom}, à distance.\n\n"
-                         "Une question ? Répondez à cet email.\n\n{signature}",
+                "sujets": "Re: Audit gratuit du site de {nom}",
+                "corps": "Bonjour,\n\nJe me permets de vous relancer au sujet de l'audit de votre site.\n\n"
+                         "Le point le plus urgent : {point_principal}. Chaque jour, ce sont des clients qui vous "
+                         "cherchent sur Google et partent chez un concurrent.\n\nJe peux tout corriger pour {nom}, "
+                         "à distance. Une question ? Répondez à cet email.\n\n{signature}",
             },
             "relance2": {
                 "sujets": "Dernier message pour {nom}",
@@ -89,11 +91,11 @@ MODELES_DEFAUT = {
         },
         "en": {
             "premier": {
-                "sujets": "{nom}'s website\nA quick question for {nom}\n{nom} on Google",
-                "corps": "Hello,\n\nI saw {nom} on Google: {note} with {nb_avis} reviews, well done. {phrase_site}\n\n"
-                         "I build simple websites for local businesses: opening hours, photos, Google reviews and a "
-                         "call button. I take care of everything remotely.\n\n{prix}, ready in {delai}.\n\n"
-                         "Any questions? Just reply to this email.\n\n{signature}",
+                "sujets": "Free audit of {nom}'s website\n{nom}'s website\n{nom} on Google",
+                "corps": "Hello,\n\nI saw {nom} on Google: {note} with {nb_avis} reviews, well done. Online, I "
+                         "noticed a few things that cost you customers:\n{analyse_site}\n\nI've prepared a free "
+                         "audit for you, attached, with the fixes.\n\nI build modern websites for small businesses, "
+                         "remotely. {prix}, ready in {delai}.\n\nAny questions? Just reply to this email.\n\n{signature}",
             },
             "relance1": {
                 "sujets": "Re: {nom}'s website",
@@ -171,6 +173,8 @@ def remplir(texte, commerce, signature, langue="fr", prix="[TON PRIX]", delai="[
         "nb_avis": commerce.get("nb_avis") or 0,
         "phrase_avis": phrase_avis(commerce.get("note"), commerce.get("nb_avis"), langue),
         "phrase_site": phrase_site(commerce, langue),
+        "analyse_site": audit.points_message(commerce, langue) or phrase_site(commerce, langue),
+        "point_principal": audit.point_principal(commerce, langue) or phrase_site(commerce, langue).rstrip("."),
         "prix": prix, "delai": delai,
         "signature": signature,
     }

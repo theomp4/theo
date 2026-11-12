@@ -76,6 +76,9 @@ MIGRATIONS = [
     ("commerces", "modifie_par", "TEXT"),
     ("historique", "auteur", "TEXT"),
     ("historique", "uid", "TEXT"),                     # identifiant unique : évite les doublons entre coéquipiers
+    ("commerces", "entreprise", "TEXT"),               # vérification dans l'annuaire des entreprises (JSON, voir entreprises.py)
+    ("commerces", "entreprise_le", "TEXT"),
+    ("commerces", "siren_force", "TEXT"),              # SIREN corrigé à la main dans la fiche
 ]
 
 

@@ -586,11 +586,14 @@ async function rendreTrouver(el) {
       <div id="tSuivi" hidden class="well" style="padding:14px;display:grid;gap:10px"><div class="line" style="justify-content:space-between"><span id="tTexte" style="font-size:13px">En cours…</span><button id="tStop">Arrêter</button></div><div class="progress"><i id="tBarre"></i></div></div>
     </div>
     <div class="glass card rise s12">
-      <div><span class="tag">Étape 2</span><h2 style="font-size:18px;font-weight:600">${S.produit === "web" ? "Trouver les emails et analyser les sites" : "Trouver les emails et comptes Instagram"}</h2></div>
-      <p class="muted" style="font-size:13px">Google ne donne pas les emails. Le logiciel visite le site de chaque commerce (accueil, contact, mentions légales) pour les trouver${S.produit === "web" ? ", et vérifie si le site est sécurisé, adapté au téléphone, rapide et récent" : ""}. Environ 5 secondes par commerce.</p>
-      <div class="line"><span style="font-size:13.5px"><b id="eRestant">${nb(t.a_enrichir)}</b> commerce${t.a_enrichir > 1 ? "s ont" : " a"} un site pas encore visité.</span>
+      <div class="line" style="justify-content:space-between"><div><span class="tag">Étape 2</span><h2 style="font-size:18px;font-weight:600">Vérifier les entreprises et analyser les sites</h2></div><span class="chip" style="--c:var(--ok)">PME · ${nb(Math.round(t.ca_minimum / 1000))} k€ minimum</span></div>
+      <div class="grid2" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+        <div class="well" style="padding:12px 14px;font-size:13px"><b style="font-weight:500">1. L'entreprise</b><p class="muted" style="font-size:12.5px;margin-top:2px">Le logiciel la retrouve dans l'annuaire officiel des entreprises : il garde seulement les PME qui font au moins ${nb(t.ca_minimum)} € de chiffre d'affaires par an. Les autres passent en « Hors cible ».</p></div>
+        <div class="well" style="padding:12px 14px;font-size:13px"><b style="font-weight:500">2. Son site</b><p class="muted" style="font-size:12.5px;margin-top:2px">Pour les entreprises retenues, il visite le site : email, Instagram, et une analyse de base de ce qui ne va pas (sécurité, téléphone, vitesse, Google, bouton d'appel, mentions légales…). Elle sert au message et à l'audit.</p></div>
+      </div>
+      <div class="line"><span style="font-size:13.5px"><b id="eRestant">${nb(t.a_enrichir)}</b> commerce${t.a_enrichir > 1 ? "s" : ""} à vérifier ou à analyser.</span>
         <label class="f" style="grid-template-columns:auto 90px;align-items:center;gap:8px">Combien<input id="eNb" type="number" min="1" max="500" value="${Math.min(50, Math.max(1, t.a_enrichir))}"></label>
-        <button class="primary" id="eGo" ${t.a_enrichir ? "" : "disabled"}>Chercher les emails</button></div>
+        <button class="primary" id="eGo" ${t.a_enrichir ? "" : "disabled"}>Vérifier et analyser</button></div>
       <div id="eSuivi" hidden class="well" style="padding:14px;display:grid;gap:10px"><div class="line" style="justify-content:space-between"><span id="eTexte" style="font-size:13px">En cours…</span><button id="eStop">Arrêter</button></div><div class="progress"><i id="eBarre"></i></div></div>
     </div>
   </div>`;
@@ -612,7 +615,7 @@ async function rendreTrouver(el) {
       const msg = await suivre(job, $("#tBarre"), $("#tTexte"));
       ecrire("rm_auto", $("#tAuto").checked ? "1" : "0");
       if ($("#tAuto").checked) {
-        toast(msg + " Je cherche maintenant les emails…");
+        toast(msg + " Je vérifie maintenant les entreprises et leurs sites…");
         try {
           const r = await api("enrichir", { espace: S.produit, combien: 500 });
           $("#tStop").onclick = () => api("annuler", { id: r.job });
@@ -634,7 +637,9 @@ async function rendreTrouver(el) {
 }
 
 // --- Mes prospects --------------------------------------------------------------
-const FILTRES_TOUS = { tous: "Tous", sanssite: "Sans site", contacter: "À contacter", cours: "En cours", vendus: "Vendus" };
+const FILTRES_TOUS = { tous: "Tous", sanssite: "Sans site", contacter: "À contacter", cours: "En cours", vendus: "Vendus", horscible: "Hors cible" };
+const COUL_PME = { ok: "var(--ok)", probable: "var(--ok)", inconnu: "var(--important)", exclu: "var(--wait)" };
+const pmeTxt = p => p.pme === "ok" ? `PME · ${p.ca}` : p.pme === "probable" ? "PME probable" : p.pme === "inconnu" ? "CA à vérifier" : p.pme === "exclu" ? "Hors cible" : "";
 const SANS_SITE = ["Pas de site", "Réseau social seul", "Plateforme seule"];
 const filtresDispo = () => Object.fromEntries(Object.entries(FILTRES_TOUS).filter(([k]) => k !== "sanssite" || S.produit === "web"));
 const COUL_SITE = l => SANS_SITE.includes(l) ? "var(--violet)" : l === "Site en panne" || /défaut|sécurisé|téléphone|Lent|jour/.test(l) ? "var(--rose)" : "var(--wait)";
@@ -642,7 +647,8 @@ const EN_COURS = ["Contacté", "Relance", "A répondu", "Intéressé"];
 function filtrer(liste) {
   const q = S.recherche.toLowerCase(), v = $("#pVille")?.value || "", ty = $("#pType")?.value || "", pr = $("#pPrio")?.value || "";
   return liste.filter(p =>
-    (S.filtre === "tous" ? p.statut !== "Ne plus contacter" : S.filtre === "sanssite" ? SANS_SITE.includes(p.site) && p.statut !== "Ne plus contacter" : S.filtre === "contacter" ? p.statut === "À contacter" : S.filtre === "cours" ? EN_COURS.includes(p.statut) : p.statut === "Vendu")
+    (S.filtre === "horscible" ? p.pme === "exclu" : p.pme !== "exclu" || ["vendus", "cours"].includes(S.filtre))
+    && (S.filtre === "tous" || S.filtre === "horscible" ? p.statut !== "Ne plus contacter" : S.filtre === "sanssite" ? SANS_SITE.includes(p.site) && p.statut !== "Ne plus contacter" : S.filtre === "contacter" ? p.statut === "À contacter" : S.filtre === "cours" ? EN_COURS.includes(p.statut) : p.statut === "Vendu")
     && (!q || [p.nom, p.email, p.telephone, p.ville_recherche, p.categorie].some(x => String(x || "").toLowerCase().includes(q)))
     && (!v || p.ville_recherche === v) && (!ty || p.categorie === ty) && (!pr || p.priorite === pr));
 }
@@ -650,7 +656,7 @@ function lignes(liste) {
   if (!liste.length) return `<div class="empty">Aucun commerce ici. ${S.prospects.length ? "Change de filtre." : `<a href="#" data-aller="trouver">Lance ta première recherche</a>.`}</div>`;
   return liste.slice(0, 400).map(p => `<div class="row rise" data-cle="${esc(p.cle)}">
     <span class="dot" style="--c:${COUL_PRIO[p.priorite]}">${p.score || 0}</span>
-    <div class="t"><b>${esc(p.nom)}</b><span>${esc([p.categorie, p.ville_recherche].filter(Boolean).join(" · "))}</span></div>
+    <div class="t"><b>${esc(p.nom)}</b><span>${p.pme ? `<em style="font-style:normal;color:${COUL_PME[p.pme]}">${esc(pmeTxt(p))}</em> · ` : ""}${esc([p.categorie, p.ville_recherche].filter(Boolean).join(" · "))}</span></div>
     <span class="stars"><em>★</em> ${p.note ? String(p.note).replace(".", ",") : "–"} <span class="dim">(${p.nb_avis || 0})</span></span>
     ${S.produit === "web" ? `<span class="sitec" style="color:${COUL_SITE(p.site)}">${esc(p.site)}</span>` : ""}
     <span class="c">${esc(p.email || p.telephone || "pas de contact")}</span>
@@ -729,9 +735,8 @@ async function ouvrirFiche(cle, nav) {
       ${c.site_web ? `<a class="btn" href="${esc(c.site_web)}" target="_blank" rel="noopener">Site</a>` : ""}
       ${c.lien_maps ? `<a class="btn" href="${esc(c.lien_maps)}" target="_blank" rel="noopener">Google Maps</a>` : ""}
     </div>
-    ${S.produit === "web" ? `<div class="well rise" style="padding:14px;display:grid;gap:8px"><div class="line" style="justify-content:space-between"><span class="tag">Son site internet</span><span class="chip" style="--c:${COUL_SITE(c.site)}">${esc(c.site)}</span></div>
-      ${c.constats.length ? `<div style="display:grid;gap:4px">${c.constats.map(k => `<p style="font-size:13px"><span style="color:var(--rose)">✕</span> ${esc(k)}</p>`).join("")}</div>` : c.site === "Pas encore analysé" ? `<p class="dim" style="font-size:12.5px">Lance « Trouver les emails et analyser les sites » dans Trouver pour voir ses défauts.</p>` : c.site === "Site correct" ? `<p class="dim" style="font-size:12.5px">Son site est déjà correct : prospect plus difficile.</p>` : ""}
-      ${c.site_web ? "" : `<p class="dim" style="font-size:12.5px">C'est ton meilleur argument : « Je n'ai pas trouvé votre site internet ».</p>`}</div>` : ""}
+    ${blocEntreprise(c)}
+    ${S.produit === "web" ? blocSite(c) : ""}
     <div class="well rise" style="padding:14px;display:grid;gap:10px">
       <span class="tag">J'ai contacté ce commerce par</span>
       <div class="line" style="gap:8px">${["Téléphone", "Instagram", "Email"].map(k => `<button data-contact="${k}">${k}</button>`).join("")}</div>
@@ -764,6 +769,16 @@ async function ouvrirFiche(cle, nav) {
   $("#fPrec").onclick = () => naviguer(-1);
   $("#fSuiv").onclick = () => naviguer(1);
   $("#fCopDm").onclick = () => copier(c.dm);
+  if ($("#fAudit")) $("#fAudit").onclick = () => telechargerAudit(c, $("#fAudit"));
+  if ($("#fReanalyse")) $("#fReanalyse").onclick = async e => {
+    e.target.disabled = true; e.target.textContent = "Analyse en cours…";
+    try { await api("reanalyser", { cle }); toast("Site analysé à nouveau."); ouvrirFiche(cle, true); } catch (er) { toast(er.message); e.target.disabled = false; }
+  };
+  if ($("#fSiren")) $("#fSirenOk").onclick = async () => {
+    $("#fSirenOk").disabled = true;
+    try { const r = await api("entreprise", { cle, siren: $("#fSiren").value }); toast(r.verdict === "exclu" ? "Entreprise vérifiée : hors cible." : "Entreprise vérifiée."); FICHE.change = true; ouvrirFiche(cle, true); }
+    catch (er) { toast(er.message); $("#fSirenOk").disabled = false; }
+  };
   $("#fCopMail").onclick = () => copier(`${c.mail_sujet}\n\n${c.mail_corps}`);
   document.querySelectorAll("[data-contact]").forEach(b => b.onclick = () => {
     const premier = c.statut === "À contacter", champs = { canal: b.dataset.contact, detail: premier ? "Premier contact" : "Relance", relance_le: plusJours(4) };
@@ -776,6 +791,48 @@ async function ouvrirFiche(cle, nav) {
   $("#fEmail").onchange = e => maj({ email: e.target.value }, "Email enregistré.", true);
   let tNotes;
   $("#fNotes").oninput = e => { clearTimeout(tNotes); tNotes = setTimeout(() => maj({ notes: e.target.value }, "Notes enregistrées."), 900); };
+}
+const GRAV_COUL = { 1: "var(--urgent)", 2: "var(--important)", 3: "var(--violet-hi)" };
+function blocEntreprise(c) {
+  const e = c.entreprise, seuil = `${nb(Math.round((c.ca_minimum || 200000) / 1000))} k€`;
+  const corriger = `<details style="margin-top:2px"><summary class="dim" style="cursor:pointer;font-size:12px">${e && e.siren ? "Ce n'est pas la bonne entreprise ?" : "Tu connais son SIREN ?"}</summary>
+    <div class="line" style="margin-top:8px;flex-wrap:nowrap"><input id="fSiren" placeholder="SIREN (9 chiffres)" inputmode="numeric" value="${esc(c.siren_force || "")}" style="flex:1;min-width:0"><button id="fSirenOk">Vérifier</button></div>
+    <p class="dim" style="font-size:11.5px;margin-top:6px">Tu le trouves sur <a href="https://annuaire-entreprises.data.gouv.fr/" target="_blank" rel="noopener">annuaire-entreprises.data.gouv.fr</a> ou dans les mentions légales de son site.</p></details>`;
+  if (!e) return `<div class="well rise" style="padding:14px;display:grid;gap:8px"><div class="line" style="justify-content:space-between"><span class="tag">L'entreprise</span><span class="chip" style="--c:var(--wait)">Pas encore vérifiée</span></div>
+    <p class="dim" style="font-size:12.5px">Lance « Vérifier et analyser » dans Trouver : le logiciel vérifie que c'est une PME qui fait au moins ${seuil} de chiffre d'affaires.</p>${corriger}</div>`;
+  const kv = (k, v) => v ? `<div class="kv"><span>${k}</span><b>${v}</b></div>` : "";
+  return `<div class="well rise" style="padding:14px;display:grid;gap:10px"><div class="line" style="justify-content:space-between"><span class="tag">L'entreprise</span><span class="chip" style="--c:${COUL_PME[e.verdict]}">${esc(e.libelle)}</span></div>
+    <p style="font-size:13px">${esc(e.raison[0].toUpperCase() + e.raison.slice(1))}.</p>
+    ${e.a_confirmer ? `<div class="banner" style="--c:var(--important);font-size:12.5px;padding:8px 12px">Rapprochement incertain : vérifie que c'est bien la même entreprise.</div>` : ""}
+    ${e.siren ? `<div class="grid2" style="grid-template-columns:repeat(2,minmax(0,1fr))">${kv("Nom officiel", esc(e.nom))}${kv("Chiffre d'affaires", esc(e.ca_txt) + (e.annee_ca ? ` (${e.annee_ca})` : ""))}${kv("Effectif", esc(e.effectif))}${kv("Catégorie", esc(e.categorie || "–"))}</div>
+      <a href="${esc(e.lien)}" target="_blank" rel="noopener" style="font-size:12.5px">Voir sa fiche officielle (SIREN ${esc(e.siren)})</a>` : ""}
+    ${corriger}</div>`;
+}
+function blocSite(c) {
+  const a = c.analyse || [];
+  const ligne = k => `<div style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 10px;align-items:start;padding:8px 0;border-top:1px solid var(--stroke)">
+      <span class="chip" style="--c:${GRAV_COUL[k.gravite]}">${esc(k.niveau)}</span><b style="font-size:13px;font-weight:500">${esc(k.titre)}</b>
+      <span></span><span class="muted" style="font-size:12px">${esc(k.pourquoi)}</span></div>`;
+  const note = c.note_site == null ? "" : `<span class="mono" style="font-size:12px;color:${c.note_site >= 75 ? "var(--ok)" : c.note_site >= 45 ? "var(--important)" : "var(--urgent)"}">${c.note_site}/100</span>`;
+  return `<div class="well rise" style="padding:14px;display:grid;gap:8px">
+    <div class="line" style="justify-content:space-between"><span class="tag">Son site internet</span><span class="line" style="gap:8px">${note}<span class="chip" style="--c:${COUL_SITE(c.site)}">${esc(c.site)}</span></span></div>
+    ${c.site === "Pas encore analysé" ? `<p class="dim" style="font-size:12.5px">Pas encore analysé : lance « Vérifier et analyser » dans Trouver, ou crée l'audit (le site est alors analysé tout de suite).</p>` : ""}
+    ${c.analyse_ancienne ? `<p class="dim" style="font-size:12.5px">Analysé par une ancienne version : refais l'analyse pour voir tous les points (titre Google, bouton d'appel, mentions légales…).</p>` : ""}
+    ${a.length ? `<div>${a.map(ligne).join("")}</div>` : c.site === "Site correct" ? `<p class="dim" style="font-size:12.5px">Son site est déjà correct : prospect plus difficile.</p>` : ""}
+    <div class="actions" style="margin-top:4px"><button class="primary" id="fAudit"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M12 18v-6M9 15l3 3 3-3"/></svg>Télécharger l'audit (PDF)</button>
+      ${c.site_web ? `<button id="fReanalyse">Refaire l'analyse</button>` : ""}</div>
+    <p class="dim" style="font-size:12px">Joins l'audit à ton email : le message annonce « un audit gratuit, en pièce jointe ».</p></div>`;
+}
+async function telechargerAudit(c, bouton) {
+  const texte = bouton.innerHTML; bouton.disabled = true; bouton.textContent = "Création de l'audit…";
+  try {
+    const r = await fetch("/api/audit?" + qs({ cle: c.cle }));
+    if (!r.ok) { let m = "Erreur"; try { m = (await r.json()).erreur; } catch {} throw new Error(m); }
+    const a = document.createElement("a"); a.href = URL.createObjectURL(await r.blob());
+    a.download = `Audit site - ${(c.nom || "commerce").replace(/[\\/:*?"<>|]+/g, " ")}.pdf`; a.click();
+    toast("Audit téléchargé : joins-le à ton email."); FICHE.change = true;
+  } catch (e) { toast(e.message); }
+  bouton.disabled = false; bouton.innerHTML = texte;
 }
 function naviguer(sens) {
   const i = FICHE.liste.indexOf(FICHE.cle) + sens;
@@ -952,6 +1009,9 @@ async function rendreReglages(el) {
     <div class="glass card rise s6"><h2>Pour les emails prêts à copier</h2><p class="sub">Le logiciel n'envoie rien : tu copies l'email, ou tu l'ouvres dans ta boîte mail.</p>
       <label class="f">Signature<textarea data-r="signature" rows="3">${esc(v.signature)}</textarea></label>
       <div class="grid2">${champ("site_prix", "Prix d'un site", "text", "ex. 490 €")}${champ("site_delai", "Délai de création d'un site", "text", "ex. 10 jours")}</div></div>
+    <div class="glass card rise s6"><h2>Entreprises ciblées</h2><p class="sub">Seulement des PME, vérifiées dans l'annuaire officiel des entreprises (France).</p>
+      ${champ("ca_minimum", "Chiffre d'affaires annuel minimum (€)", "number", "200000")}
+      <p class="dim" style="font-size:12.5px">Si une entreprise ne publie pas ses comptes, le logiciel estime avec son effectif (à partir de 3 salariés) et l'indique sur la fiche. Changer ce montant relance la vérification.</p></div>
     <div class="s12 rise line" style="justify-content:space-between"><span class="mono dim" style="font-size:11px">Version du ${esc(S.etat.version || "?")}</span><button class="primary lg" id="rSave">Enregistrer les réglages</button></div>
   </div>`;
   el.querySelectorAll("[data-dossier]").forEach(a => a.onclick = e => { e.preventDefault(); $("#rDossier").value = a.dataset.dossier; $("#rDossier").focus(); });

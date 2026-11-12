@@ -1,5 +1,6 @@
 """Enrichissement : trouve l'email de contact et le compte Instagram sur le site du commerce,
-et analyse l'état du site (sécurisé, adapté au téléphone, rapide, récent) pour l'espace « Sites ».
+et analyse l'état du site (sécurisé, adapté au téléphone, rapide, récent, titre Google, bouton
+d'appel, mentions légales…) pour l'espace « Sites » et l'audit.
 
 On lit seulement quelques pages publiques (accueil, contact, mentions légales), lentement.
 """
@@ -10,6 +11,8 @@ from datetime import datetime
 from urllib.parse import unquote, urljoin, urlparse
 
 import requests
+
+from .audit import signaux
 
 EMAIL_RE = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
 INSTA_RE = re.compile(r"https?://(?:www\.)?instagram\.com/([A-Za-z0-9_.]+)/?", re.I)
@@ -76,6 +79,7 @@ def analyser_accueil(site):
         "mobile": bool(VIEWPORT_RE.search(html)),
         "secondes": round(secondes, 1),
         "annee": extraire_annee(html),
+        **signaux(html),  # titre Google, description, bouton d'appel, mentions légales… (voir audit.py)
     }, rep.url
 
 

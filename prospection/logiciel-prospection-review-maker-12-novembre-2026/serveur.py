@@ -18,13 +18,13 @@ import webbrowser
 from datetime import datetime, timedelta
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, quote, urlparse
 
 import pandas as pd
 import requests
 
-from rm_prospect import db, enrich, equipe, google_places, mailer, pays, stats
-from rm_prospect.scoring import CATEGORIES, etat_site, niveau, poids, sans_vrai_site, score_pour
+from rm_prospect import audit, db, enrich, entreprises, equipe, google_places, mailer, pays, stats
+from rm_prospect.scoring import CATEGORIES, entreprise as entreprise_de, etat_site, niveau, poids, sans_vrai_site, score_pour
 
 if sys.stdout is None or sys.stderr is None:
     # Lancé sans fenêtre (pythonw) : les messages et erreurs vont dans data/journal.txt.
@@ -34,7 +34,7 @@ if sys.stdout is None or sys.stderr is None:
 ICI = Path(__file__).resolve().parent
 WEB = ICI / "web"
 PORT = int(os.environ.get("RM_PORT", "8765"))  # RM_PORT : tests
-VERSION = "10 novembre 2026 (Marketing intégré)"  # affichée dans Réglages : permet de vérifier que la mise à jour est bien installée
+VERSION = "12 novembre 2026 (PME et audit)"  # affichée dans Réglages : permet de vérifier que la mise à jour est bien installée
 EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$")
 
 
@@ -70,11 +70,16 @@ def R(cle, defaut=""):
     return db.get_reglage(conn, cle, defaut)
 
 
+ANCIEN_DM_WEB = ("Bonjour ! J'ai vu {nom} sur Google : {note} et {nb_avis} avis, bravo. {phrase_site} "
+                 "Je crée des sites simples et modernes pour les commerces, tout à distance. "
+                 "Si vous avez des questions, n'hésitez pas !")
+
+
 def dm_defaut(espace):
     if espace == "web":
-        return ("Bonjour ! J'ai vu {nom} sur Google : {note} et {nb_avis} avis, bravo. {phrase_site} "
-                "Je crée des sites simples et modernes pour les commerces, tout à distance. "
-                "Si vous avez des questions, n'hésitez pas !")
+        return ("Bonjour ! J'ai vu {nom} sur Google : {note} et {nb_avis} avis, bravo. En regardant votre présence en "
+                "ligne, j'ai remarqué que {point_principal}. Je vous ai préparé un audit gratuit de votre site, avec "
+                "ce qui ne va pas et comment le corriger : je vous l'envoie ?")
     return ("Bonjour ! J'ai vu {nom} sur Google : {phrase_avis} J'ai un tag à coller sur le comptoir qui permet "
             "à vos clients de laisser un avis en moins de 15 secondes. 35 €, livraison offerte. "
             "Si vous avez des questions, n'hésitez pas !")
@@ -85,8 +90,18 @@ REGLAGES = {
     "fond": "salon", "cle_google": "", "limite_google": "900",
     "site_prix": "[TON PRIX]", "site_delai": "[DÉLAI]", "signature": "Ton prénom\nReview Maker\nreviewmaker.fr",
     "modele_dm_nfc": dm_defaut("nfc"), "modele_dm_web": dm_defaut("web"),
-    "prenom": "", "equipe_dossier": "",
+    "prenom": "", "equipe_dossier": "", "ca_minimum": "200000",
 }
+
+
+def ca_minimum():
+    chiffres = re.sub(r"[^\d]", "", R("ca_minimum", "200000"))
+    return int(chiffres) if chiffres else entreprises.CA_MINIMUM
+
+
+# L'ancien message Instagram par défaut (jamais modifié) est remplacé par le nouveau, qui annonce l'audit.
+if db.get_reglage(conn, "modele_dm_web") == ANCIEN_DM_WEB:
+    db.set_reglage(conn, "modele_dm_web", dm_defaut("web"))
 
 # Photos de fond (Unsplash, licence libre), téléchargées une fois dans le dossier fonds/.
 FONDS = {
@@ -238,28 +253,65 @@ def job_recherche(job, c_conn, espace, cats, ville, code_pays, pages):
     return f"{total_n} nouveaux commerces, {total_m} mis à jour."
 
 
+def verifier_entreprise(c_conn, c, session=None):
+    """Vérifie l'entreprise dans l'annuaire officiel et met à jour toutes ses fiches. Renvoie le verdict."""
+    res = entreprises.verifier(c, ca_minimum(), session)
+    c_conn.execute("UPDATE commerces SET entreprise=?, entreprise_le=? WHERE place_id=?",
+                   (json.dumps(res, ensure_ascii=False), db.maintenant(), c["place_id"]))
+    c_conn.commit()
+    return res
+
+
+def analyser_site(c_conn, c):
+    res = enrich.enrichir_site(c["site_web"])
+    etat = json.dumps(res["site_etat"], ensure_ascii=False) if res["site_etat"] else None
+    # Le même commerce peut exister dans les deux espaces : on met à jour les deux fiches.
+    c_conn.execute("UPDATE commerces SET email=COALESCE(email, ?), instagram=COALESCE(instagram, ?), "
+                   "site_etat=?, enrichi_le=? WHERE place_id=?",
+                   (res["email"], res["instagram"], etat, db.maintenant(), c["place_id"]))
+    c_conn.commit()
+    return res
+
+
+def recalculer_place(c_conn, place_id):
+    for r in c_conn.execute("SELECT cle FROM commerces WHERE place_id=?", (place_id,)).fetchall():
+        recalculer(c_conn, r["cle"])
+
+
 def job_enrichir(job, c_conn, lot):
-    trouves = injoignables = 0
+    """1. Vérifie l'entreprise (PME, chiffre d'affaires minimum). 2. Si elle est dans la cible : visite son site
+    (email, Instagram, analyse de base pour le message et l'audit)."""
+    session = requests.Session()
+    verifiees = exclues = trouves = injoignables = analyses = 0
+    i = -1
     for i, c in enumerate(lot):
         if job["annule"]:
             break
-        job["texte"] = c["nom"]
-        res = enrich.enrichir_site(c["site_web"])
-        etat = json.dumps(res["site_etat"]) if res["site_etat"] else None
-        # Le même commerce peut exister dans les deux espaces : on met à jour les deux fiches.
-        c_conn.execute("UPDATE commerces SET email=COALESCE(email, ?), instagram=COALESCE(instagram, ?), "
-                       "site_etat=?, enrichi_le=? WHERE place_id=?",
-                       (res["email"], res["instagram"], etat, db.maintenant(), c["place_id"]))
-        c_conn.commit()
-        for r in c_conn.execute("SELECT cle FROM commerces WHERE place_id=?", (c["place_id"],)).fetchall():
-            recalculer(c_conn, r["cle"])
-        trouves += bool(res["email"])
-        injoignables += bool((res["site_etat"] or {}).get("injoignable"))
+        job["texte"] = f"{c['nom']} : vérification de l'entreprise…"
+        e = entreprise_de(c)
+        if not c.get("entreprise_le"):
+            e = verifier_entreprise(c_conn, c, session)
+            verifiees += 1
+        if e and e.get("verdict") == "exclu":
+            exclues += 1
+        elif c.get("site_web") and not c.get("enrichi_le"):
+            job["texte"] = f"{c['nom']} : analyse du site…"
+            res = analyser_site(c_conn, c)
+            analyses += 1
+            trouves += bool(res["email"])
+            injoignables += bool((res["site_etat"] or {}).get("injoignable"))
+        recalculer_place(c_conn, c["place_id"])
         job["avance"] = (i + 1) / len(lot)
-    texte = f"{trouves} emails trouvés sur {i + 1 if lot else 0} sites."
+    morceaux = []
+    if verifiees:
+        morceaux.append(f"{verifiees} entreprise{'s' if verifiees > 1 else ''} vérifiée{'s' if verifiees > 1 else ''}"
+                        f" ({exclues} hors cible)")
+    if analyses:
+        morceaux.append(f"{analyses} site{'s' if analyses > 1 else ''} analysé{'s' if analyses > 1 else ''}, "
+                        f"{trouves} email{'s' if trouves > 1 else ''} trouvé{'s' if trouves > 1 else ''}")
     if injoignables:
-        texte += f" {injoignables} site{'s' if injoignables > 1 else ''} ne s'ouvre{'nt' if injoignables > 1 else ''} pas."
-    return texte
+        morceaux.append(f"{injoignables} site{'s' if injoignables > 1 else ''} ne s'ouvre{'nt' if injoignables > 1 else ''} pas")
+    return (" · ".join(morceaux) or "Rien à faire.") + "."
 
 
 # --- Pages de l'API ---------------------------------------------------------------
@@ -313,14 +365,14 @@ def api_tableau(q):
 
 def api_trouver(q):
     espace = q["espace"]
-    a_enrichir = conn.execute("SELECT COUNT(*) FROM commerces WHERE espace=? AND site_web IS NOT NULL "
-                              "AND enrichi_le IS NULL", (espace,)).fetchone()[0]
+    a_enrichir = conn.execute("""SELECT COUNT(*) FROM commerces WHERE espace=? AND (entreprise_le IS NULL OR (site_web IS NOT NULL AND enrichi_le IS NULL
+             AND COALESCE(json_extract(entreprise, '$.verdict'), '') != 'exclu'))""", (espace,)).fetchone()[0]
     return {
         "cle_google": bool(R("cle_google")),
         "pays": [{"code": k, "nom": v[0], "langue": pays.LANGUES[v[1]], "emails": v[3], "regle": v[4]}
                  for k, v in pays.PAYS.items()],
         "categories": list(CATEGORIES[espace]),
-        "a_enrichir": a_enrichir, "adaptes": types_adaptes(espace),
+        "a_enrichir": a_enrichir, "adaptes": types_adaptes(espace), "ca_minimum": ca_minimum(),
     }
 
 
@@ -342,15 +394,16 @@ def api_recherche(d):
 
 def api_enrichir(d):
     lot = [dict(r) for r in conn.execute(
-        "SELECT cle, place_id, nom, site_web FROM commerces WHERE espace=? AND site_web IS NOT NULL "
-        "AND enrichi_le IS NULL ORDER BY score DESC LIMIT ?", (d["espace"], int(d.get("combien", 50))))]
+        """SELECT cle, place_id, nom, adresse, pays, site_web, enrichi_le, entreprise, entreprise_le, siren_force
+           FROM commerces WHERE espace=? AND (entreprise_le IS NULL OR (site_web IS NOT NULL AND enrichi_le IS NULL
+             AND COALESCE(json_extract(entreprise, '$.verdict'), '') != 'exclu')) ORDER BY score DESC LIMIT ?""", (d["espace"], int(d.get("combien", 50))))]
     if not lot:
-        raise ErreurAPI("Aucun site à visiter pour l'instant.")
+        raise ErreurAPI("Toutes les entreprises sont déjà vérifiées et tous les sites analysés.")
     return lancer_job(job_enrichir, lot)
 
 
 def site_resume(c):
-    """(étiquette courte, liste de constats) sur le site du commerce : l'argument de vente des sites."""
+    """(étiquette courte, liste des problèmes) sur le site du commerce : l'argument de vente des sites."""
     site = c.get("site_web")
     if not site:
         return "Pas de site", ["Aucun site internet"]
@@ -363,24 +416,25 @@ def site_resume(c):
         return "Plateforme seule", ["Seulement une page TheFork, Planity… pas de vrai site"]
     if etat.get("injoignable"):
         return "Site en panne", ["Le site ne s'ouvre pas"]
-    constats = []
-    if not etat.get("https"):
-        constats.append("Non sécurisé (pas de https)")
-    if not etat.get("mobile"):
-        constats.append("Pas adapté au téléphone")
-    if etat.get("secondes", 0) > 3:
-        constats.append(f"Lent ({etat['secondes']:.0f} s)")
-    if etat.get("annee") and etat["annee"] <= datetime.now().year - 3:
-        constats.append(f"Pas mis à jour depuis {etat['annee']}")
-    return (constats[0].split(" (")[0] if len(constats) == 1 else f"{len(constats)} défauts") if constats else "Site correct", constats
+    liste = audit.constats(c)
+    graves = [k for k in liste if k["gravite"] <= 2]
+    if not graves:
+        return "Site correct", [k["titre"] for k in liste]
+    return (graves[0]["titre"].split(" (")[0] if len(graves) == 1 else f"{len(graves)} défauts"), [k["titre"] for k in liste]
 
 
 def api_prospects(q):
     lignes = conn.execute(
         "SELECT cle, score, nom, categorie, note, nb_avis, statut, telephone, email, instagram, site_web, site_etat, "
-        "ville_recherche, pays, relance_le FROM commerces WHERE espace=? ORDER BY score DESC", (q["espace"],))
-    return {"prospects": [{**dict(r), "priorite": niveau(r["score"] or 0), "site": site_resume(dict(r))[0]}
-                          for r in lignes]}
+        "ville_recherche, pays, relance_le, entreprise FROM commerces WHERE espace=? ORDER BY score DESC", (q["espace"],))
+    liste = []
+    for r in lignes:
+        c = dict(r)
+        e = entreprise_de(c) or {}
+        c.pop("site_etat"); c.pop("entreprise")
+        liste.append({**c, "priorite": niveau(c["score"] or 0), "site": site_resume(dict(r))[0],
+                      "pme": e.get("verdict"), "ca": entreprises.euros(e["ca"]) if e.get("ca") else ""})
+    return {"prospects": liste}
 
 
 def api_prospect(q):
@@ -390,10 +444,57 @@ def api_prospect(q):
     lg = mailer.langue_modele(pays.langue(c.get("pays") or "FR"))
     m = mailer.modele(c["espace"], lg, "premier")
     remplir = lambda t: mailer.remplir(t, c, R("signature"), lg, R("site_prix", "[TON PRIX]"), R("site_delai", "[DÉLAI]"))
+    e = entreprise_de(c)
+    if e:
+        e = {**e, "libelle": entreprises.LIBELLES.get(e.get("verdict"), ""),
+             "ca_txt": entreprises.euros(e.get("ca")) if e.get("siren") else ""}
     return {**c, "historique": hist, "pays_nom": pays.nom(c.get("pays") or "FR"), "priorite": niveau(c["score"] or 0),
-            "site": site_resume(c)[0], "constats": site_resume(c)[1],
+            "site": site_resume(c)[0], "constats": site_resume(c)[1], "entreprise": e, "ca_minimum": ca_minimum(),
+            "analyse": [{k: v for k, v in k_.items() if k != "court"} for k_ in audit.constats(c)],
+            "note_site": audit.note_site(c), "analyse_ancienne": bool(etat_site(c)) and not (etat_site(c) or {}).get("analyse")
+            and not (etat_site(c) or {}).get("injoignable") and not (etat_site(c) or {}).get("plateforme"),
             "dm": mailer.remplir(R(f"modele_dm_{c['espace']}", dm_defaut(c["espace"])), c, "", "fr"),
             "mail_sujet": remplir(m["sujets"].splitlines()[0]), "mail_corps": remplir(m["corps"])}
+
+
+def api_audit(q):
+    """Le document d'audit du site, en PDF, à joindre au message de prospection."""
+    c = commerce(q["cle"])
+    etat = etat_site(c)
+    if c.get("site_web") and not sans_vrai_site(c["site_web"]) and (etat is None or not etat.get("analyse")):
+        analyser_site(conn, c)  # pas encore analysé, ou analysé par une ancienne version : on le refait
+        recalculer_place(conn, c["place_id"])
+        c = commerce(q["cle"])
+    signature = R("signature", REGLAGES["signature"])
+    expediteur = signature.splitlines()[1] if len(signature.splitlines()) > 1 else "Review Maker"
+    contenu = audit.pdf(c, expediteur, signature, R("site_prix"), R("site_delai"))
+    db.ajouter_historique(conn, c["cle"], "Fiche", "Audit PDF créé")
+    nom = re.sub(r'[\\/:*?"<>|]+', " ", c.get("nom") or "commerce").strip()
+    return contenu, "application/pdf", f"Audit site - {nom}.pdf"
+
+
+def api_entreprise(d):
+    """Corrige l'entreprise rattachée à la fiche (SIREN tapé à la main), ou relance la vérification."""
+    c = commerce(d["cle"])
+    siren = re.sub(r"\D", "", d.get("siren") or "")
+    if siren and len(siren) not in (9, 14):
+        raise ErreurAPI("Un SIREN a 9 chiffres (ou un SIRET 14 chiffres).")
+    conn.execute("UPDATE commerces SET siren_force=? WHERE place_id=?", (siren[:9] or None, c["place_id"]))
+    c["siren_force"] = siren[:9] or None
+    res = verifier_entreprise(conn, c)
+    recalculer_place(conn, c["place_id"])
+    if res.get("erreur"):
+        raise ErreurAPI(res["raison"])
+    return {"ok": True, "verdict": res.get("verdict")}
+
+
+def api_reanalyser(d):
+    c = commerce(d["cle"])
+    if not c.get("site_web"):
+        raise ErreurAPI("Ce commerce n'a pas de site à analyser.")
+    analyser_site(conn, c)
+    recalculer_place(conn, c["place_id"])
+    return {"ok": True}
 
 
 def api_maj_prospect(d):
@@ -440,10 +541,14 @@ def api_reglages(q):
 
 
 def api_enregistrer_reglages(d):
+    avant = ca_minimum()
     for k, v in d.get("valeurs", {}).items():
         if k in REGLAGES:
             db.set_reglage(conn, k, str(v).strip() if k.startswith("cle_") or k in ("prenom", "equipe_dossier") else v)
     db.AUTEUR = R("prenom")
+    if ca_minimum() != avant:
+        conn.execute("UPDATE commerces SET entreprise_le=NULL WHERE entreprise IS NOT NULL")
+        conn.commit()
     REVEIL_SYNCHRO.set()
     return {"ok": True}
 
@@ -514,11 +619,11 @@ def api_marketing_fait(d):
 
 GET = {"etat": api_etat, "tableau": api_tableau, "trouver": api_trouver, "prospects": api_prospects,
        "prospect": api_prospect, "reglages": api_reglages, "job": api_job,
-       "marketing": api_marketing}
+       "marketing": api_marketing, "audit": api_audit}
 POST = {"recherche": api_recherche, "enrichir": api_enrichir, "prospect": api_maj_prospect, "export": api_export,
         "reglages": api_enregistrer_reglages, "annuler": api_annuler,
         "choisir_dossier": api_choisir_dossier, "synchroniser": api_synchroniser, "quitter": lambda d: api_quitter(d),
-        "marketing_fait": api_marketing_fait}
+        "marketing_fait": api_marketing_fait, "entreprise": api_entreprise, "reanalyser": api_reanalyser}
 
 
 # --- Serveur ---------------------------------------------------------------------
@@ -609,6 +714,10 @@ class Gestionnaire(BaseHTTPRequestHandler):
         if isinstance(resultat, bytes):
             return self._repondre(200, resultat, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                                   {"Content-Disposition": 'attachment; filename="prospects.xlsx"'})
+        if isinstance(resultat, tuple):  # (contenu, type, nom du fichier)
+            contenu, type_, nom = resultat
+            return self._repondre(200, contenu, type_, {
+                "Content-Disposition": f"attachment; filename=\"audit.pdf\"; filename*=UTF-8''{quote(nom)}"})
         self._json(200, resultat)
 
     def do_GET(self):

@@ -71,10 +71,11 @@ def rechercher(conn, cle_api, espace, categorie, ville, code_pays="FR", max_page
         data = rep.json()
         for place in data.get("places", []):
             c = _convertir(place)
-            ancien = conn.execute("SELECT email, site_etat FROM commerces WHERE cle=?",
+            ancien = conn.execute("SELECT email, site_etat, entreprise FROM commerces WHERE cle=?",
                                   (db.cle_de(espace, c["place_id"]),)).fetchone()
             c["email"] = ancien["email"] if ancien else None
             c["site_etat"] = ancien["site_etat"] if ancien else None
+            c["entreprise"] = ancien["entreprise"] if ancien else None
             score, raisons = score_pour(espace, c, poids_categorie)
             c.update(espace=espace, score=score, raisons=" ; ".join(raisons), ville_recherche=ville,
                      pays=code_pays, categorie=categorie, google_maj=db.maintenant())

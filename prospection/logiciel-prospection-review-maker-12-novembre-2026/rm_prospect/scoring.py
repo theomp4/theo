@@ -102,11 +102,47 @@ def _points_note(note):
     return 6, f"note excellente ({note})"
 
 
+def entreprise(commerce):
+    """La vérification de l'entreprise enregistrée (dict) ou None si pas encore vérifiée."""
+    try:
+        return json.loads(commerce.get("entreprise") or "null")
+    except (TypeError, ValueError):
+        return None
+
+
+def _effet_entreprise(commerce):
+    """(points en plus ou en moins, raison, hors cible ?) selon la vérification de l'entreprise :
+    on ne garde que les PME qui font au moins le chiffre d'affaires minimum."""
+    e = entreprise(commerce)
+    if not e:
+        return 0, None, False
+    v = e.get("verdict")
+    if v == "exclu":
+        return 0, f"hors cible : {e.get('raison')}", True
+    if v == "ok":
+        return 6, e.get("raison"), False
+    if v == "probable":
+        return 2, e.get("raison"), False
+    return -12, f"chiffre d'affaires à vérifier ({e.get('raison')})", False
+
+
+def _avec_entreprise(calcul):
+    def score(commerce, poids_categorie=0.7):
+        statut = commerce.get("statut_google")
+        if statut and statut != "OPERATIONAL":
+            return 0, ["fermé (temporairement ou définitivement)"]
+        points, raison, exclu = _effet_entreprise(commerce)
+        if exclu:
+            return 0, [raison]
+        total, raisons = calcul(commerce, poids_categorie)
+        return max(0, min(100, total + points)), ([raison] if raison else []) + raisons
+    score.__doc__ = calcul.__doc__
+    return score
+
+
+@_avec_entreprise
 def calculer_score(commerce, poids_categorie=0.7):
     """Score « tags NFC ». Renvoie (score sur 100, liste de raisons lisibles)."""
-    statut = commerce.get("statut_google")
-    if statut and statut != "OPERATIONAL":
-        return 0, ["fermé (temporairement ou définitivement)"]
 
     raisons = []
     p_avis, r = _points_avis(commerce.get("nb_avis"))
@@ -147,11 +183,9 @@ def sans_vrai_site(site):
     return not site or any(r in site.lower() for r in RESEAUX)
 
 
+@_avec_entreprise
 def calculer_score_web(commerce, poids_categorie=0.7):
     """Score « sites internet ». Renvoie (score sur 100, liste de raisons lisibles)."""
-    statut = commerce.get("statut_google")
-    if statut and statut != "OPERATIONAL":
-        return 0, ["fermé (temporairement ou définitivement)"]
 
     raisons = []
     site = commerce.get("site_web")

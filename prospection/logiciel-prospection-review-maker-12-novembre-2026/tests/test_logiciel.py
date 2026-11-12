@@ -180,3 +180,45 @@ def test_dossier_partage_windows_retrouve_sur_mac(tmp_path, monkeypatch):
     assert equipe.adapter_chemin("G:\\Mon Drive\\Review Maker équipe") == str(dossier)
     assert equipe.adapter_chemin("G:\\Mon Drive\\Autre dossier") is None
     assert Path(equipe.adapter_chemin(str(dossier))) == dossier
+
+
+def test_seulement_pme_au_dessus_du_chiffre_d_affaires_minimum():
+    from rm_prospect import entreprises
+    from rm_prospect.scoring import calculer_score_web
+    base = {"siren": "123456789", "nom_complet": "X", "nature_juridique": "5499"}
+    ok = entreprises.verdict({**base, "categorie_entreprise": "PME", "tranche_effectif_salarie": "01",
+                              "finances": {"2023": {"ca": 450000}, "2022": {"ca": 300000}}}, 1.0)
+    assert ok["verdict"] == "ok" and ok["ca"] == 450000 and "450 k€" in ok["raison"]
+    petit = entreprises.verdict({**base, "categorie_entreprise": "PME", "finances": {"2023": {"ca": 120000}}}, 1.0)
+    assert petit["verdict"] == "exclu"
+    eti = entreprises.verdict({**base, "categorie_entreprise": "ETI", "finances": {"2024": {"ca": 9e7}}}, 1.0)
+    assert eti["verdict"] == "exclu"
+    # comptes confidentiels (CA à 0) : on estime avec l'effectif
+    secret = entreprises.verdict({**base, "categorie_entreprise": "PME", "tranche_effectif_salarie": "11",
+                                  "finances": {"2024": {"ca": 0}}}, 1.0)
+    assert secret["verdict"] == "probable"
+    assert entreprises.verdict(None, 0)["verdict"] == "inconnu"
+    assert entreprises.verifier({"nom": "Pub", "pays": "GB"})["verdict"] == "inconnu"
+    c = {"nom": "A", "note": 4.6, "nb_avis": 200, "entreprise": json.dumps(petit)}
+    assert calculer_score_web(c)[0] == 0 and "hors cible" in calculer_score_web(c)[1][0]
+    assert calculer_score_web({**c, "entreprise": json.dumps(ok)})[0] > calculer_score_web({**c, "entreprise": None})[0]
+    assert entreprises.meme_adresse("32 Cours de la Liberté", "32 COURS DE LA LIBERTE 69003 LYON")
+
+
+def test_analyse_du_site_message_et_audit_pdf():
+    from rm_prospect import audit
+    html = ('<html><head><title>Accueil</title><meta name="viewport" content="width=device-width"></head>'
+            '<body><a href="tel:0478">Appeler</a><p>Ouvert du lundi au samedi</p></body></html>')
+    etat = {"https": False, "mobile": True, "secondes": 5.0, "annee": 2018, **audit.signaux(html)}
+    assert etat["tel"] and etat["horaires"] and not etat["mentions"] and etat["titre"] == "Accueil"
+    c = {"nom": "Garage Martin", "site_web": "http://garage.fr", "site_etat": json.dumps(etat), "note": 4.5, "nb_avis": 80}
+    cles = [k["cle"] for k in audit.constats(c)]
+    assert cles[0] == "https" and "lent" in cles and "mentions" in cles and "tel" not in cles
+    assert audit.points_message(c).startswith("- Votre site s'affiche « non sécurisé »")
+    assert audit.point_principal(c).startswith("votre site")
+    assert 0 < audit.note_site(c) < 60
+    assert audit.constats({"nom": "B", "site_web": None})[0]["cle"] == "pas_de_site"
+    texte = mailer.remplir(mailer.modele("web", "fr", "premier")["corps"], c, "Théo")
+    assert "audit gratuit" in texte and "non sécurisé" in texte
+    contenu = audit.pdf(c, "Review Maker", "Théo", "990 €", "10 jours")
+    assert contenu.startswith(b"%PDF") and len(contenu) > 3000

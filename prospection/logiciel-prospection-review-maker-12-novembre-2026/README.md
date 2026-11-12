@@ -103,10 +103,13 @@ sont faits pour toi), puis `→` pour le commerce suivant. Tout s'enregistre tou
    (ex. `Lyon 3e`, `Bruxelles`, `London`).
 2. Choisis les types de commerces.
 3. Clique sur **Lancer la recherche**. Chaque type rapporte jusqu'à 60 commerces (3 requêtes).
-4. Les emails et comptes Instagram sont ensuite cherchés tout seuls (case cochée sous le bouton ;
-   sinon, clique sur **Chercher les emails** dans l'étape 2, car Google ne donne jamais les emails) : le logiciel visite le site des
-   commerces les mieux notés, récupère leur email et leur Instagram, et vérifie si le site est sécurisé,
-   adapté au téléphone, rapide et récent.
+4. L'étape 2 se lance toute seule (case cochée sous le bouton ; sinon, clique sur **Vérifier et
+   analyser**) :
+   - **l'entreprise** est vérifiée dans l'annuaire officiel des entreprises : le logiciel garde
+     seulement les **PME qui font au moins 200 000 € de chiffre d'affaires** par an (montant réglable
+     dans Réglages). Les autres passent en **Hors cible** ;
+   - pour les entreprises retenues, **son site** est visité : email, Instagram et une analyse de base
+     de ce qui ne va pas (voir plus bas).
 
 Au Canada, en Allemagne, en Espagne, en Italie et en Australie, la loi demande un accord avant
 d'envoyer un email de prospection : contacte ces commerces par téléphone ou Instagram.
@@ -132,10 +135,49 @@ d'envoyer un email de prospection : contacte ces commerces par téléphone ou In
 Un commerce fermé reçoit 0. Au-dessus de 75 : **priorité haute**, à contacter en premier.
 Chaque fiche explique son score en une phrase.
 
+### PME vérifiées : comment le logiciel décide
+
+L'annuaire officiel (recherche-entreprises.api.gouv.fr, gratuit, sans clé) donne la catégorie
+de l'entreprise (PME, ETI, grande entreprise), son effectif et le chiffre d'affaires de ses
+derniers comptes publiés.
+
+| Ce que dit l'annuaire | Dans le logiciel |
+| --- | --- |
+| PME, chiffre d'affaires publié ≥ 200 000 € | **PME vérifiée** (bonus de score) |
+| PME, comptes non publiés, 3 salariés ou plus | **PME probable** (sans doute au-dessus de 200 000 €) |
+| Comptes non publiés, moins de 3 salariés, ou entreprise introuvable | **CA à vérifier** (score baissé) |
+| Chiffre d'affaires < 200 000 €, ETI, grande entreprise, entrepreneur individuel sans salarié | **Hors cible** (score 0, onglet « Hors cible ») |
+
+- Beaucoup de petites entreprises gardent leurs comptes confidentiels : c'est pour ça que
+  l'effectif sert d'estimation, et la fiche le dit.
+- Si le logiciel s'est trompé d'entreprise (même nom, autre société), ouvre la fiche > **L'entreprise**
+  > « Ce n'est pas la bonne entreprise ? » et tape son **SIREN** (dans ses mentions légales ou sur
+  annuaire-entreprises.data.gouv.fr).
+- La vérification ne marche que pour la France : ailleurs, la fiche affiche « À vérifier ».
+
+### L'analyse du site et l'audit en PDF
+
+Pour chaque site, le logiciel lit la page d'accueil et relève ce qui fait perdre des clients :
+site non sécurisé, pas adapté au téléphone, lent, pas mis à jour, titre et description Google,
+bouton pour appeler, mentions légales (obligatoires), horaires, plan d'accès, image de partage,
+informations lisibles par Google, images sans description. Chaque point est classé
+**Urgent**, **Important** ou **À améliorer**.
+
+- Dans la fiche, le bloc **Son site internet** liste ces points avec une note sur 100.
+- L'**email** et le **message Instagram** reprennent les 3 points les plus graves et annoncent
+  l'audit gratuit.
+- **Télécharger l'audit (PDF)** crée un document de 2 à 3 pages au nom du commerce : la note, ce qui a
+  été vérifié, chaque problème avec pourquoi il compte et comment le corriger, puis ta proposition
+  (prix et délai des Réglages, ta signature). **Joins-le à ton email.**
+- **Refaire l'analyse** relit le site (utile pour les sites analysés par une ancienne version).
+
+L'analyse ne regarde que la page d'accueil : le document le précise.
+
 ### Suivre tes prospects (icône personnes)
 
 - La liste est triée du meilleur prospect au moins bon. Les onglets en haut à droite filtrent :
-  Tous, À contacter, En cours, Vendus. Tu peux aussi chercher un nom dans la barre du haut.
+  Tous, Sans site, À contacter, En cours, Vendus, Hors cible. Sous chaque nom : PME vérifiée, PME
+  probable ou CA à vérifier. Tu peux aussi chercher un nom dans la barre du haut.
 - Clique sur **Exporter en Excel** pour l'avoir dans un tableur.
 - Clique sur un commerce pour ouvrir sa **fiche** : score expliqué, téléphone, **email modifiable**,
   un **email prêt à envoyer** (bouton « Ouvrir dans ma boîte mail ») et un **message Instagram prêt

@@ -104,6 +104,10 @@ def fusionner(conn, donnees):
             maj["enrichi_le"], maj["site_etat"] = c.get("enrichi_le"), c.get("site_etat")
             if c.get("instagram"):
                 maj["instagram"] = c["instagram"]
+        # Vérification de l'entreprise : la plus récente.
+        if _plus_recent(c.get("entreprise_le"), moi.get("entreprise_le")):
+            maj["entreprise_le"], maj["entreprise"] = c.get("entreprise_le"), c.get("entreprise")
+            maj["siren_force"] = c.get("siren_force")
         maj = {k: v for k, v in maj.items() if moi.get(k) != v}
         if maj:
             conn.execute(f"UPDATE commerces SET {', '.join(k + '=?' for k in maj)} WHERE cle=?",

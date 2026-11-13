@@ -1,5 +1,6 @@
 """Bande son du film Toolkit : musique 120 BPM synthétisée + effets de sfx-library calés sur src/toolkit/cues.json.
-Sortie : public/toolkit/soundtrack.wav, normalisée à -14 LUFS (crête -1 dBFS)."""
+Sorties : public/toolkit/soundtrack.wav (musique + effets, -14 LUFS)
+et public/toolkit/soundtrack_sfx.wav (effets seuls, -16 LUFS)."""
 import json, os, subprocess, sys, wave
 import numpy as np
 from scipy import signal
@@ -90,31 +91,38 @@ for rel, at, db in cues["sfx"]:
     place(sfx, x, start, 10 ** (db / 20))
 clicks = ["packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/click1.wav", "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/click3.wav",
           "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/click5.wav", "packs/ui-clics/10-clicks-and-switches/10 Clicks and Switches/click.9.ogg"]
+keys = np.zeros((N, 2))
 for at, n, rate, db in cues["typing"]:
     for k in range(n):
-        place(sfx, lib(clicks[rng.integers(len(clicks))]), at + k * rate + rng.uniform(-0.008, 0.008), 10 ** ((db + rng.uniform(-3, 1)) / 20))
+        place(keys, lib(clicks[rng.integers(len(clicks))]), at + k * rate + rng.uniform(-0.008, 0.008), 10 ** ((db + rng.uniform(-3, 1)) / 20))
+# cartes : mêmes instants que DECK_T (0,2 + i × 0,75 s)
 # crans de la roue (mêmes instants que WHEEL_STOPS dans Toolkit.tsx)
 w0 = cues["scenes"]["wheel"][0]
 for i in range(1, 11):
     place(sfx, lib(cues["ticks"]["path"]), w0 + 0.55 + i * 0.27 - 0.02, 10 ** (cues["ticks"]["db"] / 20))
 # cartes de la pile (mêmes instants que DECK_T)
 d0 = cues["scenes"]["deck"][0]
-sw = ["packs/whoosh-transitions/swishes-sound-pack/swishes/swish-%d.wav" % k for k in (1, 3, 5, 7, 8, 9)]
-for i in range(6):
-    place(sfx, lib(sw[i]), d0 + 0.35 + i * 0.45 + 0.05, 10 ** (cues["swishes"]["db"] / 20))
+sw = ["packs/whoosh-transitions/swishes-sound-pack/swishes/swish-%d.wav" % k for k in (3, 5, 7, 9)]
+for i in range(4):
+    place(sfx, lib(sw[i]), d0 + 0.2 + i * 0.75 + 0.05, 10 ** (cues["swishes"]["db"] / 20))
+
+def render(mix, out, target, pre=""):
+    mix = mix[: int(DUR * SR)]
+    mix = mix / (np.abs(mix).max() / 0.89)
+    raw = out.replace(".wav", "_raw.wav")
+    w = wave.open(raw, "wb"); w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR)
+    w.writeframes((np.clip(mix, -1, 1) * 32767).astype("<i2").tobytes()); w.close()
+    meas = subprocess.run(["ffmpeg", "-hide_banner", "-i", raw, "-af", pre + f"loudnorm=I={target}:TP=-1:LRA=11:print_format=json", "-f", "null", "-"], capture_output=True, text=True).stderr
+    j = json.loads(meas[meas.rindex("{"):meas.rindex("}") + 1])
+    af = (f"loudnorm=I={target}:TP=-1:LRA=11:measured_I={j['input_i']}:measured_TP={j['input_tp']}:measured_LRA={j['input_lra']}:"
+          f"measured_thresh={j['input_thresh']}:offset={j['target_offset']}:linear=true,alimiter=limit=0.84:level=false")
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", raw, "-af", pre + af, "-ar", str(SR), out], check=True)
+    os.remove(raw)
 
 # l'intro (avant la batterie) est remontée pour ne pas paraître creuse
 intro = np.interp(tt, [0, 13.8, 14.5, DUR + 2], [1.9, 1.9, 1.0, 1.0])[:, None]
-mix = (music * 0.75 * intro + sfx * 1.45)[: int(DUR * SR)]
-mix /= np.abs(mix).max() / 0.89
-raw = os.path.join(ROOT, "public/toolkit/soundtrack_raw.wav")
-w = wave.open(raw, "wb"); w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR)
-w.writeframes((np.clip(mix, -1, 1) * 32767).astype("<i2").tobytes()); w.close()
-# normalisation -14 LUFS en deux passes
-meas = subprocess.run(["ffmpeg", "-hide_banner", "-i", raw, "-af", "loudnorm=I=-14:TP=-1:LRA=11:print_format=json", "-f", "null", "-"], capture_output=True, text=True).stderr
-j = json.loads(meas[meas.rindex("{"):meas.rindex("}") + 1])
-af = (f"loudnorm=I=-14:TP=-1:LRA=11:measured_I={j['input_i']}:measured_TP={j['input_tp']}:measured_LRA={j['input_lra']}:"
-      f"measured_thresh={j['input_thresh']}:offset={j['target_offset']}:linear=true,alimiter=limit=0.89:level=false")
-subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", raw, "-af", af, "-ar", str(SR), os.path.join(ROOT, "public/toolkit/soundtrack.wav")], check=True)
-os.remove(raw)
+render(music * 0.75 * intro + (sfx + keys) * 1.45, os.path.join(ROOT, "public/toolkit/soundtrack.wav"), -14)
+# version sans musique : les effets seuls, un peu moins fort (ils sont espacés)
+# sans musique, les petits sons (clics, pings) seraient couverts par les whooshs : on resserre la dynamique
+render(sfx + keys * 1.7, os.path.join(ROOT, "public/toolkit/soundtrack_sfx.wav"), -16, "acompressor=threshold=-30dB:ratio=4:attack=1:release=90:makeup=4,")
 print("ok")

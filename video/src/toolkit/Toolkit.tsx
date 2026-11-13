@@ -496,29 +496,56 @@ const Reviews: React.FC<{ lt: number }> = ({ lt }) => {
 };
 
 // ───────────── 12. Pile de cartes qui défile
-const DECK = ["resto-full", "barbier-full", "gym-full", "garage-full", "resto-salle", "barbier-photo"];
-export const DECK_T = DECK.map((_, i) => 0.35 + i * 0.45);
+// Les 4 sites entiers, au format de la capture (1440×900), posés à plat au centre le temps d'être lus
+const DECK = [
+  { name: "resto-full", url: "lecomptoirdeleon.fr" },
+  { name: "barbier-full", url: "maison-lebrun.fr" },
+  { name: "gym-full", url: "pulse-studio.fr" },
+  { name: "garage-full", url: "garage-moreau.fr" },
+];
+export const DECK_T = DECK.map((_, i) => 0.2 + i * 0.75);
+const CW = 980;
+const CH = (CW * 900) / 1440;
 const Deck: React.FC<{ lt: number }> = ({ lt }) => (
   <>
-    {DECK.map((name, i) => {
+    {DECK.map((c, i) => {
       const a = DECK_T[i];
-      const p = tw(lt, [a, a + 0.75], [0, 1], EASE.out);
-      const gone = tw(lt, [a + 0.6, a + 1.25], [0, 1], EASE.in);
+      const last = i === DECK.length - 1;
+      const p = tw(lt, [a, a + 0.45], [0, 1], EASE.out);
+      const gone = last ? 0 : tw(lt, [a + 0.75, a + 1.1], [0, 1], EASE.in);
       if (p <= 0 || gone >= 1) return null;
-      const x = lerp(900, 540, p) - gone * 700;
-      const rz = lerp(14, -3, p) - gone * 10;
+      const x = lerp(1500, 540, p) - gone * 1300;
       return (
-        <div key={i} style={{ ...abs(x - 330, 520 + i * 18 - gone * 60), width: 660, height: 820, zIndex: i, transform: `perspective(1800px) rotateY(${lerp(-35, 0, p) + gone * 30}deg) rotateZ(${rz}deg) scale(${lerp(0.85, 1, p) * (1 - gone * 0.15)})`, opacity: Math.min(1, p * 2) * (1 - gone) }}>
-          <div style={{ width: "100%", height: "100%", borderRadius: 40, overflow: "hidden", border: "3px solid rgba(255,255,255,0.9)", boxShadow: "0 50px 90px -30px rgba(10,30,140,0.6)" }}>
-            <Shot name={name} style={{ objectPosition: "30% 50%" }} />
-          </div>
+        <div
+          key={i}
+          style={{
+            ...abs(x - CW / 2, 560),
+            width: CW,
+            zIndex: i,
+            transform: `perspective(2200px) rotateY(${lerp(-28, 0, p) + gone * 28}deg) scale(${lerp(0.9, 1, p) * (1 - gone * 0.1)})`,
+            opacity: Math.min(1, p * 2) * (1 - gone),
+          }}
+        >
+          <Pane radius={34} style={{ padding: 12 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, height: 44, padding: "0 10px" }}>
+              {["#FF5F57", "#FEBC2E", "#28C840"].map((col) => (
+                <div key={col} style={{ width: 14, height: 14, borderRadius: 7, background: col }} />
+              ))}
+              <div style={{ flex: 1, margin: "0 120px 0 80px", height: 32, borderRadius: 16, background: "rgba(255,255,255,0.75)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily, fontSize: 20, fontWeight: 500, color: "#0A2A9E" }}>
+                {c.url}
+              </div>
+            </div>
+            <div style={{ height: CH - 24, borderRadius: 22, overflow: "hidden" }}>
+              <Shot name={c.name} />
+            </div>
+          </Pane>
         </div>
       );
     })}
-    <div style={{ ...row, top: 1530, zIndex: 20 }}>
+    <div style={{ ...row, top: 1300, zIndex: 20 }}>
       <Letters text="Votre site," t={lt} at={0.5} size={104} />
     </div>
-    <div style={{ ...row, top: 1652, zIndex: 20 }}>
+    <div style={{ ...row, top: 1422, zIndex: 20 }}>
       <Letters text="à votre nom." t={lt} at={0.8} size={104} accentFrom={1} />
     </div>
   </>
@@ -559,7 +586,7 @@ const Final: React.FC<{ lt: number }> = ({ lt }) => {
   );
 };
 
-export const Toolkit: React.FC = () => {
+export const Toolkit: React.FC<{ musique?: boolean }> = ({ musique = false }) => {
   const t = useT();
   const fade = tw(t, [TOOLKIT_DURATION - 0.6, TOOLKIT_DURATION], [0, 1], EASE.in);
   const sc = (k: string, C: React.FC<{ lt: number }>, extra: { first?: boolean; last?: boolean } = {}) => (
@@ -583,7 +610,7 @@ export const Toolkit: React.FC = () => {
       {sc("deck", Deck)}
       {sc("cta", Final, { last: true })}
       <AbsoluteFill style={{ background: "#fff", opacity: fade, pointerEvents: "none" }} />
-      <Audio src={staticFile("toolkit/soundtrack.wav")} />
+      <Audio src={staticFile(musique ? "toolkit/soundtrack.wav" : "toolkit/soundtrack_sfx.wav")} />
     </AbsoluteFill>
   );
 };

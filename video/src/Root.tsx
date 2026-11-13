@@ -14,6 +14,6 @@ export const Root: React.FC = () => (
     <Composition id="SitesV3" component={SitesV3} durationInFrames={Math.ceil(V3_DURATION * FPS)} fps={FPS} width={W} height={H} />
     <Composition id="SitesV4" component={SitesV4} durationInFrames={Math.ceil(V4_DURATION * FPS)} fps={FPS} width={W} height={H} />
     <Composition id="GlassPromo" component={GlassPromo} durationInFrames={GLASS_DURATION * FPS} fps={FPS} width={W} height={H} />
-    <Composition id="Toolkit" component={Toolkit} durationInFrames={TOOLKIT_DURATION * FPS} fps={FPS} width={W} height={H} />
+    <Composition id="Toolkit" component={Toolkit} defaultProps={{ musique: false }} durationInFrames={TOOLKIT_DURATION * FPS} fps={FPS} width={W} height={H} />
   </>
 );

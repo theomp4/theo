@@ -1,0 +1,3959 @@
+{
+ "license": "CC0 1.0 (domaine public) pour tous les packs",
+ "packs": [
+  {
+   "slug": "interface-sounds",
+   "title": "Interface Sounds",
+   "author": "Kenney",
+   "category": "ui-clics",
+   "files": 100,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/interface-sounds"
+  },
+  {
+   "slug": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "title": "51 UI sound effects",
+   "author": "Kenney",
+   "category": "ui-clics",
+   "files": 51,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/51-ui-sound-effects-buttons-switches-and-clicks"
+  },
+  {
+   "slug": "10-clicks-and-switches",
+   "title": "10 Clicks and Switches",
+   "author": "StarNinjas",
+   "category": "ui-clics",
+   "files": 11,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/10-clicks-and-switches"
+  },
+  {
+   "slug": "ui-sound-effects-button-clicks-user-feedback-notifications",
+   "title": "UI Sound Effects (clics, retours, notifications)",
+   "author": "Robin Lamb",
+   "category": "ui-clics",
+   "files": 12,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/ui-sound-effects-button-clicks-user-feedback-notifications"
+  },
+  {
+   "slug": "ui-sounds",
+   "title": "UI Sounds",
+   "author": "StumpyStrust",
+   "category": "ui-clics",
+   "files": 5,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/ui-sounds"
+  },
+  {
+   "slug": "ui-sounds-0",
+   "title": "UI Sounds",
+   "author": "HaelDB",
+   "category": "ui-clics",
+   "files": 11,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/ui-sounds-0"
+  },
+  {
+   "slug": "7-assorted-sound-effects-menu-level-up",
+   "title": "7 Assorted Sound Effects (menu, level up)",
+   "author": "Joth",
+   "category": "ui-clics",
+   "files": 8,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/7-assorted-sound-effects-menu-level-up"
+  },
+  {
+   "slug": "swishes-sound-pack",
+   "title": "Swishes Sound Pack",
+   "author": "artisticdude",
+   "category": "whoosh-transitions",
+   "files": 13,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/swishes-sound-pack"
+  },
+  {
+   "slug": "air-whoosh",
+   "title": "Air whoosh",
+   "author": "pyranostudios",
+   "category": "whoosh-transitions",
+   "files": 1,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/air-whoosh"
+  },
+  {
+   "slug": "3-pop-sounds",
+   "title": "3 Pop Sounds",
+   "author": "wubitog",
+   "category": "pops",
+   "files": 4,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/3-pop-sounds"
+  },
+  {
+   "slug": "pop-sounds",
+   "title": "Pop sounds",
+   "author": "cogitollc",
+   "category": "pops",
+   "files": 11,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/pop-sounds"
+  },
+  {
+   "slug": "a-slide-pop-sound",
+   "title": "A Slide Pop Sound",
+   "author": "EZduzziteh",
+   "category": "pops",
+   "files": 1,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/a-slide-pop-sound"
+  },
+  {
+   "slug": "pop-effect-sounds",
+   "title": "Pop effect sounds",
+   "author": "trezegames",
+   "category": "pops",
+   "files": 5,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/pop-effect-sounds"
+  },
+  {
+   "slug": "75-cc0-breaking-falling-hit-sfx",
+   "title": "75 breaking / falling / hit sfx",
+   "author": "rubberduck",
+   "category": "impacts-booms",
+   "files": 75,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/75-cc0-breaking-falling-hit-sfx"
+  },
+  {
+   "slug": "synthesized-explosion",
+   "title": "Synthesized explosion",
+   "author": "qubodup",
+   "category": "impacts-booms",
+   "files": 1,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/synthesized-explosion"
+  },
+  {
+   "slug": "muffled-distant-explosion",
+   "title": "Muffled Distant Explosion",
+   "author": "NenadSimic",
+   "category": "impacts-booms",
+   "files": 1,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/muffled-distant-explosion"
+  },
+  {
+   "slug": "magic-spell-sfx",
+   "title": "Magic Spell SFX",
+   "author": "JaggedStone",
+   "category": "magie-scintillements",
+   "files": 7,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/magic-spell-sfx"
+  },
+  {
+   "slug": "cure-magic",
+   "title": "Cure Magic",
+   "author": "Someoneman",
+   "category": "magie-scintillements",
+   "files": 8,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/cure-magic"
+  },
+  {
+   "slug": "teleport-spell",
+   "title": "Teleport Spell",
+   "author": "Ogrebane",
+   "category": "magie-scintillements",
+   "files": 1,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/teleport-spell"
+  },
+  {
+   "slug": "4-metal-dingsrings",
+   "title": "4 Metal Dings/Rings",
+   "author": "StarNinjas",
+   "category": "notifications-dings",
+   "files": 4,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/4-metal-dingsrings"
+  },
+  {
+   "slug": "kalimba-two-notes",
+   "title": "Kalimba Two-Notes",
+   "author": "railkill",
+   "category": "notifications-dings",
+   "files": 1,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/kalimba-two-notes"
+  },
+  {
+   "slug": "mystery-sting",
+   "title": "Mystery Sting",
+   "author": "railkill",
+   "category": "notifications-dings",
+   "files": 1,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/mystery-sting"
+  },
+  {
+   "slug": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "title": "63 Digital sound effects",
+   "author": "Kenney",
+   "category": "digital-scifi",
+   "files": 62,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/63-digital-sound-effects-lasers-phasers-space-etc"
+  },
+  {
+   "slug": "sci-fi-sounds",
+   "title": "Sci-Fi Sounds",
+   "author": "Kenney",
+   "category": "digital-scifi",
+   "files": 73,
+   "license": "CC0",
+   "source": "https://opengameart.org/content/sci-fi-sounds"
+  }
+ ],
+ "files": [
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/back_001.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.064,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/back_002.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.07,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/back_003.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.093,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/back_004.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.073,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/bong_001.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.123,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/click_001.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.1,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/click_002.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.01,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/click_003.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.01,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/click_004.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.01,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/click_005.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.01,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/close_001.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.148,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/close_002.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.314,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/close_003.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.314,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/close_004.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.323,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/confirmation_001.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.29,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/confirmation_002.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.539,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/confirmation_003.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.322,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/confirmation_004.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.49,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/drop_001.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.11,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/drop_002.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.191,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/drop_003.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.191,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/drop_004.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.287,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/error_001.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.165,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/error_002.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.165,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/error_003.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.533,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/error_004.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.103,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/error_005.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.5,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/error_006.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.5,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/error_007.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.192,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/error_008.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.139,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/glass_001.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.278,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/glass_002.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.125,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/glass_003.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.124,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/glass_004.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.692,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/glass_005.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.111,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/glass_006.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.111,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/glitch_001.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.02,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/glitch_002.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.03,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/glitch_003.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.01,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/glitch_004.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.023,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/maximize_001.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.258,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/maximize_002.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.258,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/maximize_003.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.212,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/maximize_004.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.418,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/maximize_005.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.526,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/maximize_006.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.38,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/maximize_007.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.186,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/maximize_008.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.225,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/maximize_009.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.225,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/minimize_001.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.258,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/minimize_002.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.258,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/minimize_003.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.212,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/minimize_004.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.418,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/minimize_005.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.526,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/minimize_006.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.38,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/minimize_007.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.186,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/minimize_008.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.225,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/minimize_009.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.225,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/open_001.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.148,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/open_002.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.314,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/open_003.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.314,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/open_004.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.323,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/pluck_001.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.102,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/pluck_002.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.165,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/question_001.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.491,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/question_002.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.333,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/question_003.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.332,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/question_004.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.332,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/scratch_001.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.139,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/scratch_002.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.139,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/scratch_003.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.123,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/scratch_004.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.325,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/scratch_005.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.325,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/scroll_001.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 1.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/scroll_002.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 1.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/scroll_003.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 1.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/scroll_004.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 1.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/scroll_005.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 1.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/select_001.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.043,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/select_002.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.043,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/select_003.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.383,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/select_004.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.383,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/select_005.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.383,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/select_006.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 1.944,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/select_007.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.047,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/select_008.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.047,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/switch_001.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.618,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/switch_002.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.611,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/switch_003.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.5,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/switch_004.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.5,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/switch_005.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.612,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/switch_006.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.611,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/switch_007.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.614,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/tick_001.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.023,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/tick_002.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.023,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/tick_004.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.055,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/toggle_001.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.139,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/toggle_002.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.139,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/toggle_003.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.139,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/interface-sounds/Audio/toggle_004.ogg",
+   "pack": "interface-sounds",
+   "category": "ui-clics",
+   "duration": 0.066,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/click1.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.094,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/click2.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.056,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/click3.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.086,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/click4.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.037,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/click5.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.032,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/mouseclick1.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.059,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/mouserelease1.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.069,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/rollover1.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.227,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/rollover2.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.057,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/rollover3.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.069,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/rollover4.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.113,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/rollover5.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.112,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/rollover6.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.174,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch1.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.315,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch10.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.367,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch11.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.297,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch12.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.054,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch13.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.028,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch14.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.033,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch15.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.256,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch16.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.359,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch17.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.333,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch18.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.435,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch19.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.384,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch2.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.297,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch20.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.359,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch21.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.41,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch22.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.359,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch23.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.384,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch24.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.282,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch25.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.384,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch26.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.23,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch27.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.282,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch28.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.205,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch29.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.307,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch3.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.367,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch30.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.359,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch31.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.435,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch32.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.435,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch33.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.512,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch34.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.461,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch35.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.333,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch36.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.307,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch37.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.307,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch38.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.424,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch4.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.42,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch5.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.315,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch6.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.35,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch7.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.192,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch8.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.332,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/switch9.wav",
+   "pack": "51-ui-sound-effects-buttons-switches-and-clicks",
+   "category": "ui-clics",
+   "duration": 0.262,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/10-clicks-and-switches/10 Clicks and Switches/click preview.ogg",
+   "pack": "10-clicks-and-switches",
+   "category": "ui-clics",
+   "duration": 4.406,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/10-clicks-and-switches/10 Clicks and Switches/click.1.ogg",
+   "pack": "10-clicks-and-switches",
+   "category": "ui-clics",
+   "duration": 0.29,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/10-clicks-and-switches/10 Clicks and Switches/click.10.ogg",
+   "pack": "10-clicks-and-switches",
+   "category": "ui-clics",
+   "duration": 0.774,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/10-clicks-and-switches/10 Clicks and Switches/click.2.ogg",
+   "pack": "10-clicks-and-switches",
+   "category": "ui-clics",
+   "duration": 0.42,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/10-clicks-and-switches/10 Clicks and Switches/click.3.ogg",
+   "pack": "10-clicks-and-switches",
+   "category": "ui-clics",
+   "duration": 0.25,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/10-clicks-and-switches/10 Clicks and Switches/click.4.ogg",
+   "pack": "10-clicks-and-switches",
+   "category": "ui-clics",
+   "duration": 0.204,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/10-clicks-and-switches/10 Clicks and Switches/click.5.ogg",
+   "pack": "10-clicks-and-switches",
+   "category": "ui-clics",
+   "duration": 0.198,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/10-clicks-and-switches/10 Clicks and Switches/click.6.ogg",
+   "pack": "10-clicks-and-switches",
+   "category": "ui-clics",
+   "duration": 0.181,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/10-clicks-and-switches/10 Clicks and Switches/click.7.ogg",
+   "pack": "10-clicks-and-switches",
+   "category": "ui-clics",
+   "duration": 0.224,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/10-clicks-and-switches/10 Clicks and Switches/click.8.ogg",
+   "pack": "10-clicks-and-switches",
+   "category": "ui-clics",
+   "duration": 0.213,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/10-clicks-and-switches/10 Clicks and Switches/click.9.ogg",
+   "pack": "10-clicks-and-switches",
+   "category": "ui-clics",
+   "duration": 0.102,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sound-effects-button-clicks-user-feedback-notifications/ui_wav/Ding.wav",
+   "pack": "ui-sound-effects-button-clicks-user-feedback-notifications",
+   "category": "ui-clics",
+   "duration": 0.999,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sound-effects-button-clicks-user-feedback-notifications/ui_wav/alarm.wav",
+   "pack": "ui-sound-effects-button-clicks-user-feedback-notifications",
+   "category": "ui-clics",
+   "duration": 0.429,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sound-effects-button-clicks-user-feedback-notifications/ui_wav/alarm2.wav",
+   "pack": "ui-sound-effects-button-clicks-user-feedback-notifications",
+   "category": "ui-clics",
+   "duration": 1.767,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sound-effects-button-clicks-user-feedback-notifications/ui_wav/chimes.wav",
+   "pack": "ui-sound-effects-button-clicks-user-feedback-notifications",
+   "category": "ui-clics",
+   "duration": 2.005,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sound-effects-button-clicks-user-feedback-notifications/ui_wav/click_1.wav",
+   "pack": "ui-sound-effects-button-clicks-user-feedback-notifications",
+   "category": "ui-clics",
+   "duration": 0.758,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sound-effects-button-clicks-user-feedback-notifications/ui_wav/click_2.wav",
+   "pack": "ui-sound-effects-button-clicks-user-feedback-notifications",
+   "category": "ui-clics",
+   "duration": 0.222,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sound-effects-button-clicks-user-feedback-notifications/ui_wav/click_3.wav",
+   "pack": "ui-sound-effects-button-clicks-user-feedback-notifications",
+   "category": "ui-clics",
+   "duration": 0.222,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sound-effects-button-clicks-user-feedback-notifications/ui_wav/click_4.wav",
+   "pack": "ui-sound-effects-button-clicks-user-feedback-notifications",
+   "category": "ui-clics",
+   "duration": 0.801,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sound-effects-button-clicks-user-feedback-notifications/ui_wav/ding_deep.wav",
+   "pack": "ui-sound-effects-button-clicks-user-feedback-notifications",
+   "category": "ui-clics",
+   "duration": 1.893,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sound-effects-button-clicks-user-feedback-notifications/ui_wav/dum.wav",
+   "pack": "ui-sound-effects-button-clicks-user-feedback-notifications",
+   "category": "ui-clics",
+   "duration": 0.374,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sound-effects-button-clicks-user-feedback-notifications/ui_wav/negative_sound.wav",
+   "pack": "ui-sound-effects-button-clicks-user-feedback-notifications",
+   "category": "ui-clics",
+   "duration": 1.063,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sound-effects-button-clicks-user-feedback-notifications/ui_wav/negative_sound2.wav",
+   "pack": "ui-sound-effects-button-clicks-user-feedback-notifications",
+   "category": "ui-clics",
+   "duration": 0.786,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sounds/button1.ogg",
+   "pack": "ui-sounds",
+   "category": "ui-clics",
+   "duration": 1.714,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sounds/button2.ogg",
+   "pack": "ui-sounds",
+   "category": "ui-clics",
+   "duration": 1.714,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sounds/complete.ogg",
+   "pack": "ui-sounds",
+   "category": "ui-clics",
+   "duration": 3.429,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sounds/off.ogg",
+   "pack": "ui-sounds",
+   "category": "ui-clics",
+   "duration": 1.714,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sounds/on.ogg",
+   "pack": "ui-sounds",
+   "category": "ui-clics",
+   "duration": 0.857,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sounds-0/New folder/#0.wav",
+   "pack": "ui-sounds-0",
+   "category": "ui-clics",
+   "duration": 1.0,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sounds-0/New folder/#1.wav",
+   "pack": "ui-sounds-0",
+   "category": "ui-clics",
+   "duration": 1.357,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sounds-0/New folder/#2.wav",
+   "pack": "ui-sounds-0",
+   "category": "ui-clics",
+   "duration": 1.188,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sounds-0/New folder/#3.wav",
+   "pack": "ui-sounds-0",
+   "category": "ui-clics",
+   "duration": 1.283,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sounds-0/New folder/#4.wav",
+   "pack": "ui-sounds-0",
+   "category": "ui-clics",
+   "duration": 1.379,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sounds-0/New folder/#5.wav",
+   "pack": "ui-sounds-0",
+   "category": "ui-clics",
+   "duration": 0.938,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sounds-0/New folder/#6.wav",
+   "pack": "ui-sounds-0",
+   "category": "ui-clics",
+   "duration": 0.938,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sounds-0/New folder/#7.wav",
+   "pack": "ui-sounds-0",
+   "category": "ui-clics",
+   "duration": 0.875,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sounds-0/New folder/#8.wav",
+   "pack": "ui-sounds-0",
+   "category": "ui-clics",
+   "duration": 1.062,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sounds-0/New folder/#9.wav",
+   "pack": "ui-sounds-0",
+   "category": "ui-clics",
+   "duration": 1.0,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/ui-sounds-0/New folder/Wrong Error.wav",
+   "pack": "ui-sounds-0",
+   "category": "ui-clics",
+   "duration": 0.375,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/7-assorted-sound-effects-menu-level-up/Ability Learn.mp3",
+   "pack": "7-assorted-sound-effects-menu-level-up",
+   "category": "ui-clics",
+   "duration": 3.344,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/7-assorted-sound-effects-menu-level-up/Item Pickup.mp3",
+   "pack": "7-assorted-sound-effects-menu-level-up",
+   "category": "ui-clics",
+   "duration": 0.679,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/7-assorted-sound-effects-menu-level-up/Level Up.mp3",
+   "pack": "7-assorted-sound-effects-menu-level-up",
+   "category": "ui-clics",
+   "duration": 4.18,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/7-assorted-sound-effects-menu-level-up/Menu Confirm.mp3",
+   "pack": "7-assorted-sound-effects-menu-level-up",
+   "category": "ui-clics",
+   "duration": 0.679,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/7-assorted-sound-effects-menu-level-up/Menu Error.mp3",
+   "pack": "7-assorted-sound-effects-menu-level-up",
+   "category": "ui-clics",
+   "duration": 0.679,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/7-assorted-sound-effects-menu-level-up/Menu Move.mp3",
+   "pack": "7-assorted-sound-effects-menu-level-up",
+   "category": "ui-clics",
+   "duration": 0.679,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/7-assorted-sound-effects-menu-level-up/MenuSFXPreview.mp3",
+   "pack": "7-assorted-sound-effects-menu-level-up",
+   "category": "ui-clics",
+   "duration": 17.319,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/ui-clics/7-assorted-sound-effects-menu-level-up/Transition.mp3",
+   "pack": "7-assorted-sound-effects-menu-level-up",
+   "category": "ui-clics",
+   "duration": 6.635,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/whoosh-transitions/swishes-sound-pack/swishes/swish-1.wav",
+   "pack": "swishes-sound-pack",
+   "category": "whoosh-transitions",
+   "duration": 0.126,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/whoosh-transitions/swishes-sound-pack/swishes/swish-10.wav",
+   "pack": "swishes-sound-pack",
+   "category": "whoosh-transitions",
+   "duration": 0.125,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/whoosh-transitions/swishes-sound-pack/swishes/swish-11.wav",
+   "pack": "swishes-sound-pack",
+   "category": "whoosh-transitions",
+   "duration": 0.104,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/whoosh-transitions/swishes-sound-pack/swishes/swish-12.wav",
+   "pack": "swishes-sound-pack",
+   "category": "whoosh-transitions",
+   "duration": 0.076,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/whoosh-transitions/swishes-sound-pack/swishes/swish-13.wav",
+   "pack": "swishes-sound-pack",
+   "category": "whoosh-transitions",
+   "duration": 0.071,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/whoosh-transitions/swishes-sound-pack/swishes/swish-2.wav",
+   "pack": "swishes-sound-pack",
+   "category": "whoosh-transitions",
+   "duration": 0.096,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/whoosh-transitions/swishes-sound-pack/swishes/swish-3.wav",
+   "pack": "swishes-sound-pack",
+   "category": "whoosh-transitions",
+   "duration": 0.146,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/whoosh-transitions/swishes-sound-pack/swishes/swish-4.wav",
+   "pack": "swishes-sound-pack",
+   "category": "whoosh-transitions",
+   "duration": 0.146,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/whoosh-transitions/swishes-sound-pack/swishes/swish-5.wav",
+   "pack": "swishes-sound-pack",
+   "category": "whoosh-transitions",
+   "duration": 0.127,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/whoosh-transitions/swishes-sound-pack/swishes/swish-6.wav",
+   "pack": "swishes-sound-pack",
+   "category": "whoosh-transitions",
+   "duration": 0.138,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/whoosh-transitions/swishes-sound-pack/swishes/swish-7.wav",
+   "pack": "swishes-sound-pack",
+   "category": "whoosh-transitions",
+   "duration": 0.187,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/whoosh-transitions/swishes-sound-pack/swishes/swish-8.wav",
+   "pack": "swishes-sound-pack",
+   "category": "whoosh-transitions",
+   "duration": 0.154,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/whoosh-transitions/swishes-sound-pack/swishes/swish-9.wav",
+   "pack": "swishes-sound-pack",
+   "category": "whoosh-transitions",
+   "duration": 0.197,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/whoosh-transitions/air-whoosh/whoosh.wav",
+   "pack": "air-whoosh",
+   "category": "whoosh-transitions",
+   "duration": 5.247,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/pops/3-pop-sounds/3pops/3pops.ogg",
+   "pack": "3-pop-sounds",
+   "category": "pops",
+   "duration": 3.518,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/pops/3-pop-sounds/3pops/pop1.ogg",
+   "pack": "3-pop-sounds",
+   "category": "pops",
+   "duration": 0.399,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/pops/3-pop-sounds/3pops/pop2.ogg",
+   "pack": "3-pop-sounds",
+   "category": "pops",
+   "duration": 0.291,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/pops/3-pop-sounds/3pops/pop3.ogg",
+   "pack": "3-pop-sounds",
+   "category": "pops",
+   "duration": 0.317,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/pops/pop-sounds/pop0.ogg",
+   "pack": "pop-sounds",
+   "category": "pops",
+   "duration": 1.098,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/pops/pop-sounds/pop1.ogg",
+   "pack": "pop-sounds",
+   "category": "pops",
+   "duration": 0.211,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/pops/pop-sounds/pop10.ogg",
+   "pack": "pop-sounds",
+   "category": "pops",
+   "duration": 0.047,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/pops/pop-sounds/pop2.ogg",
+   "pack": "pop-sounds",
+   "category": "pops",
+   "duration": 0.064,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/pops/pop-sounds/pop3.ogg",
+   "pack": "pop-sounds",
+   "category": "pops",
+   "duration": 0.14,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/pops/pop-sounds/pop4.ogg",
+   "pack": "pop-sounds",
+   "category": "pops",
+   "duration": 0.066,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/pops/pop-sounds/pop5.ogg",
+   "pack": "pop-sounds",
+   "category": "pops",
+   "duration": 0.156,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/pops/pop-sounds/pop6.ogg",
+   "pack": "pop-sounds",
+   "category": "pops",
+   "duration": 0.141,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/pops/pop-sounds/pop7.ogg",
+   "pack": "pop-sounds",
+   "category": "pops",
+   "duration": 0.137,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/pops/pop-sounds/pop8.ogg",
+   "pack": "pop-sounds",
+   "category": "pops",
+   "duration": 0.083,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/pops/pop-sounds/pop9.ogg",
+   "pack": "pop-sounds",
+   "category": "pops",
+   "duration": 0.053,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/pops/a-slide-pop-sound/slidepop.mp3",
+   "pack": "a-slide-pop-sound",
+   "category": "pops",
+   "duration": 0.679,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/pops/pop-effect-sounds/p_1.ogg",
+   "pack": "pop-effect-sounds",
+   "category": "pops",
+   "duration": 0.071,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/pops/pop-effect-sounds/p_2.ogg",
+   "pack": "pop-effect-sounds",
+   "category": "pops",
+   "duration": 0.071,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/pops/pop-effect-sounds/p_3.ogg",
+   "pack": "pop-effect-sounds",
+   "category": "pops",
+   "duration": 0.043,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/pops/pop-effect-sounds/p_4.ogg",
+   "pack": "pop-effect-sounds",
+   "category": "pops",
+   "duration": 0.035,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/pops/pop-effect-sounds/p_5.ogg",
+   "pack": "pop-effect-sounds",
+   "category": "pops",
+   "duration": 0.026,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_breaking_01.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 1.063,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_breaking_02.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.542,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_breaking_03.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.612,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_falling_01.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 1.069,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_falling_02.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 1.044,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_falling_03.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.812,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_falling_04.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 1.489,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_falling_05.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.927,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_falling_06.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.626,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_falling_07.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 1.112,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_glass_breaking_01.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.761,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_glass_breaking_02.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.388,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_glass_breaking_03.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.776,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_glass_breaking_04.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.763,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_glass_breaking_05.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.438,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_glass_breaking_06.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.916,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_glass_falling_01.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.431,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_glass_falling_02.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.825,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_glass_falling_03.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.554,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_glass_falling_04.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.589,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_glass_hit_01.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.302,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_glass_hit_02.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.333,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_hit_01.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.729,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_hit_02.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.797,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_hit_03.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.485,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_hit_04.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.497,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_hit_05.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.276,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_hit_06.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.595,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_hit_07.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.456,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_hit_08.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.39,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_hit_09.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.262,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_hit_10.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.303,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_hit_11.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.302,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_hit_12.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.511,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_hit_13.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.377,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_metal_falling_01.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 1.16,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_metal_falling_02.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.741,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_metal_falling_03.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.42,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_metal_falling_04.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.43,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_metal_falling_05.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.403,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_metal_hit_01.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.238,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_metal_hit_02.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.55,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_metal_hit_03.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.46,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_metal_hit_04.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.406,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_metal_hit_05.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.33,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_metal_hit_06.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.371,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_misc_01.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.518,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_misc_02.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.935,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_misc_03.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.415,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_misc_04.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.258,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_misc_05.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.238,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_misc_06.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.99,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_misc_07.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.729,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_rock_breaking_01.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 1.147,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_rock_breaking_02.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.865,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_rock_breaking_03.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.455,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_rock_falling_01.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.916,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_rock_falling_02.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.506,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_rock_falling_03.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.851,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_rock_falling_04.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.32,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_rock_falling_05.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.565,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_rock_falling_06.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.464,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_rock_falling_07.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.352,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_rock_falling_08.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.393,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_rock_falling_09.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.685,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_rock_hit_01.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.109,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_wood_breaking_01.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.298,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_wood_breaking_02.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.249,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_wood_breaking_03.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.487,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_wood_breaking_04.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.32,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_wood_falling_01.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.697,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_wood_falling_02.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.45,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_wood_hit_01.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.248,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_wood_hit_02.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.281,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/75-cc0-breaking-falling-hit-sfx/bfh1_wood_hit_03.ogg",
+   "pack": "75-cc0-breaking-falling-hit-sfx",
+   "category": "impacts-booms",
+   "duration": 0.403,
+   "sample_rate": 48000,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/synthesized-explosion/synthetic_explosion_1.flac",
+   "pack": "synthesized-explosion",
+   "category": "impacts-booms",
+   "duration": 1.184,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/impacts-booms/muffled-distant-explosion/nenadsimic__muffled_distant_explosion.ogg",
+   "pack": "muffled-distant-explosion",
+   "category": "impacts-booms",
+   "duration": 5.143,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/magie-scintillements/magic-spell-sfx/magical_1.ogg",
+   "pack": "magic-spell-sfx",
+   "category": "magie-scintillements",
+   "duration": 1.609,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/magie-scintillements/magic-spell-sfx/magical_2.ogg",
+   "pack": "magic-spell-sfx",
+   "category": "magie-scintillements",
+   "duration": 1.38,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/magie-scintillements/magic-spell-sfx/magical_3.ogg",
+   "pack": "magic-spell-sfx",
+   "category": "magie-scintillements",
+   "duration": 1.821,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/magie-scintillements/magic-spell-sfx/magical_4.ogg",
+   "pack": "magic-spell-sfx",
+   "category": "magie-scintillements",
+   "duration": 2.415,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/magie-scintillements/magic-spell-sfx/magical_5.ogg",
+   "pack": "magic-spell-sfx",
+   "category": "magie-scintillements",
+   "duration": 1.438,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/magie-scintillements/magic-spell-sfx/magical_6.ogg",
+   "pack": "magic-spell-sfx",
+   "category": "magie-scintillements",
+   "duration": 1.11,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/magie-scintillements/magic-spell-sfx/magical_7.ogg",
+   "pack": "magic-spell-sfx",
+   "category": "magie-scintillements",
+   "duration": 1.54,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/magie-scintillements/cure-magic/Cure1.wav",
+   "pack": "cure-magic",
+   "category": "magie-scintillements",
+   "duration": 1.822,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/magie-scintillements/cure-magic/Cure2.wav",
+   "pack": "cure-magic",
+   "category": "magie-scintillements",
+   "duration": 1.167,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/magie-scintillements/cure-magic/Cure3.wav",
+   "pack": "cure-magic",
+   "category": "magie-scintillements",
+   "duration": 1.481,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/magie-scintillements/cure-magic/Cure4.wav",
+   "pack": "cure-magic",
+   "category": "magie-scintillements",
+   "duration": 1.111,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/magie-scintillements/cure-magic/Cure5.wav",
+   "pack": "cure-magic",
+   "category": "magie-scintillements",
+   "duration": 1.627,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/magie-scintillements/cure-magic/Cure6.wav",
+   "pack": "cure-magic",
+   "category": "magie-scintillements",
+   "duration": 2.13,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/magie-scintillements/cure-magic/Cure7.wav",
+   "pack": "cure-magic",
+   "category": "magie-scintillements",
+   "duration": 2.047,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/magie-scintillements/cure-magic/Cure8.wav",
+   "pack": "cure-magic",
+   "category": "magie-scintillements",
+   "duration": 1.726,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/magie-scintillements/teleport-spell/teleport.wav",
+   "pack": "teleport-spell",
+   "category": "magie-scintillements",
+   "duration": 1.625,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/notifications-dings/4-metal-dingsrings/ding.1.ogg",
+   "pack": "4-metal-dingsrings",
+   "category": "notifications-dings",
+   "duration": 2.826,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/notifications-dings/4-metal-dingsrings/ding.2.ogg",
+   "pack": "4-metal-dingsrings",
+   "category": "notifications-dings",
+   "duration": 2.167,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/notifications-dings/4-metal-dingsrings/ding.3.ogg",
+   "pack": "4-metal-dingsrings",
+   "category": "notifications-dings",
+   "duration": 2.036,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/notifications-dings/4-metal-dingsrings/ding.4.ogg",
+   "pack": "4-metal-dingsrings",
+   "category": "notifications-dings",
+   "duration": 0.642,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/notifications-dings/kalimba-two-notes/kalimba.wav",
+   "pack": "kalimba-two-notes",
+   "category": "notifications-dings",
+   "duration": 0.917,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/notifications-dings/mystery-sting/mystery_sting.ogg",
+   "pack": "mystery-sting",
+   "category": "notifications-dings",
+   "duration": 5.689,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/highDown.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.496,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/highUp.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.522,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/laser1.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 1.62,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/laser2.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 1.829,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/laser3.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 1.907,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/laser4.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 1.75,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/laser5.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 2.194,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/laser6.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 1.28,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/laser7.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 1.306,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/laser8.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 1.515,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/laser9.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 1.28,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/lowDown.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.758,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/lowRandom.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.522,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/lowThreeTone.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.993,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/pepSound1.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.496,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/pepSound2.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.522,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/pepSound3.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.418,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/pepSound4.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.601,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/pepSound5.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.601,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/phaseJump1.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.444,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/phaseJump2.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.366,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/phaseJump3.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.418,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/phaseJump4.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.444,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/phaseJump5.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.392,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/phaserDown1.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.444,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/phaserDown2.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.287,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/phaserDown3.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.47,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/phaserUp1.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.47,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/phaserUp2.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.392,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/phaserUp3.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.496,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/phaserUp4.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.34,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/phaserUp5.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.287,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/phaserUp6.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.313,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/phaserUp7.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.34,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/powerUp1.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 1.176,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/powerUp10.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.627,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/powerUp11.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.653,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/powerUp12.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.836,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/powerUp2.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.444,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/powerUp3.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 1.123,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/powerUp4.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.522,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/powerUp5.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.418,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/powerUp6.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.418,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/powerUp7.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.496,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/powerUp8.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.549,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/powerUp9.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.522,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/spaceTrash1.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 1.933,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/spaceTrash2.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 2.116,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/spaceTrash3.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 2.586,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/spaceTrash4.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 2.299,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/spaceTrash5.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 2.351,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/threeTone1.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 1.724,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/threeTone2.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 1.176,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/tone1.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 1.567,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/twoTone1.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 1.202,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/twoTone2.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 1.541,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/zap1.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 0.993,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/zap2.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 1.202,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/zapThreeToneDown.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 1.306,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/zapThreeToneUp.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 1.176,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/zapTwoTone.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 1.28,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/63-digital-sound-effects-lasers-phasers-space-etc/zapTwoTone2.mp3",
+   "pack": "63-digital-sound-effects-lasers-phasers-space-etc",
+   "category": "digital-scifi",
+   "duration": 1.176,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/computerNoise_000.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/computerNoise_001.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/computerNoise_002.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/computerNoise_003.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/doorClose_000.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.532,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/doorClose_001.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.529,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/doorClose_002.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.533,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/doorOpen_000.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.532,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/doorOpen_001.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.529,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/doorOpen_002.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.533,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/engineCircular_000.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/engineCircular_001.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/engineCircular_002.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/engineCircular_003.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/engineCircular_004.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/explosionCrunch_000.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.777,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/explosionCrunch_001.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 1.357,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/explosionCrunch_002.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 1.256,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/explosionCrunch_003.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 1.553,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/explosionCrunch_004.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 1.98,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/forceField_000.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.954,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/forceField_001.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.953,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/forceField_002.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.955,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/forceField_003.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.956,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/forceField_004.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.954,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/impactMetal_000.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.635,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/impactMetal_001.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.688,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/impactMetal_002.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.471,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/impactMetal_003.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.777,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/impactMetal_004.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.39,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/laserLarge_000.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.677,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/laserLarge_001.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.721,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/laserLarge_002.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.744,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/laserLarge_003.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.716,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/laserLarge_004.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.693,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/laserRetro_000.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.235,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/laserRetro_001.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.236,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/laserRetro_002.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.255,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/laserRetro_003.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.255,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/laserRetro_004.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.279,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/laserSmall_000.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.239,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/laserSmall_001.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.247,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/laserSmall_002.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.344,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/laserSmall_003.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.3,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/laserSmall_004.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.414,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/lowFrequency_explosion_000.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 2.0,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/lowFrequency_explosion_001.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 1.0,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/slime_000.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 0.5,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/slime_001.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 4.71,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/spaceEngineLarge_000.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/spaceEngineLarge_001.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/spaceEngineLarge_002.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/spaceEngineLarge_003.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/spaceEngineLarge_004.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/spaceEngineLow_000.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/spaceEngineLow_001.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/spaceEngineLow_002.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/spaceEngineLow_003.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/spaceEngineLow_004.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/spaceEngineSmall_000.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/spaceEngineSmall_001.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/spaceEngineSmall_002.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/spaceEngineSmall_003.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/spaceEngineSmall_004.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/spaceEngine_000.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/spaceEngine_001.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/spaceEngine_002.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/spaceEngine_003.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 2
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/thrusterFire_000.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/thrusterFire_001.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/thrusterFire_002.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/thrusterFire_003.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  },
+  {
+   "path": "packs/digital-scifi/sci-fi-sounds/Audio/thrusterFire_004.ogg",
+   "pack": "sci-fi-sounds",
+   "category": "digital-scifi",
+   "duration": 5.0,
+   "sample_rate": 44100,
+   "channels": 1
+  }
+ ]
+}

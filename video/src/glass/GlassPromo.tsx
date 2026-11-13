@@ -7,7 +7,7 @@ import cues from "./cues.json";
 import { AppIcon, Aurora, BlurWords, CheckDot, Chip, G, Glass, Grain, Scene, Star, lerp, sp, useT } from "./ui";
 
 export const GLASS_DURATION = cues.duration;
-const S = cues.scenes as Record<string, [number, number]>;
+const S = cues.scenes as unknown as Record<string, [number, number]>;
 
 const center: React.CSSProperties = { position: "absolute", left: 0, right: 0, display: "flex", justifyContent: "center" };
 const txt = (size: number, weight = 500, color = G.muted): React.CSSProperties => ({

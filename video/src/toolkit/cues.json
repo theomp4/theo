@@ -1,0 +1,38 @@
+{
+  "duration": 47,
+  "bpm": 120,
+  "scenes": {
+    "title": [0, 3], "ring": [3, 7], "ui": [7, 10], "type": [10, 14.5], "rows": [14.5, 17.5], "wheel": [17.5, 21],
+    "search": [21, 25], "tags": [25, 28.5], "wall": [28.5, 31.5], "counter": [31.5, 35.5], "reviews": [35.5, 39.5], "deck": [39.5, 43], "cta": [43, 47]
+  },
+  "typing": [[10.3, 20, 0.1, -17], [21.3, 24, 0.055, -21], [25.15, 16, 0.05, -23], [25.95, 15, 0.05, -23], [43.3, 27, 0.04, -21]],
+  "sfx": [
+    ["generated/scintillement-long.wav", 0.1, -19], ["packs/ui-clics/interface-sounds/Audio/glass_004.ogg", 0.5, -20],
+    ["generated/whoosh-moyen.wav", 2.6, -15],
+    ["generated/whoosh-long.wav", 3.0, -20], ["packs/ui-clics/interface-sounds/Audio/glass_002.ogg", 3.15, -22], ["packs/ui-clics/interface-sounds/Audio/glass_005.ogg", 3.35, -22], ["packs/ui-clics/interface-sounds/Audio/glass_006.ogg", 3.55, -22],
+    ["generated/whoosh-moyen.wav", 6.65, -15],
+    ["packs/ui-clics/interface-sounds/Audio/glass_001.ogg", 7.1, -21], ["packs/ui-clics/interface-sounds/Audio/glass_003.ogg", 7.35, -22], ["packs/ui-clics/interface-sounds/Audio/glass_002.ogg", 7.6, -22], ["packs/ui-clics/interface-sounds/Audio/glass_005.ogg", 7.85, -23],
+    ["generated/whoosh-court.wav", 9.7, -16], ["generated/swell-inverse.wav", 9.1, -20],
+    ["generated/whoosh-long.wav", 12.85, -17], ["generated/riser-court.wav", 13.6, -19],
+    ["generated/boom-sub.wav", 14.5, -12], ["packs/whoosh-transitions/swishes-sound-pack/swishes/swish-7.wav", 14.6, -20],
+    ["packs/ui-clics/interface-sounds/Audio/glass_001.ogg", 14.8, -22], ["packs/ui-clics/interface-sounds/Audio/glass_002.ogg", 14.93, -22], ["packs/ui-clics/interface-sounds/Audio/glass_003.ogg", 15.06, -22], ["packs/ui-clics/interface-sounds/Audio/glass_005.ogg", 15.19, -22], ["packs/ui-clics/interface-sounds/Audio/glass_006.ogg", 15.32, -22],
+    ["generated/whoosh-descendant.wav", 17.25, -16],
+    ["generated/whoosh-moyen.wav", 20.7, -16],
+    ["packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/mouseclick1.wav", 24.05, -9], ["packs/ui-clics/interface-sounds/Audio/confirmation_001.ogg", 24.1, -15], ["packs/whoosh-transitions/swishes-sound-pack/swishes/swish-3.wav", 23.45, -20],
+    ["generated/whoosh-court.wav", 24.75, -16],
+    ["packs/pops/pop-sounds/pop1.ogg", 25.4, -20], ["packs/pops/pop-sounds/pop3.ogg", 25.52, -21], ["packs/pops/pop-sounds/pop5.ogg", 25.64, -21], ["packs/pops/pop-sounds/pop6.ogg", 25.76, -21],
+    ["packs/pops/pop-sounds/pop7.ogg", 25.88, -21], ["packs/pops/pop-sounds/pop3.ogg", 26.0, -21], ["packs/pops/pop-sounds/pop1.ogg", 26.12, -21], ["packs/pops/pop-sounds/pop5.ogg", 26.24, -21],
+    ["generated/whoosh-montant.wav", 28.25, -16], ["packs/whoosh-transitions/swishes-sound-pack/swishes/swish-9.wav", 28.6, -21], ["packs/whoosh-transitions/swishes-sound-pack/swishes/swish-4.wav", 28.8, -22],
+    ["generated/whoosh-moyen.wav", 31.25, -16], ["generated/boom-sub.wav", 31.75, -13],
+    ["packs/notifications-dings/kalimba-two-notes/kalimba.wav", 33.0, -13], ["generated/swell-inverse.wav", 33.0, -20], ["packs/notifications-dings/4-metal-dingsrings/ding.4.ogg", 34.75, -15], ["generated/scintillement.wav", 34.8, -19],
+    ["generated/whoosh-court.wav", 35.25, -16],
+    ["packs/ui-clics/interface-sounds/Audio/glass_004.ogg", 35.6, -21], ["packs/magie-scintillements/cure-magic/Cure2.wav", 36.1, -17], ["packs/ui-clics/interface-sounds/Audio/confirmation_003.ogg", 37.4, -17],
+    ["generated/whoosh-moyen.wav", 39.25, -16],
+    ["generated/riser-long.wav", 41.2, -20],
+    ["generated/whoosh-long.wav", 42.75, -16], ["generated/boom-impact.wav", 43.0, -17],
+    ["packs/ui-clics/51-ui-sound-effects-buttons-switches-and-clicks/mouseclick1.wav", 45.45, -8], ["packs/ui-clics/interface-sounds/Audio/confirmation_002.ogg", 45.5, -13], ["generated/scintillement-long.wav", 45.55, -17],
+    ["packs/notifications-dings/4-metal-dingsrings/ding.4.ogg", 45.75, -17]
+  ],
+  "ticks": { "path": "packs/ui-clics/interface-sounds/Audio/tick_002.ogg", "times": "wheel", "db": -15 },
+  "swishes": { "times": "deck", "db": -18 }
+}

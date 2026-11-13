@@ -14,6 +14,7 @@
     "@fontsource/playfair-display": "^5.3.0",
     "@fontsource/poppins": "^5.3.0",
     "@remotion/cli": "^4.0.300",
+    "@remotion/layout-utils": "^4.0.300",
     "@types/react": "^19.3.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

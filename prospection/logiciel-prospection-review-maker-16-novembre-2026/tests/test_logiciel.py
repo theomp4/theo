@@ -222,3 +222,29 @@ def test_analyse_du_site_message_et_audit_pdf():
     assert "audit gratuit" in texte and "non sécurisé" in texte
     contenu = audit.pdf(c, "Review Maker", "Théo", "990 €", "10 jours")
     assert contenu.startswith(b"%PDF") and len(contenu) > 3000
+
+
+FLUX_CODEUR = """<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Tous les projets</title>
+<item><title>Création d&#39;un site vitrine pour mon garage</title><link>https://www.codeur.com/projects/1-site-garage</link>
+<pubDate>Mon, 16 Nov 2026 17:14:00 +0100</pubDate><guid>1</guid>
+<description type="html"><![CDATA[<p>Budget : 1 000 € à 10 000 € - Catégories : Création de site internet, WordPress</p> <p> Je veux refaire le site garage-dupont.fr … </p> <p> <a href="https://www.codeur.com/projects/1-site-garage">Voir ce projet sur Codeur</a></p>]]></description></item>
+<item><title>Application mobile iOS Android</title><link>https://www.codeur.com/projects/2-app</link>
+<pubDate>Mon, 16 Nov 2026 10:00:00 +0100</pubDate><guid>2</guid>
+<description type="html"><![CDATA[<p>Budget : Moins de 500 € - Catégories : Application mobile, iOS, Android</p> <p> Une app de rencontre </p>]]></description></item>
+</channel></rss>"""
+
+
+def test_codeur_flux_pertinence_et_proposition():
+    from rm_prospect import codeur
+    site, app = codeur.lire_flux(FLUX_CODEUR.encode())
+    assert site["id"] == "1" and site["titre"] == "Création d'un site vitrine pour mon garage"
+    assert site["budget"] == "1 000 € à 10 000 €" and "WordPress" in site["categories"]
+    assert site["date"] == "2026-11-16T16:14:00+00:00" and "garage-dupont.fr" in site["extrait"]
+    s_site, type_site, _ = codeur.pertinence(site)
+    s_app, _, _ = codeur.pertinence(app)
+    assert s_site >= 60 and s_app < 20 and type_site == "refonte"
+    assert codeur.budget_min("500 € à 1 000 €") == 500 and codeur.budget_min("Moins de 500 €") == 0
+    assert codeur.site_mentionne(site["extrait"]) == "https://garage-dupont.fr"
+    assert codeur.site_mentionne("écrivez à moi@exemple.fr") is None
+    texte = codeur.proposition({**site, "type": type_site}, "Théo", "990 €", "[DÉLAI]", "- Il met 5 secondes à s'ouvrir")
+    assert "Création d'un site vitrine" in texte and "990 €" in texte and "[DÉLAI]" not in texte and "5 secondes" in texte

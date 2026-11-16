@@ -62,6 +62,14 @@ CREATE TABLE IF NOT EXISTS depenses_ia (
 CREATE TABLE IF NOT EXISTS reglages (
     cle TEXT PRIMARY KEY, valeur TEXT
 );
+CREATE TABLE IF NOT EXISTS codeur_projets (
+    id TEXT PRIMARY KEY,               -- numéro du projet sur Codeur.com
+    titre TEXT, lien TEXT, date TEXT,  -- date de publication (UTC)
+    budget TEXT, categories TEXT, extrait TEXT,
+    description TEXT, offres INTEGER, vues INTEGER, site TEXT, site_etat TEXT, detail_le TEXT,
+    pertinence INTEGER, type TEXT, raisons TEXT,
+    statut TEXT DEFAULT 'Nouveau', notes TEXT DEFAULT '', statut_le TEXT, ajoute_le TEXT
+);
 """
 
 

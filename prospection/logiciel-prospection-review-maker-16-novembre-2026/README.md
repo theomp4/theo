@@ -90,7 +90,7 @@ s'arrête avant ta limite.
 Choisis d'abord l'espace en haut de l'écran : **Tags NFC** ou **Sites internet**. Le menu est la colonne
 à gauche : Accueil, Trouver, Prospects, Réglages.
 
-**Raccourcis clavier** : touches `1` à `5` pour changer de page, `/` pour chercher un prospect.
+**Raccourcis clavier** : touches `1` à `6` pour changer de page, `/` pour chercher un prospect.
 Dans une fiche : `←` `→` pour passer au commerce précédent ou suivant, `Échap` pour fermer.
 
 **Le plus rapide pour prospecter** : sur l'Accueil, clique sur **Contacter le meilleur prospect**.
@@ -188,7 +188,27 @@ L'analyse ne regarde que la page d'accueil : le document le précise.
 - L'**Accueil** montre tes chiffres, les commerces contactés par semaine, où en sont tes prospects,
   ton quota Google et les **relances du jour**.
 
-### Marketing (icône calendrier, touche 4)
+### Demandes Codeur.com (icône bulle, touche 4)
+
+Des clients publient chaque jour leurs projets de sites sur Codeur.com. Le logiciel les récupère
+tout seul, **les plus récents d'abord** : répondre dans les premières heures, c'est être lu.
+
+- Il lit les **flux RSS publics** de Codeur.com au démarrage puis **toutes les 30 minutes** tant
+  qu'il est ouvert (bouton **Actualiser** pour le faire tout de suite) : environ la dernière semaine.
+- **Pour nous** garde seulement les demandes de sites (création, refonte, WordPress, Wix, Shopify,
+  e-commerce, landing page…), avec une note de pertinence. Les applications mobiles, jeux, logos,
+  vidéos… sont écartés. **Tous** montre tout, **Suivis** les projets que tu as gardés.
+- Une pastille rouge sur l'icône du menu compte les **nouvelles demandes des dernières 24 h**.
+- Clique sur une demande : description complète, budget, **nombre d'offres déjà reçues** (la
+  concurrence), et une **proposition prête à copier** (à compléter avec une phrase sur son projet).
+- Si le client cite **son site actuel**, le logiciel l'analyse : la proposition reprend ses défauts
+  et tu peux **télécharger l'audit PDF** de son site.
+- Clique sur **Répondre sur Codeur.com** pour faire ton offre avec ton compte (le logiciel ne répond
+  jamais à ta place), puis note le suivi : À répondre, Répondu, Retenu, Perdu.
+
+Les clients de Codeur.com sont anonymes : la vérification « PME ≥ 200 k€ » ne s'applique pas ici.
+
+### Marketing (icône calendrier, touche 5)
 
 La rubrique marketing est dans le logiciel, à côté de tes prospects :
 

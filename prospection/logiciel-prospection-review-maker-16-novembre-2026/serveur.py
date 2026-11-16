@@ -15,7 +15,7 @@ import threading
 import time
 import uuid
 import webbrowser
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, quote, urlparse
@@ -23,7 +23,7 @@ from urllib.parse import parse_qs, quote, urlparse
 import pandas as pd
 import requests
 
-from rm_prospect import audit, db, enrich, entreprises, equipe, google_places, mailer, pays, stats
+from rm_prospect import audit, codeur, db, enrich, entreprises, equipe, google_places, mailer, pays, stats
 from rm_prospect.scoring import CATEGORIES, entreprise as entreprise_de, etat_site, niveau, poids, sans_vrai_site, score_pour
 
 if sys.stdout is None or sys.stderr is None:
@@ -34,7 +34,7 @@ if sys.stdout is None or sys.stderr is None:
 ICI = Path(__file__).resolve().parent
 WEB = ICI / "web"
 PORT = int(os.environ.get("RM_PORT", "8765"))  # RM_PORT : tests
-VERSION = "12 novembre 2026 (PME et audit)"  # affichée dans Réglages : permet de vérifier que la mise à jour est bien installée
+VERSION = "16 novembre 2026 (Codeur.com)"  # affichée dans Réglages : permet de vérifier que la mise à jour est bien installée
 EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$")
 
 
@@ -212,6 +212,155 @@ class ErreurAPI(Exception):
     pass
 
 
+# --- Codeur.com : les demandes de sites récentes ----------------------------------------
+CODEUR = {"derniere": None, "erreur": "", "en_cours": False, "nouveaux": 0}
+SEUIL_CODEUR = 40          # pertinence minimum pour « Pour nous »
+VERROU_CODEUR = threading.Lock()
+
+
+def actualiser_codeur(c_conn):
+    """Lit les flux RSS de Codeur.com et enregistre les projets (sans toucher au suivi). Renvoie le nombre de nouveaux."""
+    if not VERROU_CODEUR.acquire(blocking=False):
+        return 0  # déjà en cours
+    CODEUR["en_cours"] = True
+    try:
+        projets = codeur.recuperer()
+        nouveaux = 0
+        for p in projets:
+            ancien = c_conn.execute("SELECT description FROM codeur_projets WHERE id=?", (p["id"],)).fetchone()
+            score, type_, raisons = codeur.pertinence({**p, "description": ancien["description"] if ancien else None})
+            if ancien:
+                c_conn.execute("UPDATE codeur_projets SET titre=?, budget=?, categories=?, extrait=?, pertinence=?, type=?, "
+                               "raisons=? WHERE id=?", (p["titre"], p["budget"], p["categories"], p["extrait"], score,
+                                                        type_, " ; ".join(raisons), p["id"]))
+            else:
+                c_conn.execute("INSERT INTO codeur_projets(id, titre, lien, date, budget, categories, extrait, pertinence, "
+                               "type, raisons, ajoute_le) VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+                               (p["id"], p["titre"], p["lien"], p["date"], p["budget"], p["categories"], p["extrait"],
+                                score, type_, " ; ".join(raisons), db.maintenant()))
+                nouveaux += score >= SEUIL_CODEUR
+        # On oublie les vieux projets jamais suivis.
+        limite = (datetime.now(timezone.utc) - timedelta(days=codeur.JOURS_GARDES)).isoformat(timespec="seconds")
+        c_conn.execute("DELETE FROM codeur_projets WHERE date < ? AND statut IN ('Nouveau', 'Pas pour nous')", (limite,))
+        c_conn.commit()
+        CODEUR.update(derniere=datetime.now(timezone.utc).isoformat(timespec="seconds"), erreur="", nouveaux=nouveaux)
+        return nouveaux
+    except Exception as e:
+        CODEUR["erreur"] = str(e)
+        raise
+    finally:
+        CODEUR["en_cours"] = False
+        VERROU_CODEUR.release()
+
+
+def boucle_codeur():
+    """Toutes les 30 minutes tant que le logiciel est ouvert (Codeur.com publie toute la journée)."""
+    c_conn = db.connect()
+    time.sleep(5)
+    while True:
+        try:
+            actualiser_codeur(c_conn)
+        except Exception as e:
+            print(f"{datetime.now():%d/%m %H:%M} Codeur.com : {e}")
+        time.sleep(30 * 60)
+
+
+def projet_codeur(ident):
+    row = conn.execute("SELECT * FROM codeur_projets WHERE id=?", (str(ident),)).fetchone()
+    if not row:
+        raise ErreurAPI("Projet introuvable : actualise la liste.")
+    return dict(row)
+
+
+def commerce_du_projet(p):
+    """Le site cité dans la demande, présenté comme une fiche de commerce (pour l'analyse et l'audit)."""
+    nom = re.sub(r"^https?://(www\.)?", "", p.get("site") or "").split("/")[0] or p.get("titre")
+    return {"nom": nom, "site_web": p.get("site"), "site_etat": p.get("site_etat"), "adresse": "", "note": None, "nb_avis": 0}
+
+
+def nouveaux_codeur():
+    depuis = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat(timespec="seconds")
+    return conn.execute("SELECT COUNT(*) FROM codeur_projets WHERE statut='Nouveau' AND pertinence>=? AND date>=?",
+                        (SEUIL_CODEUR, depuis)).fetchone()[0]
+
+
+def api_codeur(q):
+    vue = q.get("vue", "pour_nous")
+    ou = {"pour_nous": f"pertinence>={SEUIL_CODEUR} AND statut!='Pas pour nous'",
+          "tous": "1=1", "suivis": "statut IN ('À répondre', 'Répondu', 'Retenu', 'Perdu')"}.get(vue, "1=1")
+    lignes = [dict(r) for r in conn.execute(
+        f"SELECT id, titre, lien, date, budget, categories, extrait, offres, pertinence, type, raisons, statut, site "
+        f"FROM codeur_projets WHERE {ou} ORDER BY date DESC LIMIT 300")]
+    compte = lambda s: conn.execute("SELECT COUNT(*) FROM codeur_projets WHERE statut=?", (s,)).fetchone()[0]
+    return {"projets": lignes, "etat": CODEUR, "seuil": SEUIL_CODEUR, "statuts": codeur.STATUTS,
+            "compteurs": {"nouveaux": nouveaux_codeur(), "a_repondre": compte("À répondre"), "repondu": compte("Répondu"),
+                          "retenu": compte("Retenu")}}
+
+
+def api_codeur_actualiser(d):
+    c_conn = db.connect()
+    try:
+        n = actualiser_codeur(c_conn)
+    except Exception as e:
+        raise ErreurAPI(str(e))
+    finally:
+        c_conn.close()
+    return {"nouveaux": n}
+
+
+def api_codeur_projet(q):
+    p = projet_codeur(q["id"])
+    if not p.get("detail_le") or q.get("relire"):
+        try:
+            d = codeur.detail(p["lien"])
+        except Exception as e:
+            raise ErreurAPI(f"Impossible de lire le projet sur Codeur.com ({type(e).__name__}). Ouvre-le directement.")
+        etat = None
+        if d["site"]:
+            try:
+                etat = json.dumps(enrich.analyser_accueil(d["site"])[1], ensure_ascii=False)
+            except Exception:
+                etat = json.dumps({"injoignable": True})
+        score, type_, raisons = codeur.pertinence({**p, "description": d["description"]})
+        conn.execute("UPDATE codeur_projets SET description=?, offres=?, vues=?, site=?, site_etat=?, detail_le=?, "
+                     "pertinence=?, type=?, raisons=? WHERE id=?",
+                     (d["description"], d["offres"], d["vues"], d["site"], etat, db.maintenant(), score, type_,
+                      " ; ".join(raisons), p["id"]))
+        conn.commit()
+        p = projet_codeur(p["id"])
+    c = commerce_du_projet(p) if p.get("site") else None
+    points = audit.points_message(c) if c else ""
+    return {**p, "points_site": points, "analyse": [{k: v for k, v in a.items() if k != "court"} for a in audit.constats(c)] if c else [],
+            "note_site": audit.note_site(c) if c else None,
+            "proposition": codeur.proposition(p, R("signature"), R("site_prix"), R("site_delai"), points)}
+
+
+def api_codeur_maj(d):
+    p = projet_codeur(d["id"])
+    if "statut" in d:
+        if d["statut"] not in codeur.STATUTS:
+            raise ErreurAPI("Statut inconnu.")
+        conn.execute("UPDATE codeur_projets SET statut=?, statut_le=? WHERE id=?", (d["statut"], db.maintenant(), p["id"]))
+    if "notes" in d:
+        conn.execute("UPDATE codeur_projets SET notes=? WHERE id=?", (d.get("notes") or "", p["id"]))
+    conn.commit()
+    return {"ok": True}
+
+
+def api_codeur_audit(q):
+    p = projet_codeur(q["id"])
+    if not p.get("site"):
+        raise ErreurAPI("Ce projet ne cite pas de site existant.")
+    c = commerce_du_projet(p)
+    if not (codeur_etat := etat_site(c)) or not codeur_etat.get("analyse"):
+        c["site_etat"] = json.dumps(enrich.analyser_accueil(p["site"])[1], ensure_ascii=False)
+        conn.execute("UPDATE codeur_projets SET site_etat=? WHERE id=?", (c["site_etat"], p["id"]))
+        conn.commit()
+    signature = R("signature", REGLAGES["signature"])
+    expediteur = signature.splitlines()[1] if len(signature.splitlines()) > 1 else "Review Maker"
+    return audit.pdf(c, expediteur, signature, R("site_prix"), R("site_delai")), "application/pdf", f"Audit site - {c['nom']}.pdf"
+
+
 # --- Tâches longues ----------------------------------------------------------------
 
 def lancer_job(fonction, *args):
@@ -320,7 +469,7 @@ def api_etat(q):
     return {
         "fond": R("fond", "salon"), "espaces": db.ESPACES, "statuts": db.STATUTS, "version": VERSION, "dossier": str(ICI),
         "requetes": db.requetes_du_mois(conn), "limite_google": int(R("limite_google", "900")),
-        "equipe": SYNCHRO,
+        "equipe": SYNCHRO, "codeur_nouveaux": nouveaux_codeur(),
     }
 
 
@@ -619,11 +768,13 @@ def api_marketing_fait(d):
 
 GET = {"etat": api_etat, "tableau": api_tableau, "trouver": api_trouver, "prospects": api_prospects,
        "prospect": api_prospect, "reglages": api_reglages, "job": api_job,
-       "marketing": api_marketing, "audit": api_audit}
+       "marketing": api_marketing, "audit": api_audit, "codeur": api_codeur, "codeur_projet": api_codeur_projet,
+       "codeur_audit": api_codeur_audit}
 POST = {"recherche": api_recherche, "enrichir": api_enrichir, "prospect": api_maj_prospect, "export": api_export,
         "reglages": api_enregistrer_reglages, "annuler": api_annuler,
         "choisir_dossier": api_choisir_dossier, "synchroniser": api_synchroniser, "quitter": lambda d: api_quitter(d),
-        "marketing_fait": api_marketing_fait, "entreprise": api_entreprise, "reanalyser": api_reanalyser}
+        "marketing_fait": api_marketing_fait, "entreprise": api_entreprise, "reanalyser": api_reanalyser,
+        "codeur_actualiser": api_codeur_actualiser, "codeur_maj": api_codeur_maj}
 
 
 # --- Serveur ---------------------------------------------------------------------
@@ -699,7 +850,7 @@ class Gestionnaire(BaseHTTPRequestHandler):
         if not fonction:
             return self._json(404, {"erreur": "Page inconnue."})
         try:
-            if nom == "choisir_dossier":  # la fenêtre peut rester ouverte longtemps : ne bloque pas le reste
+            if nom in ("choisir_dossier", "codeur_actualiser"):  # peut être long : ne bloque pas le reste
                 resultat = fonction(donnees)
             else:
                 with VERROU:
@@ -807,6 +958,8 @@ def main():
     if "--sans-navigateur" not in sys.argv:
         threading.Timer(0.8, lambda: webbrowser.open(adresse)).start()
     threading.Thread(target=boucle_synchro, daemon=True).start()
+    if "--sans-codeur" not in sys.argv:
+        threading.Thread(target=boucle_codeur, daemon=True).start()
     if "--sans-arret" not in sys.argv:
         threading.Thread(target=surveiller_arret, args=(serveur,), daemon=True).start()
     try:

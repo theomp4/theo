@@ -22,3 +22,4 @@ prêt à glisser sur Netlify Drop, des captures de la maquette et un message de 
 | Crêperie Trésor Breton (Conflans-Sainte-Honorine) | `prospects/tresor-breton/` | à déployer |
 | Les Carrosseries Françaises (Les Alluets-le-Roi) | `prospects/carrosseries-francaises/` | à déployer |
 | Les Carrosseries Françaises V2 (déroulé) | `prospects/carrosseries-francaises-v2/` | à déployer |
+| Les Carrosseries Françaises V3 (sobre, illustrations) | `prospects/carrosseries-francaises-v3/` | à déployer |

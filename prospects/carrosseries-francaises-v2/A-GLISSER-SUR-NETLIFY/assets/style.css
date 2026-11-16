@@ -54,8 +54,9 @@ html.js .s1__shade{opacity:0}
 .s1__title span{display:block}
 html.js .s1__title span{opacity:0}
 .s1__lines{inset:0;pointer-events:none}
-.s1__lines p{position:absolute;left:var(--pad);right:var(--pad);top:50%;transform:translateY(-50%);font-family:var(--display);font-weight:800;font-style:italic;font-stretch:115%;text-transform:uppercase;font-size:clamp(40px,7.5vw,120px);line-height:.95;opacity:0}
+.s1__lines p{position:absolute;left:var(--pad);right:var(--pad);top:50%;font-family:var(--display);font-weight:800;font-style:italic;font-stretch:115%;text-transform:uppercase;font-size:clamp(40px,7.5vw,120px);line-height:.95;opacity:0}
 .s1__lines p:nth-child(even){text-align:right}
+.s1__lines p.tri{left:auto;right:var(--pad);width:fit-content}
 .tri{background:linear-gradient(90deg,var(--blue-hi) 0 33%,#fff 33% 66%,var(--red) 66%);-webkit-background-clip:text;background-clip:text;color:transparent}
 html:not(.js) .s1__lines p{position:static;opacity:1;transform:none}
 html:not(.js) .s1__photo{position:absolute;inset:0;opacity:.35}
@@ -97,7 +98,7 @@ html:not(.js) .s2__photo,html:not(.js) .s3__photo{position:absolute;inset:0;opac
 html.js .s3__photo{clip-path:inset(47% 0 47% 0)}
 .s3__gloss{inset:0;background:linear-gradient(100deg,transparent 35%,rgba(255,255,255,.28) 48%,transparent 60%);transform:translateX(-120%);mix-blend-mode:screen}
 .s3__words{inset:0;pointer-events:none}
-.s3__words p{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font-family:var(--display);font-weight:900;font-style:italic;font-stretch:120%;text-transform:uppercase;font-size:clamp(46px,10vw,170px);line-height:.9;color:#fff;text-shadow:0 10px 60px rgba(0,0,0,.55);opacity:0}
+.s3__words p{position:absolute;left:0;right:0;top:50%;text-align:center;font-family:var(--display);font-weight:900;font-style:italic;font-stretch:120%;text-transform:uppercase;font-size:clamp(46px,10vw,170px);line-height:.9;color:#fff;text-shadow:0 10px 60px rgba(0,0,0,.55);opacity:0}
 .s3__note{left:var(--pad);bottom:34px;font-size:13px;color:#C3C9CF}
 html:not(.js) .s3__words p{position:static;opacity:1;transform:none;font-size:clamp(36px,7vw,90px)}
 

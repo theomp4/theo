@@ -44,6 +44,7 @@
 
   /* ---------- scène 1 : on traverse le C ---------- */
   const lines = $$('.s1__lines p');
+  gsap.set(['.s1__lines p', '.s3__words p'], { yPercent: -50 });
   scene('#s1', 520, tl => {
     tl.to('.s1__scroll', { opacity: 0, duration: .2 }, 0)
       .to('.s1__name', { opacity: 0, y: -20, duration: .3 }, 0)
@@ -60,7 +61,7 @@
       .to('.s1__photo img', { scale: 1.25, duration: 3 }, 2.4);
     lines.forEach((p, i) => {
       const t = 2.8 + i * .62, odd = i % 2;
-      tl.fromTo(p, { opacity: 0, x: odd ? 120 : -120, skewX: odd ? 12 : -12 }, { opacity: 1, x: 0, skewX: 0, duration: .28, ease: 'power3.out' }, t);
+      tl.fromTo(p, { opacity: 0, yPercent: -50, x: odd ? 120 : -120, skewX: odd ? 12 : -12 }, { opacity: 1, x: 0, skewX: 0, duration: .28, ease: 'power3.out' }, t);
       if (i < lines.length - 1) tl.to(p, { opacity: 0, x: odd ? -80 : 80, duration: .22 }, t + .4);
     });
     const end = 2.8 + lines.length * .62 + .2;
@@ -95,7 +96,7 @@
       .fromTo('.s3__note', { opacity: 0 }, { opacity: 1, duration: .3 }, .8);
     words.forEach((w, i) => {
       const t = 1 + i * .8;
-      tl.fromTo(w, { opacity: 0, scale: .6, filter: 'blur(14px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: .3, ease: 'power3.out' }, t);
+      tl.fromTo(w, { opacity: 0, yPercent: -50, scale: .6, filter: 'blur(14px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: .3, ease: 'power3.out' }, t);
       if (i < words.length - 1) tl.to(w, { opacity: 0, scale: 1.5, filter: 'blur(10px)', duration: .3 }, t + .5);
     });
     tl.to('.s3__gloss', { xPercent: 240, duration: .9 }, 3.4)

@@ -112,6 +112,18 @@ MODELES_DEFAUT = {
     },
 }
 
+# Premier message pour un commerce qui vient d'être repris (BODACC) : on félicite, puis l'analyse et l'audit.
+MODELE_REPRISE = {
+    "sujets": "Félicitations pour {nom}\nLa reprise de {nom}\nUn nouveau départ pour {nom}",
+    "corps": "Bonjour,\n\nFélicitations pour la reprise de {nom} ! Un nouveau départ, c'est le bon moment pour "
+             "soigner votre image sur Google. En ligne, j'ai relevé :\n{analyse_site}\n\nJe vous ai préparé un audit "
+             "gratuit, en pièce jointe, avec les corrections.\n\nJe crée des sites modernes pour les commerces, à "
+             "distance. {prix}, prêt en {delai}.\n\nUne question ? Répondez simplement à cet email.\n\n{signature}",
+}
+DM_REPRISE = ("Bonjour ! Félicitations pour la reprise de {nom}. Un nouveau départ, c'est le bon moment pour soigner "
+              "votre présence en ligne : j'ai remarqué que {point_principal}. Je vous ai préparé un audit gratuit, "
+              "je vous l'envoie ?")
+
 ETAPES = ["premier", "relance1", "relance2"]
 NOMS_ETAPES = {"premier": "Premier email", "relance1": "Relance 1 (J+4)", "relance2": "Relance 2 (J+10)"}
 DELAIS_RELANCE = {"relance1": 4, "relance2": 10}  # jours après le premier email
@@ -127,7 +139,9 @@ def langue_modele(langue):
     return langue if langue in ("fr", "en") else "en"
 
 
-def modele(espace, langue, etape):
+def modele(espace, langue, etape, reprise=False):
+    if reprise and etape == "premier" and langue_modele(langue) == "fr":
+        return MODELE_REPRISE
     return MODELES_DEFAUT[espace][langue_modele(langue)][etape]
 
 

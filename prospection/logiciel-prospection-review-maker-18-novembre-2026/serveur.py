@@ -23,7 +23,7 @@ from urllib.parse import parse_qs, quote, urlparse
 import pandas as pd
 import requests
 
-from rm_prospect import audit, codeur, db, enrich, entreprises, equipe, google_places, mailer, pays, stats
+from rm_prospect import audit, db, enrich, entreprises, equipe, google_places, mailer, marches, pays, reprises, stats
 from rm_prospect.scoring import CATEGORIES, entreprise as entreprise_de, etat_site, niveau, poids, sans_vrai_site, score_pour
 
 if sys.stdout is None or sys.stderr is None:
@@ -34,7 +34,7 @@ if sys.stdout is None or sys.stderr is None:
 ICI = Path(__file__).resolve().parent
 WEB = ICI / "web"
 PORT = int(os.environ.get("RM_PORT", "8765"))  # RM_PORT : tests
-VERSION = "17 novembre 2026 (rapide + journal)"  # affichée dans Réglages : permet de vérifier que la mise à jour est bien installée
+VERSION = "18 novembre 2026 (reprises + marchés)"  # affichée dans Réglages : permet de vérifier que la mise à jour est bien installée
 EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$")
 
 
@@ -93,7 +93,7 @@ REGLAGES = {
     "fond": "salon", "cle_google": "", "limite_google": "900",
     "site_prix": "[TON PRIX]", "site_delai": "[DÉLAI]", "signature": "Ton prénom\nReview Maker\nreviewmaker.fr",
     "modele_dm_nfc": dm_defaut("nfc"), "modele_dm_web": dm_defaut("web"),
-    "prenom": "", "equipe_dossier": "", "ca_minimum": "200000",
+    "prenom": "", "equipe_dossier": "", "ca_minimum": "200000", "reprises_departements": "",
 }
 
 
@@ -164,7 +164,7 @@ def synchroniser(c_conn, etat):
         dossier = ici
     poste = db.get_reglage(c_conn, "poste")
     try:
-        modifiees, SYNCHRO["coequipiers"] = equipe.importer(c_conn, dossier, poste, etat.setdefault("lus", {}))
+        modifiees, SYNCHRO["coequipiers"] = equipe.importer(c_conn, dossier, poste, etat.setdefault("lus", {}), prenom)
         notes = {c for c in modifiees if c.startswith("journal:")}
         for cle in modifiees - notes:
             if c_conn.execute("SELECT 1 FROM commerces WHERE cle=?", (cle,)).fetchone():
@@ -219,161 +219,6 @@ def commerce(cle):
 
 class ErreurAPI(Exception):
     pass
-
-
-# --- Codeur.com : les demandes de sites récentes ----------------------------------------
-CODEUR = {"derniere": None, "erreur": "", "en_cours": False, "nouveaux": 0}
-SEUIL_CODEUR = 40          # pertinence minimum pour « Pour nous »
-VERROU_CODEUR = threading.Lock()
-
-
-def actualiser_codeur(c_conn):
-    """Lit les flux RSS de Codeur.com et enregistre les projets (sans toucher au suivi). Renvoie le nombre de nouveaux."""
-    if not VERROU_CODEUR.acquire(blocking=False):
-        return 0  # déjà en cours
-    CODEUR["en_cours"] = True
-    try:
-        projets = codeur.recuperer()
-        nouveaux = 0
-        for p in projets:
-            ancien = c_conn.execute("SELECT description FROM codeur_projets WHERE id=?", (p["id"],)).fetchone()
-            score, type_, raisons = codeur.pertinence({**p, "description": ancien["description"] if ancien else None})
-            if ancien:
-                c_conn.execute("UPDATE codeur_projets SET titre=?, budget=?, categories=?, extrait=?, pertinence=?, type=?, "
-                               "raisons=? WHERE id=?", (p["titre"], p["budget"], p["categories"], p["extrait"], score,
-                                                        type_, " ; ".join(raisons), p["id"]))
-            else:
-                c_conn.execute("INSERT INTO codeur_projets(id, titre, lien, date, budget, categories, extrait, pertinence, "
-                               "type, raisons, ajoute_le) VALUES(?,?,?,?,?,?,?,?,?,?,?)",
-                               (p["id"], p["titre"], p["lien"], p["date"], p["budget"], p["categories"], p["extrait"],
-                                score, type_, " ; ".join(raisons), db.maintenant()))
-                nouveaux += score >= SEUIL_CODEUR
-        # On oublie les vieux projets jamais suivis.
-        limite = (datetime.now(timezone.utc) - timedelta(days=codeur.JOURS_GARDES)).isoformat(timespec="seconds")
-        c_conn.execute("DELETE FROM codeur_projets WHERE date < ? AND statut IN ('Nouveau', 'Pas pour nous')", (limite,))
-        c_conn.commit()
-        CODEUR.update(derniere=datetime.now(timezone.utc).isoformat(timespec="seconds"), erreur="", nouveaux=nouveaux)
-        return nouveaux
-    except Exception as e:
-        CODEUR["erreur"] = str(e)
-        raise
-    finally:
-        CODEUR["en_cours"] = False
-        VERROU_CODEUR.release()
-
-
-def boucle_codeur():
-    """Toutes les 30 minutes tant que le logiciel est ouvert (Codeur.com publie toute la journée)."""
-    c_conn = db.connect()
-    time.sleep(5)
-    while True:
-        try:
-            actualiser_codeur(c_conn)
-        except Exception as e:
-            print(f"{datetime.now():%d/%m %H:%M} Codeur.com : {e}")
-        time.sleep(30 * 60)
-
-
-def projet_codeur(ident):
-    row = conn.execute("SELECT * FROM codeur_projets WHERE id=?", (str(ident),)).fetchone()
-    if not row:
-        raise ErreurAPI("Projet introuvable : actualise la liste.")
-    return dict(row)
-
-
-def commerce_du_projet(p):
-    """Le site cité dans la demande, présenté comme une fiche de commerce (pour l'analyse et l'audit)."""
-    nom = re.sub(r"^https?://(www\.)?", "", p.get("site") or "").split("/")[0] or p.get("titre")
-    return {"nom": nom, "site_web": p.get("site"), "site_etat": p.get("site_etat"), "adresse": "", "note": None, "nb_avis": 0}
-
-
-def nouveaux_codeur():
-    depuis = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat(timespec="seconds")
-    return conn.execute("SELECT COUNT(*) FROM codeur_projets WHERE statut='Nouveau' AND pertinence>=? AND date>=?",
-                        (SEUIL_CODEUR, depuis)).fetchone()[0]
-
-
-def api_codeur(q):
-    vue = q.get("vue", "pour_nous")
-    ou = {"pour_nous": f"pertinence>={SEUIL_CODEUR} AND statut!='Pas pour nous'",
-          "tous": "1=1", "suivis": "statut IN ('À répondre', 'Répondu', 'Retenu', 'Perdu')"}.get(vue, "1=1")
-    lignes = [dict(r) for r in conn.execute(
-        f"SELECT id, titre, lien, date, budget, categories, extrait, offres, pertinence, type, raisons, statut, site "
-        f"FROM codeur_projets WHERE {ou} ORDER BY date DESC LIMIT 300")]
-    compte = lambda s: conn.execute("SELECT COUNT(*) FROM codeur_projets WHERE statut=?", (s,)).fetchone()[0]
-    return {"projets": lignes, "etat": CODEUR, "seuil": SEUIL_CODEUR, "statuts": codeur.STATUTS,
-            "compteurs": {"nouveaux": nouveaux_codeur(), "a_repondre": compte("À répondre"), "repondu": compte("Répondu"),
-                          "retenu": compte("Retenu")}}
-
-
-def api_codeur_actualiser(d):
-    c_conn = db.connect()
-    try:
-        n = actualiser_codeur(c_conn)
-    except Exception as e:
-        raise ErreurAPI(str(e))
-    finally:
-        c_conn.close()
-    return {"nouveaux": n}
-
-
-def api_codeur_projet(q):
-    with VERROU:
-        p = projet_codeur(q["id"])
-    if not p.get("detail_le") or q.get("relire"):
-        try:
-            d = codeur.detail(p["lien"])
-        except Exception as e:
-            raise ErreurAPI(f"Impossible de lire le projet sur Codeur.com ({type(e).__name__}). Ouvre-le directement.")
-        etat = None
-        if d["site"]:
-            try:
-                etat = json.dumps(enrich.analyser_accueil(d["site"])[1], ensure_ascii=False)
-            except Exception:
-                etat = json.dumps({"injoignable": True})
-        score, type_, raisons = codeur.pertinence({**p, "description": d["description"]})
-        with VERROU:
-            conn.execute("UPDATE codeur_projets SET description=?, offres=?, vues=?, site=?, site_etat=?, detail_le=?, "
-                         "pertinence=?, type=?, raisons=? WHERE id=?",
-                         (d["description"], d["offres"], d["vues"], d["site"], etat, db.maintenant(), score, type_,
-                          " ; ".join(raisons), p["id"]))
-            conn.commit()
-    with VERROU:
-        p = projet_codeur(p["id"])
-        signature, prix, delai = R("signature"), R("site_prix"), R("site_delai")
-    c = commerce_du_projet(p) if p.get("site") else None
-    points = audit.points_message(c) if c else ""
-    return {**p, "points_site": points, "analyse": [{k: v for k, v in a.items() if k != "court"} for a in audit.constats(c)] if c else [],
-            "note_site": audit.note_site(c) if c else None,
-            "proposition": codeur.proposition(p, signature, prix, delai, points)}
-
-
-def api_codeur_maj(d):
-    p = projet_codeur(d["id"])
-    if "statut" in d:
-        if d["statut"] not in codeur.STATUTS:
-            raise ErreurAPI("Statut inconnu.")
-        conn.execute("UPDATE codeur_projets SET statut=?, statut_le=? WHERE id=?", (d["statut"], db.maintenant(), p["id"]))
-    if "notes" in d:
-        conn.execute("UPDATE codeur_projets SET notes=? WHERE id=?", (d.get("notes") or "", p["id"]))
-    conn.commit()
-    return {"ok": True}
-
-
-def api_codeur_audit(q):
-    with VERROU:
-        p = projet_codeur(q["id"])
-        signature, prix, delai = R("signature", REGLAGES["signature"]), R("site_prix"), R("site_delai")
-    if not p.get("site"):
-        raise ErreurAPI("Ce projet ne cite pas de site existant.")
-    c = commerce_du_projet(p)
-    if not (codeur_etat := etat_site(c)) or not codeur_etat.get("analyse"):
-        c["site_etat"] = json.dumps(enrich.analyser_accueil(p["site"])[1], ensure_ascii=False)
-        with VERROU:
-            conn.execute("UPDATE codeur_projets SET site_etat=? WHERE id=?", (c["site_etat"], p["id"]))
-            conn.commit()
-    expediteur = signature.splitlines()[1] if len(signature.splitlines()) > 1 else "Review Maker"
-    return audit.pdf(c, expediteur, signature, prix, delai), "application/pdf", f"Audit site - {c['nom']}.pdf"
 
 
 # --- Journal : ce que Théo et Luke ont fait, au fil du temps ----------------------------
@@ -486,41 +331,249 @@ def recalculer_place(c_conn, place_id):
         recalculer(c_conn, r["cle"])
 
 
-def job_enrichir(job, c_conn, lot, minimum):
+def origine_de(c):
+    try:
+        return json.loads(c.get("origine") or "null") or {}
+    except (TypeError, ValueError):
+        return {}
+
+
+def verifier_commerce(c, minimum, session=None):
+    """Vérifie l'entreprise. Pour un commerce repris, c'est l'ancien exploitant qui compte : la société du
+    repreneur est souvent toute neuve, alors que le chiffre d'affaires de l'ancien reflète la taille du commerce."""
+    o = origine_de(c)
+    if o.get("type") != "reprise":
+        return entreprises.verifier(c, minimum, session)
+    if not (c.get("siren_force") or o.get("ancien_siren")):
+        return {"verdict": "inconnu", "raison": "commerce repris, ancien exploitant non identifié : chiffre d'affaires à vérifier",
+                "verifie_le": db.maintenant()}
+    res = entreprises.verifier({**c, "siren_force": c.get("siren_force") or o.get("ancien_siren")}, minimum, session)
+    if res.get("siren"):
+        res["raison"] = f"avant la reprise ({res.get('nom') or o.get('ancien')}) : {res['raison']}"
+        res["reprise"] = True
+    return res
+
+
+def traiter(job, c_conn, c, minimum, session, compte):
     """1. Vérifie l'entreprise (PME, chiffre d'affaires minimum). 2. Si elle est dans la cible : visite son site
     (email, Instagram, analyse de base pour le message et l'audit)."""
-    session = requests.Session()
-    verifiees = exclues = trouves = injoignables = analyses = 0
-    i = -1
+    job["texte"] = f"{c['nom']} : vérification de l'entreprise…"
+    e = entreprise_de(c)
+    if not c.get("entreprise_le"):
+        e = enregistrer_entreprise(c_conn, c, verifier_commerce(c, minimum, session))
+        compte["verifiees"] += 1
+    if e and e.get("verdict") == "exclu":
+        compte["exclues"] += 1
+    elif c.get("site_web") and not c.get("enrichi_le"):
+        job["texte"] = f"{c['nom']} : analyse du site…"
+        res = enrich.enrichir_site(c["site_web"])
+        enregistrer_analyse(c_conn, c, res)
+        compte["analyses"] += 1
+        compte["trouves"] += bool(res["email"])
+        compte["injoignables"] += bool((res["site_etat"] or {}).get("injoignable"))
+    recalculer_place(c_conn, c["place_id"])
+
+
+def bilan(compte):
+    v, x, a, t_, i = (compte[k] for k in ("verifiees", "exclues", "analyses", "trouves", "injoignables"))
+    morceaux = []
+    if v:
+        morceaux.append(f"{v} entreprise{'s' if v > 1 else ''} vérifiée{'s' if v > 1 else ''} ({x} hors cible)")
+    if a:
+        morceaux.append(f"{a} site{'s' if a > 1 else ''} analysé{'s' if a > 1 else ''}, {t_} email{'s' if t_ > 1 else ''} "
+                        f"trouvé{'s' if t_ > 1 else ''}")
+    if i:
+        morceaux.append(f"{i} site{'s' if i > 1 else ''} ne s'ouvre{'nt' if i > 1 else ''} pas")
+    return " · ".join(morceaux)
+
+
+def nouveau_compte():
+    return dict.fromkeys(("verifiees", "exclues", "analyses", "trouves", "injoignables"), 0)
+
+
+def job_enrichir(job, c_conn, lot, minimum):
+    session, compte = requests.Session(), nouveau_compte()
     for i, c in enumerate(lot):
         if job["annule"]:
             break
-        job["texte"] = f"{c['nom']} : vérification de l'entreprise…"
-        e = entreprise_de(c)
-        if not c.get("entreprise_le"):
-            e = enregistrer_entreprise(c_conn, c, entreprises.verifier(c, minimum, session))
-            verifiees += 1
-        if e and e.get("verdict") == "exclu":
-            exclues += 1
-        elif c.get("site_web") and not c.get("enrichi_le"):
-            job["texte"] = f"{c['nom']} : analyse du site…"
-            res = enrich.enrichir_site(c["site_web"])
-            enregistrer_analyse(c_conn, c, res)
-            analyses += 1
-            trouves += bool(res["email"])
-            injoignables += bool((res["site_etat"] or {}).get("injoignable"))
-        recalculer_place(c_conn, c["place_id"])
+        traiter(job, c_conn, c, minimum, session, compte)
         job["avance"] = (i + 1) / len(lot)
-    morceaux = []
-    if verifiees:
-        morceaux.append(f"{verifiees} entreprise{'s' if verifiees > 1 else ''} vérifiée{'s' if verifiees > 1 else ''}"
-                        f" ({exclues} hors cible)")
-    if analyses:
-        morceaux.append(f"{analyses} site{'s' if analyses > 1 else ''} analysé{'s' if analyses > 1 else ''}, "
-                        f"{trouves} email{'s' if trouves > 1 else ''} trouvé{'s' if trouves > 1 else ''}")
-    if injoignables:
-        morceaux.append(f"{injoignables} site{'s' if injoignables > 1 else ''} ne s'ouvre{'nt' if injoignables > 1 else ''} pas")
-    return (" · ".join(morceaux) or "Rien à faire.") + "."
+    return (bilan(compte) or "Rien à faire.") + "."
+
+
+# --- Reprises de commerces (BODACC) ----------------------------------------------------
+
+COLONNES_LOT = "cle, place_id, nom, adresse, pays, site_web, enrichi_le, entreprise, entreprise_le, siren_force, origine"
+
+
+def lieu_google(c_conn, cle_google, limite, a):
+    """La fiche Google du commerce repris (même nom ou même adresse), ou None."""
+    try:
+        lieux = google_places.chercher_lieu(c_conn, cle_google, f"{a['nom']} {a['adresse']}", "FR", limite)
+    except google_places.ErreurGoogle:
+        return None
+    rue = (a.get("adresse") or "").split(",")[0]
+    meilleur, score = None, 0
+    for l in lieux:
+        s = entreprises.ressemblance(a["nom"], l["nom"]) + (0.4 if entreprises.meme_adresse(rue, l.get("adresse")) else 0)
+        if a.get("cp") and a["cp"] not in (l.get("adresse") or ""):
+            s -= 0.3
+        if s > score:
+            meilleur, score = l, s
+    return meilleur if score >= 0.6 else None
+
+
+def job_reprises(job, c_conn, depts, combien, cle_google, limite, minimum):
+    """Lit les reprises récentes au BODACC, ajoute les plus récentes à « Mes prospects » (fiche Google, entreprise
+    vérifiée, site analysé), avec un message adapté (« Félicitations pour la reprise… »)."""
+    job["texte"] = "Lecture des annonces de reprise au BODACC…"
+    try:
+        annonces = reprises.recuperer(depts)
+    except requests.RequestException:
+        raise ErreurAPI("Le BODACC (site de l'État) ne répond pas pour l'instant : réessaie dans quelques minutes.")
+    for a in annonces:
+        c_conn.execute("INSERT OR IGNORE INTO reprises(id, date, departement, categorie, donnees) VALUES(?, ?, ?, ?, ?)",
+                       (a["id"], a["date"], a["departement"], a["categorie"], json.dumps(a, ensure_ascii=False)))
+    c_conn.commit()
+    marques = ",".join("?" * len(depts))
+    a_traiter = [json.loads(r["donnees"]) for r in c_conn.execute(
+        f"SELECT donnees FROM reprises WHERE statut='nouvelle' AND departement IN ({marques}) "
+        f"ORDER BY categorie='Autres commerces', date DESC LIMIT ?", (*depts, combien))]
+    session, compte, google, ajoutees = requests.Session(), nouveau_compte(), 0, 0
+    for i, a in enumerate(a_traiter):
+        if job["annule"]:
+            break
+        job["texte"] = f"{a['nom']} : recherche sur Google…"
+        lieu = None
+        if cle_google:
+            try:
+                lieu = lieu_google(c_conn, cle_google, limite, a)
+            except google_places.QuotaAtteint as e:
+                raise ErreurAPI(f"{e} Les reprises déjà ajoutées restent dans tes prospects.")
+        google += bool(lieu)
+        c = lieu or {"place_id": f"bodacc-{a['id']}", "nom": a["nom"], "adresse": a["adresse"]}
+        origine = {"type": "reprise", "date": a.get("date_effet") or a["date"], "parution": a["date"], "lien": a["lien"],
+                   "ancien": a.get("ancien"), "ancien_siren": a.get("ancien_siren"), "repreneur": a.get("repreneur"),
+                   "activite": a.get("activite"), "google": bool(lieu)}
+        c.update(espace="web", categorie=a["categorie"], ville_recherche=a.get("ville") or "", pays="FR",
+                 google_maj=db.maintenant() if lieu else None, origine=json.dumps(origine, ensure_ascii=False))
+        c["score"], raisons = score_pour("web", c, poids("web", a["categorie"]))
+        c["raisons"] = " ; ".join(raisons)
+        db.enregistrer_commerce(c_conn, c)
+        cle = db.cle_de("web", c["place_id"])
+        c_conn.execute("UPDATE commerces SET origine=?, siren_force=COALESCE(siren_force, ?) WHERE cle=?",
+                       (c["origine"], a.get("ancien_siren"), cle))
+        c_conn.execute("UPDATE reprises SET statut='ajoutee', cle=?, ajoute_le=? WHERE id=?", (cle, db.maintenant(), a["id"]))
+        c_conn.commit()
+        fiche = dict(c_conn.execute(f"SELECT {COLONNES_LOT} FROM commerces WHERE cle=?", (cle,)).fetchone())
+        ajoutees += 1
+        traiter(job, c_conn, fiche, minimum, session, compte)
+        job["avance"] = (i + 1) / len(a_traiter)
+    if not a_traiter:
+        return f"{len(annonces)} annonces de reprise lues : rien de nouveau à ajouter dans ces départements."
+    n = ajoutees
+    return (f"{n} reprise{'s' if n > 1 else ''} ajoutée{'s' if n > 1 else ''} à tes prospects ({google} trouvée{'s' if google > 1 else ''} "
+            f"sur Google). " + (bilan(compte) + "." if bilan(compte) else ""))
+
+
+def api_reprises(q):
+    depts = reprises.departements(R("reprises_departements"))
+    marques = ",".join("?" * len(depts)) or "''"
+    restantes = conn.execute(f"SELECT COUNT(*) FROM reprises WHERE statut='nouvelle' AND departement IN ({marques})",
+                             depts).fetchone()[0] if depts else 0
+    ajoutees = conn.execute("SELECT COUNT(*) FROM commerces WHERE espace='web' AND origine LIKE '%\"reprise\"%'").fetchone()[0]
+    return {"departements": R("reprises_departements"), "restantes": restantes, "ajoutees": ajoutees,
+            "cle_google": bool(R("cle_google")), "requetes": db.requetes_du_mois(conn), "limite_google": int(R("limite_google", "900"))}
+
+
+def api_reprises_chercher(d):
+    depts = reprises.departements(d.get("departements"))
+    if not depts:
+        raise ErreurAPI("Indique au moins un département (ex. 69, 01, 38).")
+    db.set_reglage(conn, "reprises_departements", ", ".join(depts))
+    combien = max(1, min(100, int(d.get("combien") or 20)))
+    return lancer_job(job_reprises, depts, combien, R("cle_google"), int(R("limite_google", "900")), ca_minimum())
+
+
+# --- Marchés publics (BOAMP) ---------------------------------------------------------------
+MARCHES = {"derniere": None, "erreur": ""}
+VERROU_MARCHES = threading.Lock()
+
+
+def actualiser_marches(c_conn):
+    if not VERROU_MARCHES.acquire(blocking=False):
+        return 0
+    try:
+        nouveaux = 0
+        for m in marches.recuperer():
+            score, raisons = marches.pertinence(m["objet"], m["procedure"])
+            existe = c_conn.execute("SELECT 1 FROM marches WHERE idweb=?", (m["idweb"],)).fetchone()
+            if existe:
+                c_conn.execute("UPDATE marches SET objet=?, acheteur=?, departements=?, limite=?, lien=?, procedure=?, nature=?, "
+                               "pertinence=?, raisons=? WHERE idweb=?", (m["objet"], m["acheteur"], m["departements"], m["limite"],
+                                                                         m["lien"], m["procedure"], m["nature"], score, " ; ".join(raisons), m["idweb"]))
+            else:
+                c_conn.execute("INSERT INTO marches(idweb, objet, acheteur, departements, date, limite, lien, procedure, nature, "
+                               "pertinence, raisons, ajoute_le) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
+                               (m["idweb"], m["objet"], m["acheteur"], m["departements"], m["date"], m["limite"], m["lien"],
+                                m["procedure"], m["nature"], score, " ; ".join(raisons), db.maintenant()))
+                nouveaux += 1
+        c_conn.commit()
+        MARCHES.update(derniere=db.maintenant(), erreur="")
+        return nouveaux
+    except Exception as e:
+        MARCHES["erreur"] = f"Le BOAMP ne répond pas ({type(e).__name__}) : réessaie plus tard."
+        raise
+    finally:
+        VERROU_MARCHES.release()
+
+
+def boucle_marches():
+    """Toutes les 6 heures tant que le logiciel est ouvert (le BOAMP publie chaque jour)."""
+    c_conn = db.connect()
+    time.sleep(8)
+    while True:
+        try:
+            actualiser_marches(c_conn)
+        except Exception as e:
+            print(f"{datetime.now():%d/%m %H:%M} Marchés publics : {e}")
+        time.sleep(6 * 3600)
+
+
+def api_marches(q):
+    aujourd_hui = datetime.now().date().isoformat()
+    il_y_a_40j = (datetime.now() - timedelta(days=40)).date().isoformat()
+    tous = q.get("tous") == "1"
+    ou = "1=1" if tous else ("statut != 'Pas pour nous' AND (statut IN ('À étudier', 'Candidaté', 'Gagné') OR limite >= ? "
+                             "OR (limite IS NULL AND date >= ?))")
+    lignes = [dict(r) for r in conn.execute(f"SELECT * FROM marches WHERE {ou} ORDER BY pertinence >= 50 DESC, date DESC",
+                                            () if tous else (aujourd_hui, il_y_a_40j))]
+    mes_depts = set(reprises.departements(R("reprises_departements")))
+    for m in lignes:
+        m["chez_toi"] = bool(mes_depts & set(reprises.departements(m["departements"])))
+        m["ouvert"] = bool(m["limite"] and m["limite"] >= aujourd_hui) or (not m["limite"] and m["date"] >= il_y_a_40j)
+    return {"marches": lignes, "etat": MARCHES, "statuts": marches.STATUTS}
+
+
+def api_marches_actualiser(d):
+    c_conn = db.connect()
+    try:
+        return {"nouveaux": actualiser_marches(c_conn)}
+    except Exception:
+        raise ErreurAPI(MARCHES["erreur"])
+    finally:
+        c_conn.close()
+
+
+def api_marches_maj(d):
+    if d.get("statut") and d["statut"] not in marches.STATUTS:
+        raise ErreurAPI("Statut inconnu.")
+    if d.get("statut"):
+        conn.execute("UPDATE marches SET statut=?, statut_le=? WHERE idweb=?", (d["statut"], db.maintenant(), d["idweb"]))
+    if "notes" in d:
+        conn.execute("UPDATE marches SET notes=? WHERE idweb=?", (d.get("notes") or "", d["idweb"]))
+    conn.commit()
+    return {"ok": True}
 
 
 # --- Pages de l'API ---------------------------------------------------------------
@@ -529,7 +582,7 @@ def api_etat(q):
     return {
         "fond": R("fond", "salon"), "espaces": db.ESPACES, "statuts": db.STATUTS, "version": VERSION, "dossier": str(ICI),
         "requetes": db.requetes_du_mois(conn), "limite_google": int(R("limite_google", "900")),
-        "equipe": SYNCHRO, "codeur_nouveaux": nouveaux_codeur(), "journal_nouveaux": journal_nouveaux(),
+        "equipe": SYNCHRO, "journal_nouveaux": journal_nouveaux(),
     }
 
 
@@ -603,7 +656,7 @@ def api_recherche(d):
 
 def api_enrichir(d):
     lot = [dict(r) for r in conn.execute(
-        """SELECT cle, place_id, nom, adresse, pays, site_web, enrichi_le, entreprise, entreprise_le, siren_force
+        f"""SELECT {COLONNES_LOT}
            FROM commerces WHERE espace=? AND (entreprise_le IS NULL OR (site_web IS NOT NULL AND enrichi_le IS NULL
              AND COALESCE(json_extract(entreprise, '$.verdict'), '') != 'exclu')) ORDER BY score DESC LIMIT ?""", (d["espace"], int(d.get("combien", 50))))]
     if not lot:
@@ -635,13 +688,15 @@ def site_resume(c):
 def api_prospects(q):
     lignes = conn.execute(
         "SELECT cle, score, nom, categorie, note, nb_avis, statut, telephone, email, instagram, site_web, site_etat, "
-        "ville_recherche, pays, relance_le, entreprise FROM commerces WHERE espace=? ORDER BY score DESC", (q["espace"],))
+        "ville_recherche, pays, relance_le, entreprise, origine FROM commerces WHERE espace=? ORDER BY score DESC", (q["espace"],))
     liste = []
     for r in lignes:
         c = dict(r)
         e = entreprise_de(c) or {}
-        c.pop("site_etat"); c.pop("entreprise")
+        o = origine_de(c)
+        c.pop("site_etat"); c.pop("entreprise"); c.pop("origine")
         liste.append({**c, "priorite": niveau(c["score"] or 0), "site": site_resume(dict(r))[0],
+                      "reprise": o.get("date") if o.get("type") == "reprise" else None,
                       "pme": e.get("verdict"), "ca": entreprises.euros(e["ca"]) if e.get("ca") else ""})
     return {"prospects": liste}
 
@@ -651,7 +706,9 @@ def api_prospect(q):
     hist = [dict(r) for r in conn.execute("SELECT date, canal, detail, auteur FROM historique WHERE cle=? ORDER BY date DESC",
                                           (q["cle"],))]
     lg = mailer.langue_modele(pays.langue(c.get("pays") or "FR"))
-    m = mailer.modele(c["espace"], lg, "premier")
+    o = origine_de(c)
+    reprise = o.get("type") == "reprise"
+    m = mailer.modele(c["espace"], lg, "premier", reprise)
     remplir = lambda t: mailer.remplir(t, c, R("signature"), lg, R("site_prix", "[TON PRIX]"), R("site_delai", "[DÉLAI]"))
     e = entreprise_de(c)
     if e:
@@ -662,7 +719,8 @@ def api_prospect(q):
             "analyse": [{k: v for k, v in k_.items() if k != "court"} for k_ in audit.constats(c)],
             "note_site": audit.note_site(c), "analyse_ancienne": bool(etat_site(c)) and not (etat_site(c) or {}).get("analyse")
             and not (etat_site(c) or {}).get("injoignable") and not (etat_site(c) or {}).get("plateforme"),
-            "dm": mailer.remplir(R(f"modele_dm_{c['espace']}", dm_defaut(c["espace"])), c, "", "fr"),
+            "dm": mailer.remplir(mailer.DM_REPRISE if reprise else R(f"modele_dm_{c['espace']}", dm_defaut(c["espace"])), c, "", "fr"),
+            "origine": o,
             "mail_sujet": remplir(m["sujets"].splitlines()[0]), "mail_corps": remplir(m["corps"])}
 
 
@@ -700,7 +758,7 @@ def api_entreprise(d):
         conn.commit()
         minimum = ca_minimum()
     c["siren_force"] = siren[:9] or None
-    res = entreprises.verifier(c, minimum)
+    res = verifier_commerce(c, minimum)
     with VERROU:
         enregistrer_entreprise(conn, c, res)
         recalculer_place(conn, c["place_id"])
@@ -843,17 +901,17 @@ def api_marketing_fait(d):
 
 GET = {"etat": api_etat, "tableau": api_tableau, "trouver": api_trouver, "prospects": api_prospects,
        "prospect": api_prospect, "reglages": api_reglages, "job": api_job,
-       "marketing": api_marketing, "audit": api_audit, "codeur": api_codeur, "codeur_projet": api_codeur_projet,
-       "codeur_audit": api_codeur_audit, "journal": api_journal}
+       "marketing": api_marketing, "audit": api_audit, "journal": api_journal, "reprises": api_reprises,
+       "marches": api_marches}
 POST = {"recherche": api_recherche, "enrichir": api_enrichir, "prospect": api_maj_prospect, "export": api_export,
         "reglages": api_enregistrer_reglages, "annuler": api_annuler,
         "choisir_dossier": api_choisir_dossier, "synchroniser": api_synchroniser, "quitter": lambda d: api_quitter(d),
         "marketing_fait": api_marketing_fait, "entreprise": api_entreprise, "reanalyser": api_reanalyser,
-        "codeur_actualiser": api_codeur_actualiser, "codeur_maj": api_codeur_maj,
-        "journal_ecrire": api_journal_ecrire, "journal_vu": api_journal_vu}
+        "journal_ecrire": api_journal_ecrire, "journal_vu": api_journal_vu,
+        "reprises_chercher": api_reprises_chercher, "marches_actualiser": api_marches_actualiser, "marches_maj": api_marches_maj}
 
 
-SANS_VERROU = {"choisir_dossier", "codeur_actualiser", "codeur_projet", "codeur_audit", "audit", "entreprise", "reanalyser"}
+SANS_VERROU = {"choisir_dossier", "audit", "entreprise", "reanalyser", "marches_actualiser"}
 
 
 # --- Serveur ---------------------------------------------------------------------
@@ -1037,8 +1095,8 @@ def main():
     if "--sans-navigateur" not in sys.argv:
         threading.Timer(0.8, lambda: webbrowser.open(adresse)).start()
     threading.Thread(target=boucle_synchro, daemon=True).start()
-    if "--sans-codeur" not in sys.argv:
-        threading.Thread(target=boucle_codeur, daemon=True).start()
+    if "--sans-marches" not in sys.argv:
+        threading.Thread(target=boucle_marches, daemon=True).start()
     if "--sans-arret" not in sys.argv:
         threading.Thread(target=surveiller_arret, args=(serveur,), daemon=True).start()
     try:

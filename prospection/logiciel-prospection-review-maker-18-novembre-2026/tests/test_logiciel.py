@@ -224,32 +224,6 @@ def test_analyse_du_site_message_et_audit_pdf():
     assert contenu.startswith(b"%PDF") and len(contenu) > 3000
 
 
-FLUX_CODEUR = """<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Tous les projets</title>
-<item><title>Création d&#39;un site vitrine pour mon garage</title><link>https://www.codeur.com/projects/1-site-garage</link>
-<pubDate>Mon, 16 Nov 2026 17:14:00 +0100</pubDate><guid>1</guid>
-<description type="html"><![CDATA[<p>Budget : 1 000 € à 10 000 € - Catégories : Création de site internet, WordPress</p> <p> Je veux refaire le site garage-dupont.fr … </p> <p> <a href="https://www.codeur.com/projects/1-site-garage">Voir ce projet sur Codeur</a></p>]]></description></item>
-<item><title>Application mobile iOS Android</title><link>https://www.codeur.com/projects/2-app</link>
-<pubDate>Mon, 16 Nov 2026 10:00:00 +0100</pubDate><guid>2</guid>
-<description type="html"><![CDATA[<p>Budget : Moins de 500 € - Catégories : Application mobile, iOS, Android</p> <p> Une app de rencontre </p>]]></description></item>
-</channel></rss>"""
-
-
-def test_codeur_flux_pertinence_et_proposition():
-    from rm_prospect import codeur
-    site, app = codeur.lire_flux(FLUX_CODEUR.encode())
-    assert site["id"] == "1" and site["titre"] == "Création d'un site vitrine pour mon garage"
-    assert site["budget"] == "1 000 € à 10 000 €" and "WordPress" in site["categories"]
-    assert site["date"] == "2026-11-16T16:14:00+00:00" and "garage-dupont.fr" in site["extrait"]
-    s_site, type_site, _ = codeur.pertinence(site)
-    s_app, _, _ = codeur.pertinence(app)
-    assert s_site >= 60 and s_app < 20 and type_site == "refonte"
-    assert codeur.budget_min("500 € à 1 000 €") == 500 and codeur.budget_min("Moins de 500 €") == 0
-    assert codeur.site_mentionne(site["extrait"]) == "https://garage-dupont.fr"
-    assert codeur.site_mentionne("écrivez à moi@exemple.fr") is None
-    texte = codeur.proposition({**site, "type": type_site}, "Théo", "990 €", "[DÉLAI]", "- Il met 5 secondes à s'ouvrir")
-    assert "Création d'un site vitrine" in texte and "990 €" in texte and "[DÉLAI]" not in texte and "5 secondes" in texte
-
-
 def test_journal_partage_entre_theo_et_luke(tmp_path):
     from rm_prospect import equipe
     theo, luke = db.connect(tmp_path / "theo.db"), db.connect(tmp_path / "luke.db")
@@ -278,3 +252,47 @@ def test_copie_de_base_en_mode_wal(tmp_path):
     db.set_reglage(source, "prenom", "Luke")  # encore dans le journal WAL, pas dans le fichier principal
     db.copier_base(tmp_path / "ancienne.db", tmp_path / "nouvelle.db")
     assert db.get_reglage(db.connect(tmp_path / "nouvelle.db"), "prenom") == "Luke"
+
+
+def test_partage_un_seul_theo_et_un_seul_luke(tmp_path):
+    import os, time
+    from rm_prospect import equipe
+    conn = db.connect(tmp_path / "moi.db")
+    vieux = time.time() - 5 * 86400
+    for nom, age in [("equipe-Théo-aaa.json", vieux), ("equipe-Théo-bbb.json", vieux), ("equipe-Luke-ccc.json", vieux),
+                     ("equipe-Luke-ddd.json", time.time()), ("equipe-Luke-eee.json", time.time() - 40 * 86400)]:
+        f = tmp_path / nom
+        f.write_text(json.dumps({"prenom": nom.split("-")[1], "commerces": [], "historique": []}), encoding="utf-8")
+        os.utime(f, (age, age))
+    _, coequipiers = equipe.importer(conn, tmp_path, "zzz", {}, "Théo")
+    assert [c["prenom"] for c in coequipiers] == ["Luke"]          # ni moi, ni doublon, ni fichier abandonné
+    equipe.exporter(conn, tmp_path, "Théo", "zzz")
+    restants = sorted(f.name for f in tmp_path.glob("equipe-*.json"))
+    assert "equipe-Théo-zzz.json" in restants and "equipe-Théo-aaa.json" not in restants
+    assert "equipe-Luke-ccc.json" in restants                       # on ne touche jamais aux fichiers de l'autre
+
+
+def test_reprise_bodacc_et_marches_publics():
+    from rm_prospect import marches, reprises
+    annonce = {
+        "id": "A1", "dateparution": "2026-11-15", "numerodepartement": "69", "cp": "69370", "ville": "Saint-Didier",
+        "listeetablissements": json.dumps({"etablissement": {"origineFonds": "Fonds acquis par achat", "activite": "Salon de coiffure mixte",
+                                                             "adresse": {"numeroVoie": "44", "typeVoie": "Avenue", "nomVoie": "De la République",
+                                                                         "codePostal": "69370", "ville": "Saint-Didier"}}}),
+        "listepersonnes": json.dumps({"personne": {"typePersonne": "pm", "denomination": "L'ATELIER DE CECILIA"}}),
+        "listeprecedentproprietaire": json.dumps({"personne": {"typePersonne": "pm", "denomination": "EMYNES COIFFURE",
+                                                               "numeroImmatriculation": {"numeroIdentification": "438 821 589"}}}),
+        "acte": json.dumps({"vente": {"categorieVente": "Achat d'un fonds", "dateEffet": "2026-11-01"}}),
+    }
+    a = reprises.lire(annonce)
+    assert a["nom"] == "L'ATELIER DE CECILIA" and a["categorie"] == "Coiffeurs" and a["ancien_siren"] == "438821589"
+    assert a["adresse"] == "44 Avenue De la République, 69370 Saint-Didier" and a["date_effet"] == "2026-11-01"
+    fusion = {**annonce, "acte": json.dumps({"descriptif": "Projet de fusion absorption", "vente": {"categorieVente": "Fusion"}})}
+    assert reprises.lire(fusion) is None
+    assert reprises.departements("69, 01 et 2a") == ["69", "01", "2A"]
+    assert reprises.categorie("Restauration rapide", "Boulangerie Martin") == "Boulangeries-pâtisseries"
+    assert marches.parle_de_site("REFONTE DU SITE INTERNET DE LA VILLE DE CLICHY")
+    assert not marches.parle_de_site("Création d'un pôle de soins sur le site de l'hôpital, travaux web de câblage")
+    assert marches.pertinence("Refonte du site internet de la ville", "Procédure adaptée")[0] > marches.pertinence("Hébergement et maintenance du site web")[0]
+    texte = mailer.remplir(mailer.modele("web", "fr", "premier", reprise=True)["corps"], {"nom": "Noma"}, "Théo")
+    assert texte.startswith("Bonjour,\n\nFélicitations pour la reprise de Noma") and len(mailer.MODELE_REPRISE["corps"].split()) <= 70

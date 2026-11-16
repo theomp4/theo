@@ -53,7 +53,21 @@ def exporter(conn, dossier, prenom, poste, dernier_contenu=None):
                 f.unlink()
             except OSError:
                 pass
+    nettoyer_mes_anciens(dossier, prenom, cible.name)
     return contenu
+
+
+def nettoyer_mes_anciens(dossier, prenom, mon_fichier, inactif=2 * 86400):
+    """Retire les fichiers laissés par mes anciennes installations (mon prénom, autre poste), une fois
+    qu'ils ne sont plus mis à jour depuis 2 jours : ce sont les versions précédentes du logiciel."""
+    import time
+    debut = nom_fichier(prenom, "x")[:-len("x.json")]
+    for f in Path(dossier).glob(f"{debut}*.json"):
+        try:
+            if f.name != mon_fichier and time.time() - f.stat().st_mtime > inactif:
+                f.unlink()
+        except OSError:
+            pass
 
 
 def fichiers_coequipiers(dossier, poste):
@@ -83,7 +97,7 @@ def fusionner(conn, donnees):
         # Données Google : les plus récentes.
         if _plus_recent(c.get("google_maj"), moi.get("google_maj")):
             maj.update({f: c.get(f) for f in db.GOOGLE_FIELDS if f in c})
-        for f in ("ville_recherche", "categorie", "pays", "ajoute_le"):
+        for f in ("ville_recherche", "categorie", "pays", "ajoute_le", "origine"):
             if not moi.get(f) and c.get(f):
                 maj[f] = c[f]
         # Suivi : la modification la plus récente gagne, champ par champ.
@@ -139,11 +153,11 @@ def fusionner(conn, donnees):
     return modifiees
 
 
-def importer(conn, dossier, poste, deja_lus):
+def importer(conn, dossier, poste, deja_lus, prenom=""):
     """Lit les fichiers des coéquipiers qui ont changé depuis la dernière fois.
 
     `deja_lus` : {nom de fichier: date de modification}, tenu à jour ici.
-    Renvoie (clés modifiées, [{prenom, vu}] des coéquipiers)."""
+    Renvoie (clés modifiées, [{prenom, vu}] des coéquipiers : un par prénom, sans moi)."""
     modifiees, coequipiers = set(), []
     for f in fichiers_coequipiers(dossier, poste):
         try:
@@ -159,7 +173,24 @@ def importer(conn, dossier, poste, deja_lus):
         except (OSError, ValueError):
             continue  # fichier en cours de synchronisation par le cloud : on réessaiera
         coequipiers.append({"prenom": deja_lus.get(f.name, {}).get("prenom", "?"), "vu": mtime})
-    return modifiees, coequipiers
+    return modifiees, uniques(coequipiers, prenom)
+
+
+ANCIEN = 30 * 86400        # un fichier pas mis à jour depuis 30 jours : installation abandonnée
+
+
+def uniques(coequipiers, moi=""):
+    """Chaque logiciel installé laisse son fichier dans le dossier partagé : après plusieurs mises à jour,
+    il y en a plusieurs par personne. On garde une ligne par prénom (la plus récente), jamais moi-même."""
+    import time
+    par_prenom = {}
+    for c in coequipiers:
+        cle = (c.get("prenom") or "?").strip().lower()
+        if cle == (moi or "").strip().lower() or time.time() - c["vu"] > ANCIEN:
+            continue
+        if cle not in par_prenom or c["vu"] > par_prenom[cle]["vu"]:
+            par_prenom[cle] = c
+    return sorted(par_prenom.values(), key=lambda c: -c["vu"])
 
 
 def adapter_chemin(chemin):

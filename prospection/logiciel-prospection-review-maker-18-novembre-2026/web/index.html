@@ -196,16 +196,9 @@ details summary::marker { color: var(--dim) }
 .funnel { display: grid; gap: 11px }
 .funnel div > p { display: flex; justify-content: space-between; font-size: 12.5px; margin-bottom: 5px } .funnel p b { font: 500 11.5px var(--mono); color: var(--muted) }
 
-/* codeur */
+/* pastilles du menu */
 .ico .badge { position: absolute; top: -3px; right: -3px; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 99px; background: var(--urgent); color: #2A0A10;
   font: 600 10px/17px var(--font); font-style: normal; text-align: center; box-shadow: 0 0 0 2px rgb(18 16 26 / .9) }
-.cd-grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); gap: 16px }
-.cd-carte { padding: 16px 18px; display: grid; gap: 9px; align-content: start; cursor: pointer; text-align: left }
-.cd-carte h2 { font-size: 15px; font-weight: 600; line-height: 1.35 }
-.cd-carte .ext { font-size: 12.5px; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden }
-.cd-carte .cats { font-size: 11.5px; color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
-.cd-carte.vu { opacity: .72 }
-.cd-desc { white-space: pre-wrap; font-size: 13px; line-height: 1.6; padding: 12px 14px; max-height: 300px; overflow: auto }
 
 /* journal */
 .jr-jour { display: grid; gap: 10px }
@@ -293,10 +286,9 @@ details summary::marker { color: var(--dim) }
       <button class="nav-item" data-vue="accueil" role="tab" aria-selected="false" title="Raccourci : touche 1  ·  Accueil"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></span>Accueil</button>
       <button class="nav-item" data-vue="trouver" role="tab" aria-selected="false" title="Raccourci : touche 2  ·  Trouver des commerces"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>Trouver</button>
       <button class="nav-item" data-vue="prospects" role="tab" aria-selected="false" title="Raccourci : touche 3  ·  Mes prospects"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20"/><circle cx="10" cy="8" r="3.5"/><path d="M20 20v-1.5a3.5 3.5 0 0 0-2.5-3.35M15.5 4.6a3.5 3.5 0 0 1 0 6.8"/></svg></span>Prospects</button>
-      <button class="nav-item" data-vue="codeur" role="tab" aria-selected="false" title="Raccourci : touche 4  ·  Demandes Codeur.com"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4z"/><path d="m10 9-2 2 2 2M14 9l2 2-2 2"/></svg><i class="badge" id="codeurBadge" hidden></i></span>Codeur</button>
-      <button class="nav-item" data-vue="marketing" role="tab" aria-selected="false" title="Raccourci : touche 5  ·  Marketing"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span>Marketing</button>
-      <button class="nav-item" data-vue="journal" role="tab" aria-selected="false" title="Raccourci : touche 6  ·  Journal de l'équipe"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19M9 8h6M9 12h4"/></svg><i class="badge" id="journalBadge" hidden></i></span>Journal</button>
-      <button class="nav-item" data-vue="reglages" role="tab" aria-selected="false" title="Raccourci : touche 7  ·  Réglages"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span>Réglages</button>
+      <button class="nav-item" data-vue="marketing" role="tab" aria-selected="false" title="Raccourci : touche 4  ·  Marketing"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span>Marketing</button>
+      <button class="nav-item" data-vue="journal" role="tab" aria-selected="false" title="Raccourci : touche 5  ·  Journal de l'équipe"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19M9 8h6M9 12h4"/></svg><i class="badge" id="journalBadge" hidden></i></span>Journal</button>
+      <button class="nav-item" data-vue="reglages" role="tab" aria-selected="false" title="Raccourci : touche 6  ·  Réglages"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span>Réglages</button>
     </div>
     <button class="ico plus" id="plus" aria-label="Trouver de nouveaux commerces" title="Trouver de nouveaux commerces"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span class="tip">Trouver de nouveaux commerces</span></button>
   </nav>
@@ -324,7 +316,6 @@ details summary::marker { color: var(--dim) }
     <section id="vue-accueil" class="vue" hidden></section>
     <section id="vue-trouver" class="vue" hidden></section>
     <section id="vue-prospects" class="vue" hidden></section>
-    <section id="vue-codeur" class="vue" hidden></section>
     <section id="vue-marketing" class="vue" hidden></section>
     <section id="vue-journal" class="vue" hidden></section>
     <section id="vue-reglages" class="vue" hidden></section>
@@ -348,7 +339,6 @@ const VUES = {
   accueil: ["Accueil", "Où en est ta prospection, en un coup d'œil."],
   trouver: ["Trouver des commerces", "Le logiciel cherche sur Google, puis trouve les emails et comptes Instagram."],
   prospects: ["Mes prospects", "Tous tes commerces, du meilleur au moins bon. Clique sur un commerce pour ouvrir sa fiche."],
-  codeur: ["Demandes Codeur.com", "Les projets de sites publiés sur Codeur.com, les plus récents d'abord. Réponds vite : les premiers sont les plus lus."],
   marketing: ["Marketing", "Un contenu par jour, publié sur TikTok et sur Instagram. Coche-le quand il est en ligne."],
   journal: ["Journal de l'équipe", "Ce que Théo et Luke ont fait, au fil du temps : en un coup d'œil, tu sais où en est l'autre."],
   reglages: ["Réglages", "Ta clé Google, ton fond d'écran et tes messages prêts à copier."],
@@ -518,8 +508,6 @@ async function chargerEtat() {
   const avant = S.etat && S.etat.equipe ? S.etat.equipe.recues : null;
   S.etat = await api("etat");
   afficherEquipe();
-  const nbC = S.etat.codeur_nouveaux || 0, badge = $("#codeurBadge");
-  badge.hidden = !nbC; badge.textContent = nbC > 9 ? "9+" : nbC;
   const nbJ = S.vue === "journal" ? 0 : S.etat.journal_nouveaux || 0, bj = $("#journalBadge");
   bj.hidden = !nbJ; bj.textContent = nbJ > 9 ? "9+" : nbJ;
   // Le coéquipier a écrit dans le journal pendant que tu le lis : on l'affiche.
@@ -691,18 +679,19 @@ async function rendreTrouver(el) {
 }
 
 // --- Mes prospects --------------------------------------------------------------
-const FILTRES_TOUS = { tous: "Tous", sanssite: "Sans site", contacter: "À contacter", cours: "En cours", vendus: "Vendus", horscible: "Hors cible" };
+const FILTRES_TOUS = { tous: "Tous", sanssite: "Sans site", reprises: "Reprises", marches: "Marchés publics", contacter: "À contacter", cours: "En cours", vendus: "Vendus", horscible: "Hors cible" };
+const WEB_SEULEMENT = ["sanssite", "reprises", "marches"];
 const COUL_PME = { ok: "var(--ok)", probable: "var(--ok)", inconnu: "var(--important)", exclu: "var(--wait)" };
 const pmeTxt = p => p.pme === "ok" ? `PME · ${p.ca}` : p.pme === "probable" ? "PME probable" : p.pme === "inconnu" ? "CA à vérifier" : p.pme === "exclu" ? "Hors cible" : "";
 const SANS_SITE = ["Pas de site", "Réseau social seul", "Plateforme seule"];
-const filtresDispo = () => Object.fromEntries(Object.entries(FILTRES_TOUS).filter(([k]) => k !== "sanssite" || S.produit === "web"));
+const filtresDispo = () => Object.fromEntries(Object.entries(FILTRES_TOUS).filter(([k]) => !WEB_SEULEMENT.includes(k) || S.produit === "web"));
 const COUL_SITE = l => SANS_SITE.includes(l) ? "var(--violet)" : l === "Site en panne" || /défaut|sécurisé|téléphone|Lent|jour/.test(l) ? "var(--rose)" : "var(--wait)";
 const EN_COURS = ["Contacté", "Relance", "A répondu", "Intéressé"];
 function filtrer(liste) {
   const q = S.recherche.toLowerCase(), v = $("#pVille")?.value || "", ty = $("#pType")?.value || "", pr = $("#pPrio")?.value || "";
   return liste.filter(p =>
     (S.filtre === "horscible" ? p.pme === "exclu" : p.pme !== "exclu" || ["vendus", "cours"].includes(S.filtre))
-    && (S.filtre === "tous" || S.filtre === "horscible" ? p.statut !== "Ne plus contacter" : S.filtre === "sanssite" ? SANS_SITE.includes(p.site) && p.statut !== "Ne plus contacter" : S.filtre === "contacter" ? p.statut === "À contacter" : S.filtre === "cours" ? EN_COURS.includes(p.statut) : p.statut === "Vendu")
+    && (S.filtre === "tous" || S.filtre === "horscible" ? p.statut !== "Ne plus contacter" : S.filtre === "reprises" ? !!p.reprise && p.statut !== "Ne plus contacter" : S.filtre === "sanssite" ? SANS_SITE.includes(p.site) && p.statut !== "Ne plus contacter" : S.filtre === "contacter" ? p.statut === "À contacter" : S.filtre === "cours" ? EN_COURS.includes(p.statut) : p.statut === "Vendu")
     && (!q || [p.nom, p.email, p.telephone, p.ville_recherche, p.categorie].some(x => String(x || "").toLowerCase().includes(q)))
     && (!v || p.ville_recherche === v) && (!ty || p.categorie === ty) && (!pr || p.priorite === pr));
 }
@@ -710,7 +699,7 @@ function lignes(liste) {
   if (!liste.length) return `<div class="empty">Aucun commerce ici. ${S.prospects.length ? "Change de filtre." : `<a href="#" data-aller="trouver">Lance ta première recherche</a>.`}</div>`;
   return liste.slice(0, 400).map(p => `<div class="row rise" data-cle="${esc(p.cle)}">
     <span class="dot" style="--c:${COUL_PRIO[p.priorite]}">${p.score || 0}</span>
-    <div class="t"><b>${esc(p.nom)}</b><span>${p.pme ? `<em style="font-style:normal;color:${COUL_PME[p.pme]}">${esc(pmeTxt(p))}</em> · ` : ""}${esc([p.categorie, p.ville_recherche].filter(Boolean).join(" · "))}</span></div>
+    <div class="t"><b>${esc(p.nom)}</b><span>${p.reprise ? `<em style="font-style:normal;color:var(--violet-hi)">Reprise · ${dateFr(p.reprise)}</em> · ` : ""}${p.pme ? `<em style="font-style:normal;color:${COUL_PME[p.pme]}">${esc(pmeTxt(p))}</em> · ` : ""}${esc([p.categorie, p.ville_recherche].filter(Boolean).join(" · "))}</span></div>
     <span class="stars"><em>★</em> ${p.note ? String(p.note).replace(".", ",") : "–"} <span class="dim">(${p.nb_avis || 0})</span></span>
     ${S.produit === "web" ? `<span class="sitec" style="color:${COUL_SITE(p.site)}">${esc(p.site)}</span>` : ""}
     <span class="c">${esc(p.email || p.telephone || "pas de contact")}</span>
@@ -723,7 +712,16 @@ async function rendreProspects(el) {
   if (!filtresDispo()[S.filtre]) S.filtre = "tous";
   const uniq = k => [...new Set(prospects.map(p => p[k]).filter(Boolean))].sort();
   $("#vueActions").innerHTML = `<div class="seg glass" id="pFiltres">${Object.entries(filtresDispo()).map(([k, v]) => `<button data-f="${k}" aria-pressed="${k === S.filtre}">${v}</button>`).join("")}</div>`;
-  el.innerHTML = `<div class="glass card rise">
+  document.querySelectorAll("#pFiltres [data-f]").forEach(b => b.onclick = () => {
+    const avant = S.filtre; S.filtre = b.dataset.f;
+    document.querySelectorAll("#pFiltres [data-f]").forEach(x => x.setAttribute("aria-pressed", x === b)); slide($("#pFiltres"));
+    if (S.filtre === "marches" || avant === "marches" || S.filtre === "reprises" || avant === "reprises") return rendreProspects(el).then(() => replay(el));
+    majListe(true);
+  });
+  requestAnimationFrame(() => slide($("#pFiltres")));
+  if (S.filtre === "marches") return rendreMarches(el);
+  const reprisesBloc = S.filtre === "reprises" ? await blocReprises() : "";
+  el.innerHTML = `${reprisesBloc}<div class="glass card rise">
     <div class="line">
       <label class="f" style="flex:2 1 200px">Chercher<input id="pQ" placeholder="Nom, email, ville…" value="${esc(S.recherche)}"></label>
       <label class="f" style="flex:1 1 140px">Ville<select id="pVille"><option value="">Toutes</option>${uniq("ville_recherche").map(v => `<option>${esc(v)}</option>`).join("")}</select></label>
@@ -735,9 +733,9 @@ async function rendreProspects(el) {
     <div class="rows" id="pListe"></div>
   </div>`;
   const maj = anim => { const l = filtrer(prospects); $("#pCompte").textContent = `${nb(l.length)} commerce${l.length > 1 ? "s" : ""}, du meilleur prospect au moins bon.`; $("#pListe").innerHTML = lignes(l); if (anim) replay(el); };
+  majListe = maj;
   maj();
-  document.querySelectorAll("#pFiltres [data-f]").forEach(b => b.onclick = () => { S.filtre = b.dataset.f; document.querySelectorAll("#pFiltres [data-f]").forEach(x => x.setAttribute("aria-pressed", x === b)); slide($("#pFiltres")); maj(true); });
-  requestAnimationFrame(() => slide($("#pFiltres")));
+  if (S.filtre === "reprises") brancherReprises(el);
   $("#pQ").oninput = e => { S.recherche = e.target.value; if (document.activeElement !== $("#quick")) $("#quick").value = S.recherche; maj(); };
   ["#pVille", "#pType", "#pPrio"].forEach(s => $(s).onchange = () => maj(true));
   $("#pExport").onclick = async () => {
@@ -746,6 +744,75 @@ async function rendreProspects(el) {
       const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "prospects.xlsx"; a.click(); toast("Fichier Excel téléchargé.");
     } catch (e) { toast(e.message); }
   };
+}
+
+let majListe = () => {};
+
+// --- Reprises de commerces (BODACC) : dans « Mes prospects », onglet Reprises -------
+async function blocReprises() {
+  const r = await api("reprises");
+  return `<div class="glass card rise" style="margin-bottom:16px">
+    <div class="line" style="justify-content:space-between"><div><span class="tag">Commerces repris récemment</span><h2 style="font-size:17px;font-weight:600;margin-top:2px">Un nouveau propriétaire refait presque toujours son image</h2></div><span class="chip" style="--c:var(--violet-hi)">BODACC · gratuit</span></div>
+    <p class="muted" style="font-size:12.5px">Le logiciel lit les annonces officielles de rachat de fonds de commerce des 45 derniers jours dans tes départements, retrouve chaque commerce sur Google, vérifie le chiffre d'affaires de l'ancien exploitant et analyse son site. Les reprises arrivent ici avec un message « Félicitations pour la reprise… ».</p>
+    <div class="line" style="align-items:end">
+      <label class="f" style="flex:2 1 220px">Départements<input id="rDep" placeholder="ex. 69, 01, 38" value="${esc(r.departements)}"></label>
+      <label class="f" style="flex:0 1 110px">Combien<input id="rNb" type="number" min="1" max="100" value="20"></label>
+      <button class="primary" id="rGo" style="padding:10px 18px">Chercher les reprises</button></div>
+    <p class="dim" style="font-size:12px">${r.departements ? `${nb(r.restantes)} reprise${r.restantes > 1 ? "s" : ""} pas encore ajoutée${r.restantes > 1 ? "s" : ""} dans ces départements · ` : ""}${nb(r.ajoutees)} déjà dans tes prospects · ${r.cle_google ? `1 requête Google par reprise (${nb(r.limite_google - r.requetes)} restantes ce mois)` : "sans clé Google : ajoutées sans leur fiche Google"}.</p>
+    <div id="rSuivi" hidden class="well" style="padding:14px;display:grid;gap:10px"><div class="line" style="justify-content:space-between"><span id="rTexte" style="font-size:13px">En cours…</span><button id="rStop">Arrêter</button></div><div class="progress"><i id="rBarre"></i></div></div>
+  </div>`;
+}
+function brancherReprises(el) {
+  $("#rGo").onclick = async () => {
+    $("#rGo").disabled = true; $("#rSuivi").hidden = false;
+    try {
+      const { job } = await api("reprises_chercher", { departements: $("#rDep").value, combien: +$("#rNb").value });
+      $("#rStop").onclick = () => api("annuler", { id: job });
+      toast(await suivre(job, $("#rBarre"), $("#rTexte")));
+      await chargerEtat(); rendreProspects(el).then(() => replay(el));
+    } catch (e) { toast(e.message); $("#rGo").disabled = false; $("#rSuivi").hidden = true; }
+  };
+}
+
+// --- Marchés publics (BOAMP) : dans « Mes prospects », onglet Marchés publics ------
+const COUL_MARCHE = { "Nouveau": "var(--violet-hi)", "À étudier": "var(--important)", "Candidaté": "var(--violet)", "Gagné": "var(--ok)", "Perdu": "var(--wait)", "Pas pour nous": "rgb(255 255 255 / .42)" };
+async function rendreMarches(el, tous) {
+  const d = await api("marches?" + qs({ tous: tous ? 1 : 0 }));
+  const jours = l => Math.ceil((new Date(l) - new Date(new Date().toDateString())) / 864e5);
+  const carte = m => {
+    const j = m.limite ? jours(m.limite) : null;
+    const lim = m.limite ? (j < 0 ? "clôturé" : j === 0 ? "dernier jour" : `${j} jour${j > 1 ? "s" : ""} pour répondre`) : "date limite dans l'avis";
+    return `<article class="glass card lift rise" style="gap:9px">
+      <div class="line" style="gap:6px;justify-content:space-between"><span class="line" style="gap:6px">
+        <span class="chip" style="--c:${j !== null && j <= 7 ? "var(--urgent)" : "var(--ok)"}">${lim}</span>
+        ${m.chez_toi ? `<span class="chip" style="--c:var(--important)">Dans tes départements</span>` : ""}</span>
+        <span class="mono dim" style="font-size:11px">pertinence ${m.pertinence}/100</span></div>
+      <h2 style="font-size:15px;font-weight:600;line-height:1.35">${esc(m.objet)}</h2>
+      <p class="muted" style="font-size:12.5px">${esc(m.acheteur)} · département ${esc(m.departements || "–")} · publié le ${dateFr(m.date)}${m.limite ? ` · réponse avant le ${new Date(m.limite).toLocaleDateString("fr-FR")}` : ""}</p>
+      ${m.raisons ? `<p class="dim" style="font-size:12px">${esc(m.raisons).split(" ; ").join(" · ")}</p>` : ""}
+      <div class="line" style="gap:6px">${["À étudier", "Candidaté", "Gagné", "Perdu", "Pas pour nous"].map(s => `<button class="toggle" data-m="${esc(m.idweb)}" data-s="${esc(s)}" aria-pressed="${s === m.statut}">${esc(s)}</button>`).join("")}
+        <a class="btn primary" href="${esc(m.lien)}" target="_blank" rel="noopener" style="margin-left:auto">Voir l'avis officiel</a></div>
+    </article>`;
+  };
+  el.innerHTML = `<div class="bento">
+    <div class="glass card rise s12"><div class="line" style="justify-content:space-between"><div><span class="tag">Marchés publics</span><h2 style="font-size:17px;font-weight:600;margin-top:2px">Demandes officielles de création ou de refonte de site</h2></div>
+      <div class="line" style="gap:8px"><button id="mTous" class="toggle" aria-pressed="${!!tous}">Voir aussi les clôturés</button><button id="mMaj">Actualiser</button></div></div>
+      <p class="muted" style="font-size:12.5px">Mairies, offices de tourisme, écoles, hôpitaux… publient leurs besoins au BOAMP. Consulter et répondre est gratuit : l'avis officiel indique où déposer ton dossier. Les procédures « adaptées » sont les plus simples.</p>
+      <p class="dim" style="font-size:12px">${d.etat.erreur ? esc(d.etat.erreur) : d.etat.derniere ? `Mis à jour ${depuis(d.etat.derniere)} · le logiciel relit le BOAMP toutes les 6 heures.` : "Première lecture du BOAMP en cours…"}</p></div>
+    ${d.marches.length ? d.marches.map(m => `<div class="s6">${carte(m)}</div>`).join("") : `<div class="glass card empty rise s12">Aucun marché ouvert pour l'instant. Clique sur « Actualiser ».</div>`}
+  </div>`;
+  el.querySelectorAll("[data-m]").forEach(b => b.onclick = async () => {
+    const statut = b.getAttribute("aria-pressed") === "true" ? "Nouveau" : b.dataset.s;
+    try { await api("marches_maj", { idweb: b.dataset.m, statut }); el.querySelectorAll(`[data-m="${b.dataset.m}"]`).forEach(x => x.setAttribute("aria-pressed", x.dataset.s === statut)); toast(statut === "Nouveau" ? "Suivi retiré." : `Marché : ${statut}.`); }
+    catch (e) { toast(e.message); }
+  });
+  $("#mTous").onclick = () => rendreMarches(el, !tous).then(() => replay(el));
+  $("#mMaj").onclick = async () => {
+    $("#mMaj").disabled = true; $("#mMaj").textContent = "Mise à jour…";
+    try { const r = await api("marches_actualiser", {}); toast(r.nouveaux ? `${r.nouveaux} nouveau${r.nouveaux > 1 ? "x" : ""} marché${r.nouveaux > 1 ? "s" : ""}.` : "À jour : pas de nouveau marché."); await rendreMarches(el, tous); replay(el); }
+    catch (e) { toast(e.message); $("#mMaj").disabled = false; $("#mMaj").textContent = "Actualiser"; }
+  };
+  if (!d.etat.derniere && !d.etat.erreur) setTimeout(() => { if (S.vue === "prospects" && S.filtre === "marches") rendreMarches(el, tous); }, 9000);
 }
 
 // --- Fiche d'un commerce : tout en un clic, enregistré tout de suite ------------
@@ -850,14 +917,16 @@ async function ouvrirFiche(cle, nav) {
 }
 const GRAV_COUL = { 1: "var(--urgent)", 2: "var(--important)", 3: "var(--violet-hi)" };
 function blocEntreprise(c) {
-  const e = c.entreprise, seuil = `${nb(Math.round((c.ca_minimum || 200000) / 1000))} k€`;
+  const e = c.entreprise, seuil = `${nb(Math.round((c.ca_minimum || 200000) / 1000))} k€`, o = c.origine || {};
+  const reprise = o.type === "reprise" ? `<div class="banner" style="--c:var(--violet);font-size:12.5px;padding:9px 12px">Commerce repris le ${dateFr(o.date)}${o.ancien ? ` (ancien exploitant : ${esc(o.ancien)})` : ""}${o.repreneur ? `, par ${esc(o.repreneur)}` : ""}. <a href="${esc(o.lien)}" target="_blank" rel="noopener">Voir l'annonce officielle</a>${o.google ? "" : "<br>Pas trouvé sur Google : il n'a peut-être pas encore de fiche, ou il a changé de nom."}</div>` : "";
   const corriger = `<details style="margin-top:2px"><summary class="dim" style="cursor:pointer;font-size:12px">${e && e.siren ? "Ce n'est pas la bonne entreprise ?" : "Tu connais son SIREN ?"}</summary>
     <div class="line" style="margin-top:8px;flex-wrap:nowrap"><input id="fSiren" placeholder="SIREN (9 chiffres)" inputmode="numeric" value="${esc(c.siren_force || "")}" style="flex:1;min-width:0"><button id="fSirenOk">Vérifier</button></div>
     <p class="dim" style="font-size:11.5px;margin-top:6px">Tu le trouves sur <a href="https://annuaire-entreprises.data.gouv.fr/" target="_blank" rel="noopener">annuaire-entreprises.data.gouv.fr</a> ou dans les mentions légales de son site.</p></details>`;
-  if (!e) return `<div class="well rise" style="padding:14px;display:grid;gap:8px"><div class="line" style="justify-content:space-between"><span class="tag">L'entreprise</span><span class="chip" style="--c:var(--wait)">Pas encore vérifiée</span></div>
+  if (!e) return `<div class="well rise" style="padding:14px;display:grid;gap:8px"><div class="line" style="justify-content:space-between"><span class="tag">L'entreprise</span><span class="chip" style="--c:var(--wait)">Pas encore vérifiée</span></div>${reprise}
     <p class="dim" style="font-size:12.5px">Lance « Vérifier et analyser » dans Trouver : le logiciel vérifie que c'est une PME qui fait au moins ${seuil} de chiffre d'affaires.</p>${corriger}</div>`;
   const kv = (k, v) => v ? `<div class="kv"><span>${k}</span><b>${v}</b></div>` : "";
   return `<div class="well rise" style="padding:14px;display:grid;gap:10px"><div class="line" style="justify-content:space-between"><span class="tag">L'entreprise</span><span class="chip" style="--c:${COUL_PME[e.verdict]}">${esc(e.libelle)}</span></div>
+    ${reprise}
     <p style="font-size:13px">${esc(e.raison[0].toUpperCase() + e.raison.slice(1))}.</p>
     ${e.a_confirmer ? `<div class="banner" style="--c:var(--important);font-size:12.5px;padding:8px 12px">Rapprochement incertain : vérifie que c'est bien la même entreprise.</div>` : ""}
     ${e.siren ? `<div class="grid2" style="grid-template-columns:repeat(2,minmax(0,1fr))">${kv("Nom officiel", esc(e.nom))}${kv("Chiffre d'affaires", esc(e.ca_txt) + (e.annee_ca ? ` (${e.annee_ca})` : ""))}${kv("Effectif", esc(e.effectif))}${kv("Catégorie", esc(e.categorie || "–"))}</div>
@@ -902,7 +971,6 @@ function fermerFiche() {
 // Raccourcis clavier : 1 à 4 pour les pages, / pour chercher, ← → et Échap dans une fiche.
 document.addEventListener("keydown", e => {
   const champ = e.target.closest?.("input, textarea, select");
-  if ($("#codeurFond") && e.key === "Escape") { e.preventDefault(); return fermerCodeur(); }
   if ($("#ficheFond")) {
     if (e.key === "Escape") { e.preventDefault(); fermerFiche(); }
     else if (!champ && e.key === "ArrowRight") naviguer(1);
@@ -910,118 +978,10 @@ document.addEventListener("keydown", e => {
     return;
   }
   if (champ || e.ctrlKey || e.metaKey || e.altKey) return;
-  const vues = ["accueil", "trouver", "prospects", "codeur", "marketing", "journal", "reglages"];
-  if (e.key >= "1" && e.key <= "7") go(vues[+e.key - 1]);
+  const vues = ["accueil", "trouver", "prospects", "marketing", "journal", "reglages"];
+  if (e.key >= "1" && e.key <= "6") go(vues[+e.key - 1]);
   else if (e.key === "/") { e.preventDefault(); $("#quick").focus(); }
 });
-
-// --- Codeur.com : demandes de sites récentes ------------------------------------
-const CD = { vue: lire("rm_cd_vue", "pour_nous"), liste: [] };
-const COUL_CD = { "Nouveau": "var(--violet-hi)", "À répondre": "var(--important)", "Répondu": "var(--violet)", "Retenu": "var(--ok)", "Perdu": "var(--wait)", "Pas pour nous": "rgb(255 255 255 / .42)" };
-function ilYa(iso) {
-  const m = Math.max(0, Math.round((Date.now() - new Date(iso)) / 60000));
-  return m < 1 ? "à l'instant" : m < 60 ? `il y a ${m} min` : m < 1440 ? `il y a ${Math.round(m / 60)} h` : m < 2880 ? "hier" : `il y a ${Math.round(m / 1440)} jours`;
-}
-const frais = iso => Date.now() - new Date(iso) < 24 * 3600 * 1000;
-async function rendreCodeur(el) {
-  const d = await api("codeur?" + qs({ vue: CD.vue }));
-  CD.liste = d.projets;
-  $("#vueActions").innerHTML = `<div class="line" style="gap:8px"><div class="seg glass" id="cdVues">${[["pour_nous", "Pour nous"], ["suivis", "Suivis"], ["tous", "Tous"]]
-    .map(([k, n]) => `<button data-v="${k}" aria-pressed="${k === CD.vue}">${n}</button>`).join("")}</div>
-    <button class="glass" id="cdMaj" style="padding:9px 16px">${d.etat.en_cours ? "Mise à jour…" : "Actualiser"}</button></div>`;
-  const c = d.compteurs;
-  const stat = (titre, n, sous, hl) => `<div class="glass stat lift rise s3${hl ? " hl" : ""}"><header>${titre}</header><b>${nb(n)}</b><small>${sous}</small></div>`;
-  el.innerHTML = `<div class="bento">
-    ${stat("Nouvelles demandes", c.nouveaux, "pour nous, ces dernières 24 h", c.nouveaux > 0)}
-    ${stat("À répondre", c.a_repondre, "que tu as gardées")}
-    ${stat("Répondu", c.repondu, "en attente du client")}
-    ${stat("Retenu", c.retenu, "projets gagnés")}
-    ${d.etat.erreur ? `<div class="banner rise s12">${esc(d.etat.erreur)}</div>` : ""}
-    <p class="dim rise s12" style="font-size:12.5px">${d.etat.derniere ? `Mis à jour ${ilYa(d.etat.derniere)} · le logiciel relit Codeur.com toutes les 30 minutes tant qu'il est ouvert.` : "Première lecture de Codeur.com en cours…"}
-      ${CD.vue === "pour_nous" ? ` Seulement les demandes de sites (création, refonte, WordPress, e-commerce…).` : ""}</p>
-    <div class="cd-grille s12">${d.projets.length ? d.projets.map(carteCodeur).join("") : `<div class="glass card empty">Aucune demande ici pour l'instant. ${CD.vue === "suivis" ? "Garde une demande avec « À répondre » pour la retrouver ici." : "Clique sur « Actualiser »."}</div>`}</div>
-  </div>`;
-  $("#cdVues").querySelectorAll("[data-v]").forEach(b => b.onclick = () => { CD.vue = b.dataset.v; ecrire("rm_cd_vue", CD.vue); go("codeur", true); });
-  slide($("#cdVues"));
-  $("#cdMaj").onclick = async () => {
-    $("#cdMaj").disabled = true; $("#cdMaj").textContent = "Mise à jour…";
-    try { const r = await api("codeur_actualiser", {}); toast(r.nouveaux ? `${r.nouveaux} nouvelle${r.nouveaux > 1 ? "s" : ""} demande${r.nouveaux > 1 ? "s" : ""} pour nous.` : "À jour : pas de nouvelle demande pour nous."); await chargerEtat(); go("codeur", true); }
-    catch (e) { toast(e.message); $("#cdMaj").disabled = false; $("#cdMaj").textContent = "Actualiser"; }
-  };
-  el.querySelectorAll("[data-cd]").forEach(b => b.onclick = () => ouvrirCodeur(b.dataset.cd));
-  if (!d.etat.derniere && !d.etat.erreur) setTimeout(() => { if (S.vue === "codeur" && !$("#codeurFond")) go("codeur", true); }, 8000);
-}
-function carteCodeur(p) {
-  const neuf = frais(p.date);
-  return `<article class="glass cd-carte lift rise${["Nouveau"].includes(p.statut) ? "" : " vu"}" data-cd="${esc(p.id)}" tabindex="0">
-    <div class="line" style="gap:6px;justify-content:space-between"><span class="line" style="gap:6px">
-      <span class="chip" style="--c:${neuf ? "var(--ok)" : "var(--wait)"}">${neuf ? "Récent · " : ""}${ilYa(p.date)}</span>
-      ${p.budget ? `<span class="chip" style="--c:var(--important)">${esc(p.budget)}</span>` : ""}</span>
-      ${p.statut !== "Nouveau" ? `<span class="chip" style="--c:${COUL_CD[p.statut]}">${esc(p.statut)}</span>` : ""}</div>
-    <h2>${esc(p.titre)}</h2>
-    <p class="ext">${esc(p.extrait)}</p>
-    <p class="cats">${esc(p.categories)}</p>
-    <div class="line" style="justify-content:space-between"><span class="mono dim" style="font-size:11px">pertinence ${p.pertinence}/100${p.offres != null ? ` · ${p.offres} offres` : ""}${p.site ? " · site cité" : ""}</span><span class="arrow btn" aria-hidden="true">${FLECHE}</span></div>
-  </article>`;
-}
-function fermerCodeur() { $("#fiche").innerHTML = ""; if (S.vue === "codeur") go("codeur", true); }
-async function ouvrirCodeur(id, relire) {
-  $("#fiche").innerHTML = `<div class="fiche-wrap" id="codeurFond"><aside class="fiche glass"><p class="muted">Lecture du projet sur Codeur.com…</p></aside></div>`;
-  let p;
-  const tour = ouvrirCodeur.tour = (ouvrirCodeur.tour || 0) + 1;
-  try { p = await api("codeur_projet?" + qs(relire ? { id, relire: 1 } : { id })); } catch (e) { if (tour === ouvrirCodeur.tour) $("#fiche").innerHTML = ""; return toast(e.message); }
-  if (tour !== ouvrirCodeur.tour || !$("#codeurFond")) return;  // fermé ou autre projet ouvert entre-temps
-  const ico = d => `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
-  const conc = p.offres == null ? "" : p.offres < 10 ? "peu de concurrence : fonce" : p.offres < 40 ? "concurrence moyenne : soigne ta réponse" : "beaucoup d'offres déjà : démarque-toi (maquette, audit)";
-  const GR = { 1: "var(--urgent)", 2: "var(--important)", 3: "var(--violet-hi)" };
-  $("#fiche").innerHTML = `<div class="fiche-wrap sans-anim" id="codeurFond"><aside class="fiche glass" role="dialog" aria-label="${esc(p.titre)}">
-    <div class="line" style="justify-content:space-between"><span class="chip" style="--c:${frais(p.date) ? "var(--ok)" : "var(--wait)"}">Publié ${ilYa(p.date)}</span>
-      <button class="arrow" id="cdFermer" aria-label="Fermer (Échap)">${ico('<path d="M6 6l12 12M18 6 6 18"/>')}</button></div>
-    <div class="rise"><h2 style="font-size:19px;font-weight:600;line-height:1.3">${esc(p.titre)}</h2>
-      <p class="muted" style="font-size:12.5px;margin-top:4px">${esc(p.categories)}</p></div>
-    <div class="grid2 rise" style="grid-template-columns:repeat(3,minmax(0,1fr))">
-      <div class="kv"><span>Budget</span><b>${esc(p.budget || "–")}</b></div>
-      <div class="kv"><span>Offres reçues</span><b>${p.offres ?? "–"}</b></div>
-      <div class="kv"><span>Vues</span><b>${p.vues != null ? nb(p.vues) : "–"}</b></div></div>
-    ${conc ? `<p class="rise" style="font-size:12.5px;color:${p.offres < 10 ? "var(--ok)" : p.offres < 40 ? "var(--important)" : "var(--urgent)"}">${esc(conc[0].toUpperCase() + conc.slice(1))}.</p>` : ""}
-    <div class="actions rise"><a class="btn primary" href="${esc(p.lien)}" target="_blank" rel="noopener">${ico('<path d="M14 3h7v7M10 14 21 3M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/>')}Répondre sur Codeur.com</a>
-      <button id="cdCopier">${ico('<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>')}Copier ma proposition</button></div>
-    <div class="rise" style="display:grid;gap:8px"><span class="tag">Suivi</span>
-      <div class="line" style="gap:6px">${["À répondre", "Répondu", "Retenu", "Perdu", "Pas pour nous"].map(s => `<button class="toggle" data-cds="${esc(s)}" aria-pressed="${s === p.statut}">${esc(s)}</button>`).join("")}</div></div>
-    <div class="rise" style="display:grid;gap:8px"><span class="tag">La demande du client</span>
-      <div class="well cd-desc">${esc(p.description || p.extrait)}</div></div>
-    ${p.site ? `<div class="well rise" style="padding:14px;display:grid;gap:8px"><div class="line" style="justify-content:space-between"><span class="tag">Son site actuel</span>${p.note_site != null ? `<span class="mono" style="font-size:12px">${p.note_site}/100</span>` : ""}</div>
-      <a href="${esc(p.site)}" target="_blank" rel="noopener" style="font-size:13px">${esc(p.site)}</a>
-      ${p.analyse.length ? p.analyse.slice(0, 6).map(k => `<p style="font-size:12.5px"><span class="chip" style="--c:${GR[k.gravite]}">${esc(k.niveau)}</span> ${esc(k.titre)}</p>`).join("") : `<p class="dim" style="font-size:12.5px">Rien d'important relevé sur la page d'accueil.</p>`}
-      <div class="actions"><button id="cdAudit">${ico('<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M12 18v-6M9 15l3 3 3-3"/>')}Télécharger l'audit de son site (PDF)</button></div>
-      <p class="dim" style="font-size:12px">Ta proposition cite déjà ces points. Sur Codeur.com, tu peux joindre l'audit à ton offre.</p></div>` : ""}
-    <div class="rise" style="display:grid;gap:8px"><div class="line" style="justify-content:space-between"><span class="tag">Ma proposition (à relire et compléter)</span><button id="cdCopier2">Copier</button></div>
-      <textarea id="cdProp" rows="14" style="font-size:13px">${esc(p.proposition)}</textarea>
-      <p class="dim" style="font-size:12px">Remplace « [une phrase sur leur demande] » par un détail de son projet : c'est ce qui fait la différence. Prix et délai viennent des Réglages.</p></div>
-    <label class="f rise"><span>Notes</span><textarea id="cdNotes" rows="3" placeholder="ex. Appelé le 16/11, attend un devis">${esc(p.notes || "")}</textarea></label>
-    <button id="cdRelire" class="rise" style="justify-self:start">Relire le projet sur Codeur.com</button>
-  </aside></div>`;
-  replay($(".fiche"));
-  const copierProp = () => copier($("#cdProp").value);
-  $("#cdCopier").onclick = copierProp; $("#cdCopier2").onclick = copierProp;
-  $("#cdFermer").onclick = fermerCodeur;
-  $("#codeurFond").onclick = e => { if (e.target.id === "codeurFond") fermerCodeur(); };
-  $("#cdRelire").onclick = () => ouvrirCodeur(id, true);
-  document.querySelectorAll("[data-cds]").forEach(b => b.onclick = async () => {
-    const statut = b.getAttribute("aria-pressed") === "true" ? "Nouveau" : b.dataset.cds;
-    try { await api("codeur_maj", { id, statut }); document.querySelectorAll("[data-cds]").forEach(x => x.setAttribute("aria-pressed", x.dataset.cds === statut)); toast(statut === "Nouveau" ? "Suivi retiré." : `Suivi : ${statut}.`); } catch (e) { toast(e.message); }
-  });
-  let tN; $("#cdNotes").oninput = e => { clearTimeout(tN); tN = setTimeout(() => api("codeur_maj", { id, notes: e.target.value }).then(() => toast("Notes enregistrées.")).catch(er => toast(er.message)), 900); };
-  if ($("#cdAudit")) $("#cdAudit").onclick = async () => {
-    const b = $("#cdAudit"), html = b.innerHTML; b.disabled = true; b.textContent = "Création de l'audit…";
-    try {
-      const r = await fetch("/api/codeur_audit?" + qs({ id }));
-      if (!r.ok) { let m = "Erreur"; try { m = (await r.json()).erreur; } catch {} throw new Error(m); }
-      const a = document.createElement("a"); a.href = URL.createObjectURL(await r.blob()); a.download = `Audit site - ${p.site.replace(/^https?:\/\/(www\.)?/, "").split("/")[0]}.pdf`; a.click(); toast("Audit téléchargé.");
-    } catch (e) { toast(e.message); }
-    b.disabled = false; b.innerHTML = html;
-  };
-}
 
 // --- Journal de l'équipe : notes simples, partagées avec le coéquipier --------------
 const JR = { filtre: lire("rm_jr_filtre", "tous"), recues: null };
@@ -1269,7 +1229,7 @@ async function rendreReglages(el) {
   };
 }
 
-const RENDUS = { accueil: rendreAccueil, trouver: rendreTrouver, prospects: rendreProspects, codeur: rendreCodeur, marketing: rendreMarketing, journal: rendreJournal, reglages: rendreReglages };
+const RENDUS = { accueil: rendreAccueil, trouver: rendreTrouver, prospects: rendreProspects, marketing: rendreMarketing, journal: rendreJournal, reglages: rendreReglages };
 
 // --- Démarrage ------------------------------------------------------------------
 (async () => {

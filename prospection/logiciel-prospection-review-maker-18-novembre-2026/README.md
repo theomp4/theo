@@ -90,7 +90,7 @@ s'arrête avant ta limite.
 Choisis d'abord l'espace en haut de l'écran : **Tags NFC** ou **Sites internet**. Le menu est la colonne
 à gauche : Accueil, Trouver, Prospects, Réglages.
 
-**Raccourcis clavier** : touches `1` à `7` pour changer de page, `/` pour chercher un prospect.
+**Raccourcis clavier** : touches `1` à `6` pour changer de page, `/` pour chercher un prospect.
 Dans une fiche : `←` `→` pour passer au commerce précédent ou suivant, `Échap` pour fermer.
 
 **Le plus rapide pour prospecter** : sur l'Accueil, clique sur **Contacter le meilleur prospect**.
@@ -188,27 +188,35 @@ L'analyse ne regarde que la page d'accueil : le document le précise.
 - L'**Accueil** montre tes chiffres, les commerces contactés par semaine, où en sont tes prospects,
   ton quota Google et les **relances du jour**.
 
-### Demandes Codeur.com (icône bulle, touche 4)
+### Reprises de commerces et marchés publics (dans « Mes prospects »)
 
-Des clients publient chaque jour leurs projets de sites sur Codeur.com. Le logiciel les récupère
-tout seul, **les plus récents d'abord** : répondre dans les premières heures, c'est être lu.
+Deux sources gratuites et officielles de clients qui ont un besoin, en plus de Google Maps :
 
-- Il lit les **flux RSS publics** de Codeur.com au démarrage puis **toutes les 30 minutes** tant
-  qu'il est ouvert (bouton **Actualiser** pour le faire tout de suite) : environ la dernière semaine.
-- **Pour nous** garde seulement les demandes de sites (création, refonte, WordPress, Wix, Shopify,
-  e-commerce, landing page…), avec une note de pertinence. Les applications mobiles, jeux, logos,
-  vidéos… sont écartés. **Tous** montre tout, **Suivis** les projets que tu as gardés.
-- Une pastille rouge sur l'icône du menu compte les **nouvelles demandes des dernières 24 h**.
-- Clique sur une demande : description complète, budget, **nombre d'offres déjà reçues** (la
-  concurrence), et une **proposition prête à copier** (à compléter avec une phrase sur son projet).
-- Si le client cite **son site actuel**, le logiciel l'analyse : la proposition reprend ses défauts
-  et tu peux **télécharger l'audit PDF** de son site.
-- Clique sur **Répondre sur Codeur.com** pour faire ton offre avec ton compte (le logiciel ne répond
-  jamais à ta place), puis note le suivi : À répondre, Répondu, Retenu, Perdu.
+**Onglet Reprises** : les commerces qui viennent d'être rachetés, d'après les annonces officielles
+du BODACC (journal des annonces légales). Un nouveau propriétaire refait presque toujours son image,
+et le commerce a déjà des clients.
 
-Les clients de Codeur.com sont anonymes : la vérification « PME ≥ 200 k€ » ne s'applique pas ici.
+1. Tape tes départements (ex. `69, 01, 38`) et combien de reprises ajouter, puis **Chercher les
+   reprises** (annonces des 45 derniers jours ; restaurants, coiffeurs, beauté, commerces de bouche…
+   d'abord).
+2. Pour chaque reprise, le logiciel retrouve le commerce sur Google (1 requête de ton quota), l'ajoute
+   à tes prospects, vérifie le chiffre d'affaires de **l'ancien exploitant** (la société du repreneur
+   est souvent toute neuve) et analyse son site.
+3. La fiche affiche « Commerce repris le … » avec le lien vers l'annonce, et l'email commence par
+   **« Félicitations pour la reprise de… »**, suivi de l'analyse et de l'audit gratuit.
 
-### Marketing (icône calendrier, touche 5)
+**Onglet Marchés publics** : les demandes officielles de création ou de refonte de site publiées au
+BOAMP (mairies, offices de tourisme, écoles, hôpitaux…). Consulter et répondre est gratuit.
+
+- Le logiciel relit le BOAMP toutes les 6 heures (bouton **Actualiser** pour le faire tout de suite).
+- Les créations et refontes passent devant la simple maintenance ; chaque carte indique le nombre de
+  jours pour répondre, et **Dans tes départements** quand c'est près de chez toi.
+- **Voir l'avis officiel** ouvre l'annonce : elle indique les pièces à fournir et où déposer ton dossier.
+  Note le suivi : À étudier, Candidaté, Gagné, Perdu, Pas pour nous.
+- Il y en a peu (quelques-unes par semaine en France) et le dossier est plus long qu'un email :
+  privilégie les « procédures adaptées ».
+
+### Marketing (icône calendrier, touche 4)
 
 La rubrique marketing est dans le logiciel, à côté de tes prospects :
 
@@ -223,7 +231,7 @@ La rubrique marketing est dans le logiciel, à côté de tes prospects :
 Le planning est dans `web/marketing/planning.json`. Les cases cochées sont dans `data/prospection.db`,
 sur ton ordinateur : elles ne sont pas partagées avec ton coéquipier (chacun coche ses propres contenus).
 
-### Journal de l'équipe (icône carnet, touche 6)
+### Journal de l'équipe (icône carnet, touche 5)
 
 Pour savoir ce que l'autre a fait quand tu n'étais pas là :
 
@@ -269,6 +277,8 @@ En haut de l'écran, la pastille verte « Partagé avec … » confirme que tout
 - Ne mets jamais le dossier `data` du logiciel dans Google Drive : seule la copie dans
   « Review Maker équipe » doit y être.
 - Les recherches Google comptent sur la clé de chacun : vous pouvez utiliser la même clé.
+- Après une mise à jour, chacun n'apparaît qu'une fois dans « Partagé avec » : les fichiers laissés
+  dans le dossier par tes anciennes versions sont retirés tout seuls après 2 jours.
 
 ## 4. Règles légales intégrées
 

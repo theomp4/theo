@@ -68,11 +68,13 @@ def _noms(resultat):
     return [n for n in noms if n]
 
 
-def _chercher(params, session):
+def _chercher(params, session, actives=True):
     params = {k: v for k, v in params.items() if v}
+    if actives:
+        params["etat_administratif"] = "A"
     for essai in range(4):
         try:
-            rep = session.get(URL, params={**params, "per_page": 10, "etat_administratif": "A"}, timeout=20)
+            rep = session.get(URL, params={**params, "per_page": 10}, timeout=20)
         except (requests.ConnectionError, requests.Timeout):
             if essai == 3:
                 raise
@@ -100,7 +102,8 @@ def trouver(nom, adresse, siren=None, session=None):
     """Retrouve l'entreprise d'un commerce Google. Renvoie (résultat de l'API, confiance 0 à 1) ou (None, 0)."""
     session = session or requests.Session()
     if siren:
-        res = _chercher({"q": re.sub(r"\D", "", siren)}, session)
+        # par SIREN : y compris une entreprise fermée (l'ancien exploitant d'un commerce repris, par exemple)
+        res = _chercher({"q": re.sub(r"\D", "", siren)}, session, actives=False)
         return (res[0], 1.0) if res else (None, 0)
     cp = code_postal(adresse)
     rue = (adresse or "").split(",")[0]
@@ -155,7 +158,7 @@ def verdict(resultat, confiance, ca_minimum=CA_MINIMUM):
     effectif_txt, effectif_min = EFFECTIFS.get(tranche, ("effectif inconnu", 0))
     ca, annee = dernier_ca(resultat.get("finances"))
     infos = {
-        "siren": resultat.get("siren"), "nom": resultat.get("nom_complet"), "categorie": categorie,
+        "siren": resultat.get("siren"), "nom": re.sub(r"^(.+?) \(\1\)$", r"\1", resultat.get("nom_complet") or ""), "categorie": categorie,
         "effectif": effectif_txt, "ca": ca, "annee_ca": annee, "confiance": round(confiance, 2),
         "lien": LIEN_FICHE.format(siren=resultat.get("siren")),
         "verifie_le": datetime.now().isoformat(timespec="seconds"),

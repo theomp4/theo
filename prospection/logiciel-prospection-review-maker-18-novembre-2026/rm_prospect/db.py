@@ -62,19 +62,24 @@ CREATE TABLE IF NOT EXISTS depenses_ia (
 CREATE TABLE IF NOT EXISTS reglages (
     cle TEXT PRIMARY KEY, valeur TEXT
 );
+CREATE TABLE IF NOT EXISTS reprises (
+    id TEXT PRIMARY KEY,               -- numéro de l'annonce au BODACC
+    date TEXT, departement TEXT, categorie TEXT,
+    donnees TEXT,                      -- l'annonce lue (JSON, voir reprises.py)
+    statut TEXT DEFAULT 'nouvelle',    -- nouvelle / ajoutee (dans les prospects)
+    cle TEXT, ajoute_le TEXT
+);
+CREATE TABLE IF NOT EXISTS marches (
+    idweb TEXT PRIMARY KEY,            -- numéro de l'avis au BOAMP
+    objet TEXT, acheteur TEXT, departements TEXT, date TEXT, limite TEXT, lien TEXT, procedure TEXT, nature TEXT,
+    pertinence INTEGER, raisons TEXT,
+    statut TEXT DEFAULT 'Nouveau', notes TEXT DEFAULT '', statut_le TEXT, ajoute_le TEXT
+);
 CREATE TABLE IF NOT EXISTS journal (
     uid TEXT PRIMARY KEY,              -- identifiant unique : la même note chez Théo et chez Luke
     date TEXT, auteur TEXT, texte TEXT,
     modifie_le TEXT,                   -- dernière modification (la plus récente gagne au partage)
     supprime INTEGER DEFAULT 0         -- supprimée : gardée pour que la suppression se propage
-);
-CREATE TABLE IF NOT EXISTS codeur_projets (
-    id TEXT PRIMARY KEY,               -- numéro du projet sur Codeur.com
-    titre TEXT, lien TEXT, date TEXT,  -- date de publication (UTC)
-    budget TEXT, categories TEXT, extrait TEXT,
-    description TEXT, offres INTEGER, vues INTEGER, site TEXT, site_etat TEXT, detail_le TEXT,
-    pertinence INTEGER, type TEXT, raisons TEXT,
-    statut TEXT DEFAULT 'Nouveau', notes TEXT DEFAULT '', statut_le TEXT, ajoute_le TEXT
 );
 """
 
@@ -85,8 +90,8 @@ CREATE INDEX IF NOT EXISTS idx_commerces_espace ON commerces(espace, score);
 CREATE INDEX IF NOT EXISTS idx_commerces_place ON commerces(place_id);
 CREATE INDEX IF NOT EXISTS idx_historique_cle ON historique(cle, date);
 CREATE INDEX IF NOT EXISTS idx_historique_uid ON historique(uid);
-CREATE INDEX IF NOT EXISTS idx_codeur_date ON codeur_projets(date);
 CREATE INDEX IF NOT EXISTS idx_journal_date ON journal(date);
+CREATE INDEX IF NOT EXISTS idx_reprises_date ON reprises(departement, date);
 """
 
 
@@ -104,6 +109,7 @@ MIGRATIONS = [
     ("commerces", "entreprise", "TEXT"),               # vérification dans l'annuaire des entreprises (JSON, voir entreprises.py)
     ("commerces", "entreprise_le", "TEXT"),
     ("commerces", "siren_force", "TEXT"),              # SIREN corrigé à la main dans la fiche
+    ("commerces", "origine", "TEXT"),                  # d'où vient le prospect : {"type": "reprise", …} (BODACC)
 ]
 
 
@@ -133,7 +139,7 @@ def _ecriture_possible(conn):
 def _ouvrir(path):
     conn = sqlite3.connect(path, check_same_thread=False, timeout=30)
     conn.row_factory = sqlite3.Row
-    # WAL : la lecture n'attend plus l'écriture (recherche en cours, partage, Codeur.com en même temps).
+    # WAL : la lecture n'attend plus l'écriture (recherche en cours, partage, vérifications en même temps).
     try:
         conn.execute("PRAGMA journal_mode=WAL")
         conn.execute("PRAGMA synchronous=NORMAL")

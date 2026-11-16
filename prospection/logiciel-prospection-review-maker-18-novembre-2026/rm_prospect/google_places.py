@@ -44,6 +44,22 @@ def _convertir(place):
     }
 
 
+def chercher_lieu(conn, cle_api, texte, code_pays="FR", limite_mensuelle=900):
+    """Cherche un commerce précis (« Boulangerie Martin, 12 rue X, 69003 Lyon ») : 1 requête, 5 résultats au plus."""
+    if db.requetes_du_mois(conn) >= limite_mensuelle:
+        raise QuotaAtteint(f"Limite mensuelle de {limite_mensuelle} requêtes atteinte.")
+    rep = requests.post(URL, json={"textQuery": texte, "languageCode": pays.langue(code_pays), "regionCode": code_pays,
+                                   "pageSize": 5}, timeout=30, headers={"X-Goog-Api-Key": cle_api, "X-Goog-FieldMask": FIELD_MASK})
+    db.compter_requete(conn)
+    if rep.status_code != 200:
+        try:
+            message = rep.json()["error"]["message"]
+        except Exception:
+            message = rep.text[:300]
+        raise ErreurGoogle(f"Google a répondu {rep.status_code} : {message}")
+    return [_convertir(p) for p in rep.json().get("places", [])]
+
+
 def rechercher(conn, cle_api, espace, categorie, ville, code_pays="FR", max_pages=3, limite_mensuelle=900):
     """Cherche « mots à ville » dans un pays, enregistre les commerces dans l'espace choisi
     et renvoie (nouveaux, mis_a_jour, requetes)."""

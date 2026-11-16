@@ -222,7 +222,7 @@
   // le dégradé tricolore couvre toute la ligne, lettre par lettre
   const tri = $('.hl--tri');
   if (tri) {
-    const place = () => { const r = tri.getBoundingClientRect(); $$('.ch', tri).forEach(ch => { const c = ch.getBoundingClientRect(); ch.style.backgroundSize = `${r.width}px 100%`; ch.style.backgroundPosition = `${r.left - c.left}px 0`; }); };
+    const place = () => { $$('.ch', tri).forEach(ch => { const r = ch.closest('.wd').getBoundingClientRect(); const c = ch.getBoundingClientRect(); ch.style.backgroundSize = `${r.width}px 100%`; ch.style.backgroundPosition = `${r.left - c.left}px 0`; }); };
     document.fonts?.ready.then(place); addEventListener('resize', place); place();
   }
   $$('[data-lines]').forEach(el => {

@@ -20,3 +20,4 @@ prêt à glisser sur Netlify Drop, des captures de la maquette et un message de 
 | Chez Ennio (trattoria, Les Clayes-sous-Bois) | `prospects/chez-ennio/` | https://coruscating-zuccutto-6d6acc.netlify.app |
 | Taanneef Resto (sénégalais, Carrières-sous-Poissy) | `prospects/taanneef-resto/` | à déployer |
 | Crêperie Trésor Breton (Conflans-Sainte-Honorine) | `prospects/tresor-breton/` | à déployer |
+| Les Carrosseries Françaises (Les Alluets-le-Roi) | `prospects/carrosseries-francaises/` | à déployer |

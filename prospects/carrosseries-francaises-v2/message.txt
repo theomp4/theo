@@ -1,0 +1,72 @@
+LES CARROSSERIES FRANÇAISES
+Site en ligne : [LIEN NETLIFY]
+Contact : 01 39 65 06 68 · 24 rue des Vergers, 78580 Les Alluets-le-Roi
+Présidente (registre) : Sarah Gharzouli · Chef d'atelier cité dans les avis : Brahim
+Facebook : Les Carrosseries Françaises
+
+============================================================
+MAIL À ENVOYER (copier-coller)
+============================================================
+Objet : Les Carrosseries Françaises : votre audit en ligne + une maquette de site
+
+Bonjour Madame Gharzouli,
+
+Je m'appelle Théo, je crée des sites internet pour les entreprises des Yvelines.
+
+En préparant l'audit de votre présence en ligne (en pièce jointe), une chose m'a frappé : avec 4,9 sur 391 avis Google, Les Carrosseries Françaises ont l'une des meilleures réputations du secteur. Vos clients parlent de votre accueil, de votre équipe, de Brahim, et de voitures rendues « comme si l'accident n'avait jamais eu lieu ».
+
+Pourtant, cette réputation ne travaille pas autant qu'elle le pourrait. L'audit montre notamment que :
+- [CONSTAT 1 DE L'AUDIT]
+- [CONSTAT 2 DE L'AUDIT]
+- [CONSTAT 3 DE L'AUDIT]
+
+En faisant mes recherches, j'ai aussi relevé deux incohérences sur les annuaires en ligne :
+- votre adresse apparaît parfois au 27 rue des Vergers au lieu du 24 ;
+- vos horaires ne sont pas les mêmes d'un site à l'autre (certains vous affichent ouverts le samedi).
+
+Et surtout, vous n'avez pas de site internet : la personne qui vient d'avoir un accrochage et cherche « carrosserie agréée assurance » près de chez elle ne trouve que des annuaires.
+
+Alors je vous ai préparé une maquette de site, construite comme un petit film qu'on déroule : on traverse le « C » de votre logo pour entrer dans l'atelier, vos trois bandes bleu-blanc-rouge font le lien entre les scènes, et les 4 étapes d'un sinistre défilent sous les yeux du visiteur. Vos clients peuvent aussi envoyer une photo des dégâts pour obtenir un devis.
+
+👉 [LIEN NETLIFY]
+
+Ouvrez-le plutôt sur ordinateur, ça vaut le coup d'œil. Les photos sont celles de votre atelier (la 911, le Macan, la R8, la dépanneuse).
+
+Seriez-vous disponible 15 minutes cette semaine pour que je vous présente l'audit et la maquette, par téléphone ou directement à l'atelier ?
+
+Bien cordialement,
+
+Théo
+[TON TÉLÉPHONE]
+[TON ADRESSE MAIL]
+
+============================================================
+RELANCE (5 à 7 jours plus tard)
+============================================================
+Objet : Re : Les Carrosseries Françaises : votre audit en ligne + une maquette de site
+
+Bonjour Madame Gharzouli,
+
+Je me permets de revenir vers vous au sujet de l'audit et de la maquette de site que je vous ai envoyés pour Les Carrosseries Françaises : [LIEN NETLIFY].
+
+Je peux passer à l'atelier quand cela vous arrange pour vous les présenter en 15 minutes.
+
+Bien cordialement,
+Théo
+
+============================================================
+PIÈCES JOINTES
+============================================================
+1. Ton audit (PDF)
+2. photos/02-on-traverse-le-c.jpg : l'ouverture dans le logo
+3. photos/05-la-cabine.jpg : la cabine de peinture
+4. photos/04-le-sinistre.jpg : les 4 étapes du sinistre
+5. photos/08-mobile.jpg : la version téléphone
+
+Sur Netlify (app.netlify.com/drop), glisser UNIQUEMENT le dossier « A-GLISSER-SUR-NETLIFY » (pas le dossier entier, sinon « Page not found »).
+Adresse mail : non trouvée en ligne. À demander par téléphone (01 39 65 06 68) ou via leur page Facebook.
+
+À VÉRIFIER AVANT ENVOI
+- Remplacer les 3 constats [CONSTAT] par ceux de ton audit (ou envoie-moi l'audit et je les intègre).
+- Liste des assurances partenaires : le panneau de l'atelier en affiche une dizaine, le site dit seulement « agréé assurances ».
+- Avis : les citations sont de vrais extraits d'avis Google ; seuls les auteurs affichés en ligne sont nommés.

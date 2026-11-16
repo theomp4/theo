@@ -28,8 +28,7 @@ h1, h2, h3, p { margin: 0 }
 
 /* --- Fond photo --- */
 #bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: var(--bg) center / cover no-repeat;
-  filter: brightness(.8); transition: opacity .6s ease; animation: kb 60s ease-in-out infinite alternate }
-@keyframes kb { to { transform: scale(1.03) } }
+  filter: brightness(.8); transition: opacity .6s ease }
 .veil { position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background: radial-gradient(120% 90% at 50% 0%, transparent 40%, rgb(8 6 14 / .45)), linear-gradient(180deg, rgb(8 6 14 / .15), rgb(8 6 14 / .35)) }
 
@@ -40,7 +39,8 @@ h1, h2, h3, p { margin: 0 }
 .glass::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .4s;
   background: radial-gradient(280px circle at var(--mx, -999px) var(--my, -999px), rgb(255 255 255 / .11), transparent 60%) }
 .glass:hover::before { opacity: 1 }
-.lift { transition: transform .6s var(--spring), border-color .35s, box-shadow .35s; will-change: transform }
+.lift { transition: transform .6s var(--spring), border-color .35s, box-shadow .35s }
+.lift:hover { will-change: transform }
 .lift:hover { border-color: var(--stroke-hi); box-shadow: inset 0 1px 0 rgb(255 255 255 / .12), 0 40px 80px -40px rgb(0 0 0 / .95) }
 .hl { background: linear-gradient(155deg, rgb(167 139 250 / .50), rgb(124 92 250 / .22) 70%); border-color: rgb(221 211 255 / .35) }
 .card { padding: 18px; display: grid; gap: 12px; min-width: 0; align-content: start }
@@ -207,6 +207,20 @@ details summary::marker { color: var(--dim) }
 .cd-carte.vu { opacity: .72 }
 .cd-desc { white-space: pre-wrap; font-size: 13px; line-height: 1.6; padding: 12px 14px; max-height: 300px; overflow: auto }
 
+/* journal */
+.jr-jour { display: grid; gap: 10px }
+.jr-jour > h3 { font: 500 10px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--dim); padding-left: 4px }
+.jr-note { position: relative; padding: 14px 16px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; align-items: start }
+.jr-note .qui i { width: 30px; height: 30px; font-size: 12px }
+.jr-note .tete { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap }
+.jr-note .tete b { font-weight: 600; font-size: 13.5px }
+.jr-note .tete span { font: 11px var(--mono); color: var(--dim) }
+.jr-note .txt { grid-column: 2; white-space: pre-wrap; font-size: 13.5px; line-height: 1.55; overflow-wrap: anywhere }
+.jr-note .act { position: absolute; top: 10px; right: 12px; display: flex; gap: 6px; opacity: 0; transition: opacity .2s }
+.jr-note:hover .act, .jr-note:focus-within .act { opacity: 1 }
+.jr-note .act button { padding: 4px 11px; font-size: 11.5px }
+@media (hover: none) { .jr-note .act { opacity: 1 } }
+
 /* marketing */
 .mk-bar { padding: 12px 14px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap }
 .mk-bar .t { margin-right: auto; min-width: 0 } .mk-bar .t b { display: block; font-weight: 500 } .mk-bar .t span { font-size: 12px; color: var(--muted) }
@@ -265,6 +279,7 @@ details summary::marker { color: var(--dim) }
   .fiche { border-radius: var(--r) var(--r) 0 0; height: 92%; align-self: flex-end }
   .menu-fond { width: min(330px, calc(100vw - 32px)) }
 }
+@media (max-width: 420px) { .rail .ico { width: 38px; height: 38px } .rail .ico svg { width: 16px; height: 16px } }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important } }
 </style>
 </head>
@@ -280,7 +295,8 @@ details summary::marker { color: var(--dim) }
       <button class="nav-item" data-vue="prospects" role="tab" aria-selected="false" title="Raccourci : touche 3  ·  Mes prospects"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20"/><circle cx="10" cy="8" r="3.5"/><path d="M20 20v-1.5a3.5 3.5 0 0 0-2.5-3.35M15.5 4.6a3.5 3.5 0 0 1 0 6.8"/></svg></span>Prospects</button>
       <button class="nav-item" data-vue="codeur" role="tab" aria-selected="false" title="Raccourci : touche 4  ·  Demandes Codeur.com"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4z"/><path d="m10 9-2 2 2 2M14 9l2 2-2 2"/></svg><i class="badge" id="codeurBadge" hidden></i></span>Codeur</button>
       <button class="nav-item" data-vue="marketing" role="tab" aria-selected="false" title="Raccourci : touche 5  ·  Marketing"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span>Marketing</button>
-      <button class="nav-item" data-vue="reglages" role="tab" aria-selected="false" title="Raccourci : touche 6  ·  Réglages"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span>Réglages</button>
+      <button class="nav-item" data-vue="journal" role="tab" aria-selected="false" title="Raccourci : touche 6  ·  Journal de l'équipe"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19M9 8h6M9 12h4"/></svg><i class="badge" id="journalBadge" hidden></i></span>Journal</button>
+      <button class="nav-item" data-vue="reglages" role="tab" aria-selected="false" title="Raccourci : touche 7  ·  Réglages"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span>Réglages</button>
     </div>
     <button class="ico plus" id="plus" aria-label="Trouver de nouveaux commerces" title="Trouver de nouveaux commerces"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span class="tip">Trouver de nouveaux commerces</span></button>
   </nav>
@@ -310,6 +326,7 @@ details summary::marker { color: var(--dim) }
     <section id="vue-prospects" class="vue" hidden></section>
     <section id="vue-codeur" class="vue" hidden></section>
     <section id="vue-marketing" class="vue" hidden></section>
+    <section id="vue-journal" class="vue" hidden></section>
     <section id="vue-reglages" class="vue" hidden></section>
   </main>
 </div>
@@ -333,6 +350,7 @@ const VUES = {
   prospects: ["Mes prospects", "Tous tes commerces, du meilleur au moins bon. Clique sur un commerce pour ouvrir sa fiche."],
   codeur: ["Demandes Codeur.com", "Les projets de sites publiés sur Codeur.com, les plus récents d'abord. Réponds vite : les premiers sont les plus lus."],
   marketing: ["Marketing", "Un contenu par jour, publié sur TikTok et sur Instagram. Coche-le quand il est en ligne."],
+  journal: ["Journal de l'équipe", "Ce que Théo et Luke ont fait, au fil du temps : en un coup d'œil, tu sais où en est l'autre."],
   reglages: ["Réglages", "Ta clé Google, ton fond d'écran et tes messages prêts à copier."],
 };
 
@@ -377,9 +395,11 @@ function replay(panel) {
   panel.classList.add("enter"); clearTimeout(replay.t); replay.t = setTimeout(() => panel.classList.remove("enter"), 2600);
 }
 function switchView(from, to) {
+  clearTimeout(switchView.t);
+  document.querySelectorAll(".vue.leave").forEach(v => { v.classList.remove("leave"); if (v !== to) v.hidden = true; });
   if (REDUCED || !from || from === to) { if (from && from !== to) from.hidden = true; to.hidden = false; return replay(to); }
   from.classList.add("leave");
-  setTimeout(() => { from.hidden = true; from.classList.remove("leave"); to.hidden = false; replay(to); }, 200);
+  switchView.t = setTimeout(() => { from.hidden = true; from.classList.remove("leave"); to.hidden = false; replay(to); }, 200);
 }
 function countUp(el, to, fmt = v => nb(Math.round(v))) {
   if (!el) return;
@@ -400,7 +420,12 @@ function slide(box) {
 }
 const slideAll = () => document.querySelectorAll(".seg").forEach(slide);
 let tiltEl = null;
+let survol = null;
 document.addEventListener("pointermove", e => {
+  if (!survol) requestAnimationFrame(() => { suivreSouris(survol); survol = null; });
+  survol = e;
+});
+function suivreSouris(e) {
   const g = e.target.closest?.(".glass");
   if (g) { const r = g.getBoundingClientRect(); g.style.setProperty("--mx", e.clientX - r.left + "px"); g.style.setProperty("--my", e.clientY - r.top + "px"); }
   if (REDUCED || e.pointerType !== "mouse") return;
@@ -408,7 +433,7 @@ document.addEventListener("pointermove", e => {
   if (t !== tiltEl) { if (tiltEl) tiltEl.style.transform = ""; tiltEl = t; }
   if (t) { const r = t.getBoundingClientRect(), px = (e.clientX - r.left) / r.width - .5, py = (e.clientY - r.top) / r.height - .5;
     t.style.transform = `perspective(1000px) rotateX(${(-py * 4).toFixed(2)}deg) rotateY(${(px * 5).toFixed(2)}deg) translateY(-4px)`; }
-});
+}
 document.addEventListener("pointerleave", () => { if (tiltEl) tiltEl.style.transform = ""; tiltEl = null; });
 addEventListener("resize", slideAll);
 document.fonts?.ready.then(slideAll);
@@ -460,6 +485,7 @@ function cadre() {
   slideAll();
 }
 async function go(vue = S.vue, force) {
+  const tour = go.tour = (go.tour || 0) + 1;
   const avant = document.querySelector(`#vue-${S.vue}`), change = vue !== S.vue;
   S.vue = vue; ecrire("rm_vue", vue);
   const [t, p] = VUES[vue];
@@ -467,8 +493,11 @@ async function go(vue = S.vue, force) {
   $("#vueActions").innerHTML = "";
   cadre();
   const cible = $(`#vue-${vue}`);
-  try { await RENDUS[vue](cible); } catch (e) { cible.innerHTML = `<div class="glass card"><p>${esc(e.message)}</p></div>`; }
+  try { await RENDUS[vue](cible); } catch (e) { if (tour === go.tour) cible.innerHTML = `<div class="glass card"><p>${esc(e.message)}</p></div>`; }
+  if (tour !== go.tour) return;  // une autre page a été demandée entre-temps
+  document.querySelectorAll(".vue").forEach(v => { if (v !== cible && v !== avant) v.hidden = true; });
   if (change || force || cible.hidden) switchView(change ? avant : null, cible); else replay(cible);
+  setTimeout(slideAll, 260);  // sélecteurs mesurés une fois la page visible
 }
 document.querySelectorAll("#rail [data-vue]").forEach(b => b.onclick = () => go(b.dataset.vue));
 $("#plus").onclick = () => go("trouver");
@@ -491,6 +520,15 @@ async function chargerEtat() {
   afficherEquipe();
   const nbC = S.etat.codeur_nouveaux || 0, badge = $("#codeurBadge");
   badge.hidden = !nbC; badge.textContent = nbC > 9 ? "9+" : nbC;
+  const nbJ = S.vue === "journal" ? 0 : S.etat.journal_nouveaux || 0, bj = $("#journalBadge");
+  bj.hidden = !nbJ; bj.textContent = nbJ > 9 ? "9+" : nbJ;
+  // Le coéquipier a écrit dans le journal pendant que tu le lis : on l'affiche.
+  const notesAvant = JR.recues;
+  JR.recues = (S.etat.equipe || {}).journal || 0;
+  if (notesAvant !== null && JR.recues > notesAvant && S.vue === "journal" && !(document.activeElement && /TEXTAREA/.test(document.activeElement.tagName))) {
+    rendreJournal($("#vue-journal")).then(() => replay($("#vue-journal"))).catch(() => {});
+    toast("Nouvelle note de ton coéquipier.");
+  }
   // Le coéquipier a modifié des fiches : on rafraîchit l'écran (sauf si une fiche est ouverte ou si tu tapes).
   const eq = S.etat.equipe;
   if (avant !== null && eq && eq.recues > avant && ["accueil", "prospects"].includes(S.vue) && !$("#ficheFond")
@@ -724,8 +762,10 @@ async function ouvrirFiche(cle, nav) {
   if (!nav) FICHE.liste = await listeNavigation().catch(() => []);
   if (!FICHE.liste.includes(cle)) FICHE.liste.unshift(cle);
   FICHE.cle = cle;
+  const tour = FICHE.tour = (FICHE.tour || 0) + 1;
   let c;
   try { c = await api("prospect?" + qs({ cle })); } catch (e) { return toast(e.message); }
+  if (tour !== FICHE.tour) return;  // une autre fiche a été demandée entre-temps
   const i = FICHE.liste.indexOf(cle), n = FICHE.liste.length;
   const R = 27, C = 2 * Math.PI * R, coul = COUL_PRIO[c.priorite];
   const mailto = c.email ? `mailto:${encodeURIComponent(c.email)}?subject=${encodeURIComponent(c.mail_sujet)}&body=${encodeURIComponent(c.mail_corps)}` : "";
@@ -870,8 +910,8 @@ document.addEventListener("keydown", e => {
     return;
   }
   if (champ || e.ctrlKey || e.metaKey || e.altKey) return;
-  const vues = ["accueil", "trouver", "prospects", "codeur", "marketing", "reglages"];
-  if (e.key >= "1" && e.key <= "6") go(vues[+e.key - 1]);
+  const vues = ["accueil", "trouver", "prospects", "codeur", "marketing", "journal", "reglages"];
+  if (e.key >= "1" && e.key <= "7") go(vues[+e.key - 1]);
   else if (e.key === "/") { e.preventDefault(); $("#quick").focus(); }
 });
 
@@ -928,7 +968,9 @@ function fermerCodeur() { $("#fiche").innerHTML = ""; if (S.vue === "codeur") go
 async function ouvrirCodeur(id, relire) {
   $("#fiche").innerHTML = `<div class="fiche-wrap" id="codeurFond"><aside class="fiche glass"><p class="muted">Lecture du projet sur Codeur.com…</p></aside></div>`;
   let p;
-  try { p = await api("codeur_projet?" + qs(relire ? { id, relire: 1 } : { id })); } catch (e) { $("#fiche").innerHTML = ""; return toast(e.message); }
+  const tour = ouvrirCodeur.tour = (ouvrirCodeur.tour || 0) + 1;
+  try { p = await api("codeur_projet?" + qs(relire ? { id, relire: 1 } : { id })); } catch (e) { if (tour === ouvrirCodeur.tour) $("#fiche").innerHTML = ""; return toast(e.message); }
+  if (tour !== ouvrirCodeur.tour || !$("#codeurFond")) return;  // fermé ou autre projet ouvert entre-temps
   const ico = d => `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
   const conc = p.offres == null ? "" : p.offres < 10 ? "peu de concurrence : fonce" : p.offres < 40 ? "concurrence moyenne : soigne ta réponse" : "beaucoup d'offres déjà : démarque-toi (maquette, audit)";
   const GR = { 1: "var(--urgent)", 2: "var(--important)", 3: "var(--violet-hi)" };
@@ -979,6 +1021,78 @@ async function ouvrirCodeur(id, relire) {
     } catch (e) { toast(e.message); }
     b.disabled = false; b.innerHTML = html;
   };
+}
+
+// --- Journal de l'équipe : notes simples, partagées avec le coéquipier --------------
+const JR = { filtre: lire("rm_jr_filtre", "tous"), recues: null };
+const jrGens = nom => MK_GENS[nom] || { c: "var(--wait)", i: (nom || "?")[0].toUpperCase(), k: "" };
+function jrJour(iso) {
+  const d = new Date(iso), auj = new Date(), hier = new Date(); hier.setDate(auj.getDate() - 1);
+  const meme = (a, b) => a.toDateString() === b.toDateString();
+  return meme(d, auj) ? "Aujourd'hui" : meme(d, hier) ? "Hier" : d.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: d.getFullYear() === auj.getFullYear() ? undefined : "numeric" });
+}
+async function rendreJournal(el) {
+  const d = await api("journal");
+  const auteurs = ["Théo", "Luke"];
+  let auteur = d.moi && auteurs.includes(d.moi) ? d.moi : lire("rm_jr_auteur", d.moi || "Théo");
+  $("#vueActions").innerHTML = `<div class="seg glass" id="jrFiltre">${[["tous", "Tous"], ["Théo", "Théo"], ["Luke", "Luke"]].map(([k, n]) => `<button data-f="${k}" aria-pressed="${k === JR.filtre}">${n}</button>`).join("")}</div>`;
+  const notes = d.notes.filter(n => JR.filtre === "tous" || n.auteur === JR.filtre);
+  const semaine = new Date(Date.now() - 7 * 864e5).toISOString().slice(0, 10);
+  const cette = auteurs.map(a => `${a} ${d.notes.filter(n => n.auteur === a && n.date >= semaine).length}`).join(" · ");
+  const jours = [];
+  for (const n of notes) { const j = jrJour(n.date); if (!jours.length || jours.at(-1)[0] !== j) jours.push([j, []]); jours.at(-1)[1].push(n); }
+  const eq = d.equipe || {};
+  el.innerHTML = `<div class="bento">
+    <div class="glass card rise s12">
+      <div class="line" style="justify-content:space-between"><h2 style="font-size:15px;font-weight:600">Qu'est-ce que tu as fait ?</h2>
+        <div class="line" style="gap:8px"><span class="dim" style="font-size:12px">Écrit par</span><div class="seg" id="jrAuteur">${auteurs.map(a => `<button data-a="${a}" aria-pressed="${a === auteur}">${a}</button>`).join("")}</div></div></div>
+      <textarea id="jrTexte" rows="3" placeholder="ex. Appelé 8 garages à Lyon 7e, 2 intéressés (Garage Martin rappelle jeudi). Posté le TikTok du jour."></textarea>
+      <div class="line" style="justify-content:space-between"><span class="dim" style="font-size:12px">${eq.actif ? (eq.erreur ? `Partage en pause : ${esc(eq.erreur)}` : `Partagé avec ton coéquipier par le dossier Google Drive commun.`) : `Pour que ton coéquipier voie tes notes, active le partage dans <a href="#" data-aller="reglages">Réglages</a> (Travail en équipe).`}</span>
+        <button class="primary" id="jrAjout">Ajouter la note</button></div>
+    </div>
+    <p class="dim rise s12" style="font-size:12.5px">Notes des 7 derniers jours : ${cette}.</p>
+    <div class="s12" style="display:grid;gap:18px">${jours.length ? jours.map(([j, l]) => `<section class="jr-jour"><h3>${esc(j)}</h3>${l.map(n => noteJournal(n, d)).join("")}</section>`).join("")
+      : `<div class="glass card empty rise">${d.notes.length ? "Aucune note de " + esc(JR.filtre) + " pour l'instant." : "Aucune note pour l'instant. Écris la première : ce que tu as fait aujourd'hui, même en une phrase."}</div>`}</div>
+  </div>`;
+  slide($("#jrFiltre")); slide($("#jrAuteur"));
+  $("#jrFiltre").querySelectorAll("[data-f]").forEach(b => b.onclick = () => { JR.filtre = b.dataset.f; ecrire("rm_jr_filtre", JR.filtre); rendreJournal(el).then(() => replay(el)); });
+  $("#jrAuteur").querySelectorAll("[data-a]").forEach(b => b.onclick = () => {
+    auteur = b.dataset.a; ecrire("rm_jr_auteur", auteur);
+    $("#jrAuteur").querySelectorAll("[data-a]").forEach(x => x.setAttribute("aria-pressed", x === b)); slide($("#jrAuteur"));
+  });
+  const ajouter = async () => {
+    const texte = $("#jrTexte").value.trim();
+    if (!texte) return $("#jrTexte").focus();
+    $("#jrAjout").disabled = true;
+    try { await api("journal_ecrire", { texte, auteur }); toast("Note ajoutée."); await rendreJournal(el); replay(el); }
+    catch (e) { toast(e.message); $("#jrAjout").disabled = false; }
+  };
+  $("#jrAjout").onclick = ajouter;
+  $("#jrTexte").onkeydown = e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); ajouter(); } };
+  el.querySelectorAll("[data-jr-modif]").forEach(b => b.onclick = () => {
+    const note = b.closest(".jr-note"), txt = note.querySelector(".txt");
+    txt.innerHTML = `<textarea rows="3">${esc(d.notes.find(n => n.uid === b.dataset.jrModif).texte)}</textarea>`;
+    const zone = txt.querySelector("textarea"); zone.focus();
+    b.textContent = "Enregistrer"; b.onclick = async () => {
+      try { await api("journal_ecrire", { uid: b.dataset.jrModif, texte: zone.value }); toast("Note modifiée."); await rendreJournal(el); } catch (e) { toast(e.message); }
+    };
+  });
+  el.querySelectorAll("[data-jr-suppr]").forEach(b => b.onclick = async () => {
+    if (b.dataset.ok !== "1") { b.dataset.ok = "1"; b.textContent = "Confirmer la suppression"; return; }
+    try { await api("journal_ecrire", { uid: b.dataset.jrSuppr, supprimer: true }); toast("Note supprimée."); await rendreJournal(el); } catch (e) { toast(e.message); }
+  });
+  // Ouvrir le journal = lu : la pastille du menu disparaît.
+  api("journal_vu", {}).then(() => { $("#journalBadge").hidden = true; }).catch(() => {});
+}
+function noteJournal(n, d) {
+  const g = jrGens(n.auteur), neuf = d.moi && n.auteur !== d.moi && n.date > (d.vu_le || "");
+  const heure = new Date(n.date).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+  const modifiee = n.modifie_le && n.modifie_le.slice(0, 16) > n.date.slice(0, 16);
+  return `<article class="glass jr-note rise"><span class="qui" style="--c:${g.c}"><i>${esc(g.i)}</i></span>
+    <div class="tete"><b>${esc(n.auteur)}</b><span>${heure}${modifiee ? " · modifiée" : ""}</span>${neuf ? `<span class="chip" style="--c:var(--ok)">Nouveau</span>` : ""}</div>
+    <div class="txt">${esc(n.texte)}</div>
+    <div class="act"><button data-jr-modif="${esc(n.uid)}">Modifier</button><button data-jr-suppr="${esc(n.uid)}">Supprimer</button></div>
+  </article>`;
 }
 
 // --- Marketing : un contenu par jour, publié sur TikTok et sur Instagram -----------
@@ -1155,7 +1269,7 @@ async function rendreReglages(el) {
   };
 }
 
-const RENDUS = { accueil: rendreAccueil, trouver: rendreTrouver, prospects: rendreProspects, codeur: rendreCodeur, marketing: rendreMarketing, reglages: rendreReglages };
+const RENDUS = { accueil: rendreAccueil, trouver: rendreTrouver, prospects: rendreProspects, codeur: rendreCodeur, marketing: rendreMarketing, journal: rendreJournal, reglages: rendreReglages };
 
 // --- Démarrage ------------------------------------------------------------------
 (async () => {
@@ -1166,6 +1280,7 @@ const RENDUS = { accueil: rendreAccueil, trouver: rendreTrouver, prospects: rend
 })();
 // Page fermée : le logiciel s'arrête aussitôt (sauf si une recherche est en cours).
 addEventListener("pagehide", () => navigator.sendBeacon("/api/quitter", "{}"));
+document.addEventListener("visibilitychange", () => { if (!document.hidden) chargerEtat().catch(() => {}); });
 </script>
 </body>
 </html>

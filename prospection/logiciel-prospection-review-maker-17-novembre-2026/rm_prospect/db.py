@@ -62,6 +62,12 @@ CREATE TABLE IF NOT EXISTS depenses_ia (
 CREATE TABLE IF NOT EXISTS reglages (
     cle TEXT PRIMARY KEY, valeur TEXT
 );
+CREATE TABLE IF NOT EXISTS journal (
+    uid TEXT PRIMARY KEY,              -- identifiant unique : la même note chez Théo et chez Luke
+    date TEXT, auteur TEXT, texte TEXT,
+    modifie_le TEXT,                   -- dernière modification (la plus récente gagne au partage)
+    supprime INTEGER DEFAULT 0         -- supprimée : gardée pour que la suppression se propage
+);
 CREATE TABLE IF NOT EXISTS codeur_projets (
     id TEXT PRIMARY KEY,               -- numéro du projet sur Codeur.com
     titre TEXT, lien TEXT, date TEXT,  -- date de publication (UTC)
@@ -70,6 +76,17 @@ CREATE TABLE IF NOT EXISTS codeur_projets (
     pertinence INTEGER, type TEXT, raisons TEXT,
     statut TEXT DEFAULT 'Nouveau', notes TEXT DEFAULT '', statut_le TEXT, ajoute_le TEXT
 );
+"""
+
+
+# Index : les listes s'affichent vite même avec des milliers de commerces.
+INDEX = """
+CREATE INDEX IF NOT EXISTS idx_commerces_espace ON commerces(espace, score);
+CREATE INDEX IF NOT EXISTS idx_commerces_place ON commerces(place_id);
+CREATE INDEX IF NOT EXISTS idx_historique_cle ON historique(cle, date);
+CREATE INDEX IF NOT EXISTS idx_historique_uid ON historique(uid);
+CREATE INDEX IF NOT EXISTS idx_codeur_date ON codeur_projets(date);
+CREATE INDEX IF NOT EXISTS idx_journal_date ON journal(date);
 """
 
 
@@ -114,9 +131,26 @@ def _ecriture_possible(conn):
 
 
 def _ouvrir(path):
-    conn = sqlite3.connect(path, check_same_thread=False, timeout=20)
+    conn = sqlite3.connect(path, check_same_thread=False, timeout=30)
     conn.row_factory = sqlite3.Row
+    # WAL : la lecture n'attend plus l'écriture (recherche en cours, partage, Codeur.com en même temps).
+    try:
+        conn.execute("PRAGMA journal_mode=WAL")
+        conn.execute("PRAGMA synchronous=NORMAL")
+    except sqlite3.OperationalError:
+        pass  # base en lecture seule : traité dans connect()
     return conn
+
+
+def copier_base(source, cible):
+    """Copie une base SQLite proprement (y compris ce qui est encore dans son journal)."""
+    src = sqlite3.connect(f"file:{source}?mode=ro", uri=True)
+    dst = sqlite3.connect(cible)
+    try:
+        src.backup(dst)
+    finally:
+        src.close()
+        dst.close()
 
 
 def connect(path=None):
@@ -139,6 +173,7 @@ def connect(path=None):
     for table, colonne, type_ in MIGRATIONS:
         if colonne not in {r[1] for r in conn.execute(f"PRAGMA table_info({table})")}:
             conn.execute(f"ALTER TABLE {table} ADD COLUMN {colonne} {type_}")
+    conn.executescript(INDEX)
     sans_uid = conn.execute("SELECT id FROM historique WHERE uid IS NULL").fetchall()
     for (i,) in sans_uid:
         conn.execute("UPDATE historique SET uid=? WHERE id=?", (uuid.uuid4().hex, i))

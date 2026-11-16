@@ -90,7 +90,7 @@ s'arrête avant ta limite.
 Choisis d'abord l'espace en haut de l'écran : **Tags NFC** ou **Sites internet**. Le menu est la colonne
 à gauche : Accueil, Trouver, Prospects, Réglages.
 
-**Raccourcis clavier** : touches `1` à `6` pour changer de page, `/` pour chercher un prospect.
+**Raccourcis clavier** : touches `1` à `7` pour changer de page, `/` pour chercher un prospect.
 Dans une fiche : `←` `→` pour passer au commerce précédent ou suivant, `Échap` pour fermer.
 
 **Le plus rapide pour prospecter** : sur l'Accueil, clique sur **Contacter le meilleur prospect**.
@@ -222,6 +222,21 @@ La rubrique marketing est dans le logiciel, à côté de tes prospects :
 
 Le planning est dans `web/marketing/planning.json`. Les cases cochées sont dans `data/prospection.db`,
 sur ton ordinateur : elles ne sont pas partagées avec ton coéquipier (chacun coche ses propres contenus).
+
+### Journal de l'équipe (icône carnet, touche 6)
+
+Pour savoir ce que l'autre a fait quand tu n'étais pas là :
+
+- Écris en une ou deux phrases ce que tu as fait (« Appelé 8 garages à Lyon 7e, 2 intéressés »),
+  choisis **Théo** ou **Luke**, puis **Ajouter la note** (ou Ctrl + Entrée, Cmd + Entrée sur Mac).
+- Les notes s'affichent du plus récent au plus ancien, par jour, avec le prénom et l'heure.
+  Les onglets **Tous / Théo / Luke** filtrent.
+- Les notes passent par le **dossier Google Drive commun** (Réglages > Travail en équipe), comme les
+  prospects : ton coéquipier les reçoit en quelques secondes.
+- Une **pastille** sur l'icône Journal compte les notes de ton coéquipier depuis ta dernière visite ;
+  elles sont marquées **Nouveau**.
+- Passe la souris sur une note pour la **modifier** ou la **supprimer** (la modification arrive aussi
+  chez l'autre).
 
 ### Réglages utiles
 

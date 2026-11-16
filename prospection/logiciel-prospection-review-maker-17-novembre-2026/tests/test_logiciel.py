@@ -248,3 +248,33 @@ def test_codeur_flux_pertinence_et_proposition():
     assert codeur.site_mentionne("écrivez à moi@exemple.fr") is None
     texte = codeur.proposition({**site, "type": type_site}, "Théo", "990 €", "[DÉLAI]", "- Il met 5 secondes à s'ouvrir")
     assert "Création d'un site vitrine" in texte and "990 €" in texte and "[DÉLAI]" not in texte and "5 secondes" in texte
+
+
+def test_journal_partage_entre_theo_et_luke(tmp_path):
+    from rm_prospect import equipe
+    theo, luke = db.connect(tmp_path / "theo.db"), db.connect(tmp_path / "luke.db")
+    assert theo.execute("PRAGMA journal_mode").fetchone()[0] == "wal"
+    theo.execute("INSERT INTO journal(uid, date, auteur, texte, modifie_le) VALUES('n1', '2026-11-16T10:00:00', 'Théo', "
+                 "'Appelé 8 garages', '2026-11-16T10:00:00.000')")
+    theo.commit()
+    recues = equipe.fusionner(luke, equipe.instantane(theo, "Théo"))
+    assert "journal:n1" in recues
+    assert tuple(luke.execute("SELECT auteur, texte FROM journal").fetchone()) == ("Théo", "Appelé 8 garages")
+    # Luke corrige la note : la modification la plus récente gagne, chez Théo aussi
+    luke.execute("UPDATE journal SET texte='Appelé 9 garages', modifie_le='2026-11-16T11:00:00.000'")
+    luke.commit()
+    equipe.fusionner(theo, equipe.instantane(luke, "Luke"))
+    assert theo.execute("SELECT texte FROM journal").fetchone()[0] == "Appelé 9 garages"
+    # une vieille copie ne revient pas en arrière, et la suppression se propage
+    assert not equipe.fusionner(luke, equipe.instantane(theo, "Théo"))
+    theo.execute("UPDATE journal SET supprime=1, modifie_le='2026-11-16T12:00:00.000'")
+    theo.commit()
+    equipe.fusionner(luke, equipe.instantane(theo, "Théo"))
+    assert luke.execute("SELECT supprime FROM journal").fetchone()[0] == 1
+
+
+def test_copie_de_base_en_mode_wal(tmp_path):
+    source = db.connect(tmp_path / "ancienne.db")
+    db.set_reglage(source, "prenom", "Luke")  # encore dans le journal WAL, pas dans le fichier principal
+    db.copier_base(tmp_path / "ancienne.db", tmp_path / "nouvelle.db")
+    assert db.get_reglage(db.connect(tmp_path / "nouvelle.db"), "prenom") == "Luke"

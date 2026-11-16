@@ -32,7 +32,8 @@ def instantane(conn, prenom):
         commerces.append({k: r[k] for k in r.keys() if k not in NON_EXPORTES})
     historique = [dict(r) for r in conn.execute(
         "SELECT cle, date, canal, detail, auteur, uid FROM historique ORDER BY uid")]
-    return {"format": 1, "prenom": prenom, "commerces": commerces, "historique": historique}
+    journal = [dict(r) for r in conn.execute("SELECT uid, date, auteur, texte, modifie_le, supprime FROM journal ORDER BY uid")]
+    return {"format": 1, "prenom": prenom, "commerces": commerces, "historique": historique, "journal": journal}
 
 
 def exporter(conn, dossier, prenom, poste, dernier_contenu=None):
@@ -120,6 +121,19 @@ def fusionner(conn, donnees):
                          (h.get("cle"), h.get("date"), h.get("canal"), h.get("detail"), h.get("auteur"), h["uid"]))
             connus.add(h["uid"])
             modifiees.add(h.get("cle"))
+    # Journal : notes nouvelles, modifiées ou supprimées chez le coéquipier (la modification la plus récente gagne).
+    for j in donnees.get("journal", []):
+        if not j.get("uid"):
+            continue
+        moi = conn.execute("SELECT modifie_le FROM journal WHERE uid=?", (j["uid"],)).fetchone()
+        if moi is None:
+            conn.execute("INSERT INTO journal(uid, date, auteur, texte, modifie_le, supprime) VALUES(?, ?, ?, ?, ?, ?)",
+                         (j["uid"], j.get("date"), j.get("auteur"), j.get("texte"), j.get("modifie_le"), j.get("supprime") or 0))
+            modifiees.add(f"journal:{j['uid']}")
+        elif _plus_recent(j.get("modifie_le"), moi["modifie_le"]):
+            conn.execute("UPDATE journal SET texte=?, supprime=?, modifie_le=? WHERE uid=?",
+                         (j.get("texte"), j.get("supprime") or 0, j.get("modifie_le"), j["uid"]))
+            modifiees.add(f"journal:{j['uid']}")
     conn.commit()
     modifiees.discard(None)
     return modifiees

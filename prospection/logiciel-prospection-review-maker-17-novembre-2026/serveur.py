@@ -34,7 +34,7 @@ if sys.stdout is None or sys.stderr is None:
 ICI = Path(__file__).resolve().parent
 WEB = ICI / "web"
 PORT = int(os.environ.get("RM_PORT", "8765"))  # RM_PORT : tests
-VERSION = "16 novembre 2026 (Codeur.com)"  # affichée dans Réglages : permet de vérifier que la mise à jour est bien installée
+VERSION = "17 novembre 2026 (rapide + journal)"  # affichée dans Réglages : permet de vérifier que la mise à jour est bien installée
 EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$")
 
 
@@ -51,7 +51,10 @@ def recuperer_ancienne_version():
     if anciennes:
         plus_recente = max(anciennes, key=lambda b: b.stat().st_mtime)
         db.DATA_DIR.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(plus_recente, db.DB_PATH)  # copie neuve : jamais en lecture seule
+        try:
+            db.copier_base(plus_recente, db.DB_PATH)  # copie cohérente, journal compris ; jamais en lecture seule
+        except Exception:
+            shutil.copyfile(plus_recente, db.DB_PATH)
         print(f"{datetime.now():%d/%m %H:%M} Prospects repris de {plus_recente.parent.parent.name}.")
 
 
@@ -140,7 +143,7 @@ def photo_fond(nom, mini):
 if not db.get_reglage(conn, "poste"):
     db.set_reglage(conn, "poste", uuid.uuid4().hex[:6])  # identifie cet ordinateur dans le dossier partagé
 db.AUTEUR = db.get_reglage(conn, "prenom")
-SYNCHRO = {"actif": False, "derniere": None, "coequipiers": [], "erreur": "", "recues": 0}
+SYNCHRO = {"actif": False, "derniere": None, "coequipiers": [], "erreur": "", "recues": 0, "journal": 0}
 REVEIL_SYNCHRO = threading.Event()  # réveille la synchronisation après une modification
 
 
@@ -162,11 +165,17 @@ def synchroniser(c_conn, etat):
     poste = db.get_reglage(c_conn, "poste")
     try:
         modifiees, SYNCHRO["coequipiers"] = equipe.importer(c_conn, dossier, poste, etat.setdefault("lus", {}))
-        for cle in modifiees:
+        notes = {c for c in modifiees if c.startswith("journal:")}
+        for cle in modifiees - notes:
             if c_conn.execute("SELECT 1 FROM commerces WHERE cle=?", (cle,)).fetchone():
                 recalculer(c_conn, cle)
-        SYNCHRO["recues"] += len(modifiees)
-        etat["contenu"] = equipe.exporter(c_conn, dossier, prenom, poste, etat.get("contenu"))
+        SYNCHRO["recues"] += len(modifiees - notes)
+        SYNCHRO["journal"] += len(notes)
+        # On ne refabrique ma copie que si la base a changé depuis la dernière fois (sinon : rien à faire).
+        empreinte = (c_conn.execute("PRAGMA data_version").fetchone()[0], c_conn.total_changes, prenom, dossier)
+        if empreinte != etat.get("empreinte"):
+            etat["contenu"] = equipe.exporter(c_conn, dossier, prenom, poste, etat.get("contenu"))
+            etat["empreinte"] = empreinte
         SYNCHRO.update(derniere=db.maintenant(), erreur="")
     except OSError as e:
         SYNCHRO["erreur"] = f"Impossible d'écrire dans le dossier partagé : {e}"
@@ -309,7 +318,8 @@ def api_codeur_actualiser(d):
 
 
 def api_codeur_projet(q):
-    p = projet_codeur(q["id"])
+    with VERROU:
+        p = projet_codeur(q["id"])
     if not p.get("detail_le") or q.get("relire"):
         try:
             d = codeur.detail(p["lien"])
@@ -322,17 +332,20 @@ def api_codeur_projet(q):
             except Exception:
                 etat = json.dumps({"injoignable": True})
         score, type_, raisons = codeur.pertinence({**p, "description": d["description"]})
-        conn.execute("UPDATE codeur_projets SET description=?, offres=?, vues=?, site=?, site_etat=?, detail_le=?, "
-                     "pertinence=?, type=?, raisons=? WHERE id=?",
-                     (d["description"], d["offres"], d["vues"], d["site"], etat, db.maintenant(), score, type_,
-                      " ; ".join(raisons), p["id"]))
-        conn.commit()
+        with VERROU:
+            conn.execute("UPDATE codeur_projets SET description=?, offres=?, vues=?, site=?, site_etat=?, detail_le=?, "
+                         "pertinence=?, type=?, raisons=? WHERE id=?",
+                         (d["description"], d["offres"], d["vues"], d["site"], etat, db.maintenant(), score, type_,
+                          " ; ".join(raisons), p["id"]))
+            conn.commit()
+    with VERROU:
         p = projet_codeur(p["id"])
+        signature, prix, delai = R("signature"), R("site_prix"), R("site_delai")
     c = commerce_du_projet(p) if p.get("site") else None
     points = audit.points_message(c) if c else ""
     return {**p, "points_site": points, "analyse": [{k: v for k, v in a.items() if k != "court"} for a in audit.constats(c)] if c else [],
             "note_site": audit.note_site(c) if c else None,
-            "proposition": codeur.proposition(p, R("signature"), R("site_prix"), R("site_delai"), points)}
+            "proposition": codeur.proposition(p, signature, prix, delai, points)}
 
 
 def api_codeur_maj(d):
@@ -348,17 +361,66 @@ def api_codeur_maj(d):
 
 
 def api_codeur_audit(q):
-    p = projet_codeur(q["id"])
+    with VERROU:
+        p = projet_codeur(q["id"])
+        signature, prix, delai = R("signature", REGLAGES["signature"]), R("site_prix"), R("site_delai")
     if not p.get("site"):
         raise ErreurAPI("Ce projet ne cite pas de site existant.")
     c = commerce_du_projet(p)
     if not (codeur_etat := etat_site(c)) or not codeur_etat.get("analyse"):
         c["site_etat"] = json.dumps(enrich.analyser_accueil(p["site"])[1], ensure_ascii=False)
-        conn.execute("UPDATE codeur_projets SET site_etat=? WHERE id=?", (c["site_etat"], p["id"]))
-        conn.commit()
-    signature = R("signature", REGLAGES["signature"])
+        with VERROU:
+            conn.execute("UPDATE codeur_projets SET site_etat=? WHERE id=?", (c["site_etat"], p["id"]))
+            conn.commit()
     expediteur = signature.splitlines()[1] if len(signature.splitlines()) > 1 else "Review Maker"
-    return audit.pdf(c, expediteur, signature, R("site_prix"), R("site_delai")), "application/pdf", f"Audit site - {c['nom']}.pdf"
+    return audit.pdf(c, expediteur, signature, prix, delai), "application/pdf", f"Audit site - {c['nom']}.pdf"
+
+
+# --- Journal : ce que Théo et Luke ont fait, au fil du temps ----------------------------
+
+def journal_nouveaux():
+    """Notes du coéquipier écrites depuis la dernière fois que j'ai ouvert le journal."""
+    moi, vu = R("prenom"), R("journal_vu_le", "")
+    return conn.execute("SELECT COUNT(*) FROM journal WHERE supprime=0 AND date>? AND auteur!=?",
+                        (vu, moi or "\x00")).fetchone()[0] if moi else 0
+
+
+def api_journal(q):
+    notes = [dict(r) for r in conn.execute(
+        "SELECT uid, date, auteur, texte, modifie_le FROM journal WHERE supprime=0 ORDER BY date DESC LIMIT 1000")]
+    return {"notes": notes, "moi": R("prenom"), "vu_le": R("journal_vu_le", ""), "equipe": SYNCHRO}
+
+
+def api_journal_vu(d):
+    db.set_reglage(conn, "journal_vu_le", db.maintenant())
+    return {"ok": True}
+
+
+def api_journal_ecrire(d):
+    """Ajoute une note (sans uid), la modifie ou la supprime (avec uid)."""
+    texte = (d.get("texte") or "").strip()
+    if d.get("uid"):
+        row = conn.execute("SELECT uid FROM journal WHERE uid=?", (d["uid"],)).fetchone()
+        if not row:
+            raise ErreurAPI("Note introuvable.")
+        if d.get("supprimer"):
+            conn.execute("UPDATE journal SET supprime=1, modifie_le=? WHERE uid=?", (db.maintenant_precis(), d["uid"]))
+        else:
+            if not texte:
+                raise ErreurAPI("La note est vide.")
+            conn.execute("UPDATE journal SET texte=?, modifie_le=? WHERE uid=?", (texte[:5000], db.maintenant_precis(), d["uid"]))
+    else:
+        auteur = (d.get("auteur") or R("prenom") or "").strip()
+        if not texte:
+            raise ErreurAPI("Écris d'abord ce que tu as fait.")
+        if not auteur:
+            raise ErreurAPI("Choisis qui écrit la note (Théo ou Luke).")
+        maintenant = db.maintenant_precis()
+        conn.execute("INSERT INTO journal(uid, date, auteur, texte, modifie_le) VALUES(?, ?, ?, ?, ?)",
+                     (uuid.uuid4().hex, maintenant[:19], auteur[:40], texte[:5000], maintenant))
+    conn.commit()
+    REVEIL_SYNCHRO.set()  # partage tout de suite avec le coéquipier
+    return {"ok": True}
 
 
 # --- Tâches longues ----------------------------------------------------------------
@@ -385,15 +447,14 @@ def lancer_job(fonction, *args):
     return {"job": jid}
 
 
-def job_recherche(job, c_conn, espace, cats, ville, code_pays, pages):
+def job_recherche(job, c_conn, espace, cats, ville, code_pays, pages, cle_google, limite):
     total_n = total_m = 0
     for i, cat in enumerate(cats):
         if job["annule"]:
             break
         job["texte"] = f"{cat}…"
         try:
-            n, m, _ = google_places.rechercher(c_conn, R("cle_google"), espace, cat, ville, code_pays, pages,
-                                               int(R("limite_google", "900")))
+            n, m, _ = google_places.rechercher(c_conn, cle_google, espace, cat, ville, code_pays, pages, limite)
         except google_places.QuotaAtteint as e:
             raise ErreurAPI(f"{e} Augmente la limite dans Réglages seulement si tu as vérifié ton quota gratuit.")
         total_n += n
@@ -402,17 +463,15 @@ def job_recherche(job, c_conn, espace, cats, ville, code_pays, pages):
     return f"{total_n} nouveaux commerces, {total_m} mis à jour."
 
 
-def verifier_entreprise(c_conn, c, session=None):
-    """Vérifie l'entreprise dans l'annuaire officiel et met à jour toutes ses fiches. Renvoie le verdict."""
-    res = entreprises.verifier(c, ca_minimum(), session)
+def enregistrer_entreprise(c_conn, c, res):
+    """Enregistre la vérification de l'entreprise dans toutes ses fiches. Renvoie le verdict."""
     c_conn.execute("UPDATE commerces SET entreprise=?, entreprise_le=? WHERE place_id=?",
                    (json.dumps(res, ensure_ascii=False), db.maintenant(), c["place_id"]))
     c_conn.commit()
     return res
 
 
-def analyser_site(c_conn, c):
-    res = enrich.enrichir_site(c["site_web"])
+def enregistrer_analyse(c_conn, c, res):
     etat = json.dumps(res["site_etat"], ensure_ascii=False) if res["site_etat"] else None
     # Le même commerce peut exister dans les deux espaces : on met à jour les deux fiches.
     c_conn.execute("UPDATE commerces SET email=COALESCE(email, ?), instagram=COALESCE(instagram, ?), "
@@ -427,7 +486,7 @@ def recalculer_place(c_conn, place_id):
         recalculer(c_conn, r["cle"])
 
 
-def job_enrichir(job, c_conn, lot):
+def job_enrichir(job, c_conn, lot, minimum):
     """1. Vérifie l'entreprise (PME, chiffre d'affaires minimum). 2. Si elle est dans la cible : visite son site
     (email, Instagram, analyse de base pour le message et l'audit)."""
     session = requests.Session()
@@ -439,13 +498,14 @@ def job_enrichir(job, c_conn, lot):
         job["texte"] = f"{c['nom']} : vérification de l'entreprise…"
         e = entreprise_de(c)
         if not c.get("entreprise_le"):
-            e = verifier_entreprise(c_conn, c, session)
+            e = enregistrer_entreprise(c_conn, c, entreprises.verifier(c, minimum, session))
             verifiees += 1
         if e and e.get("verdict") == "exclu":
             exclues += 1
         elif c.get("site_web") and not c.get("enrichi_le"):
             job["texte"] = f"{c['nom']} : analyse du site…"
-            res = analyser_site(c_conn, c)
+            res = enrich.enrichir_site(c["site_web"])
+            enregistrer_analyse(c_conn, c, res)
             analyses += 1
             trouves += bool(res["email"])
             injoignables += bool((res["site_etat"] or {}).get("injoignable"))
@@ -469,7 +529,7 @@ def api_etat(q):
     return {
         "fond": R("fond", "salon"), "espaces": db.ESPACES, "statuts": db.STATUTS, "version": VERSION, "dossier": str(ICI),
         "requetes": db.requetes_du_mois(conn), "limite_google": int(R("limite_google", "900")),
-        "equipe": SYNCHRO, "codeur_nouveaux": nouveaux_codeur(),
+        "equipe": SYNCHRO, "codeur_nouveaux": nouveaux_codeur(), "journal_nouveaux": journal_nouveaux(),
     }
 
 
@@ -538,7 +598,7 @@ def api_recherche(d):
     # Aucun type choisi : le logiciel prend lui-même les types les plus adaptés.
     categories = d.get("categories") or types_adaptes(d["espace"])
     return lancer_job(job_recherche, d["espace"], categories, d["ville"].strip(), d["pays"],
-                      max(1, min(3, int(d.get("pages", 3)))))
+                      max(1, min(3, int(d.get("pages", 3)))), R("cle_google"), int(R("limite_google", "900")))
 
 
 def api_enrichir(d):
@@ -548,7 +608,7 @@ def api_enrichir(d):
              AND COALESCE(json_extract(entreprise, '$.verdict'), '') != 'exclu')) ORDER BY score DESC LIMIT ?""", (d["espace"], int(d.get("combien", 50))))]
     if not lot:
         raise ErreurAPI("Toutes les entreprises sont déjà vérifiées et tous les sites analysés.")
-    return lancer_job(job_enrichir, lot)
+    return lancer_job(job_enrichir, lot, ca_minimum())
 
 
 def site_resume(c):
@@ -606,43 +666,58 @@ def api_prospect(q):
             "mail_sujet": remplir(m["sujets"].splitlines()[0]), "mail_corps": remplir(m["corps"])}
 
 
+# Les pages qui vont sur internet (plusieurs secondes) ne gardent le verrou de la base que pour lire et écrire :
+# pendant qu'elles attendent un site, le reste du logiciel continue de répondre.
+
 def api_audit(q):
     """Le document d'audit du site, en PDF, à joindre au message de prospection."""
-    c = commerce(q["cle"])
+    with VERROU:
+        c = commerce(q["cle"])
+        signature, prix, delai = R("signature", REGLAGES["signature"]), R("site_prix"), R("site_delai")
     etat = etat_site(c)
     if c.get("site_web") and not sans_vrai_site(c["site_web"]) and (etat is None or not etat.get("analyse")):
-        analyser_site(conn, c)  # pas encore analysé, ou analysé par une ancienne version : on le refait
-        recalculer_place(conn, c["place_id"])
-        c = commerce(q["cle"])
-    signature = R("signature", REGLAGES["signature"])
+        res = enrich.enrichir_site(c["site_web"])  # pas encore analysé, ou par une ancienne version : on le refait
+        with VERROU:
+            enregistrer_analyse(conn, c, res)
+            recalculer_place(conn, c["place_id"])
+            c = commerce(q["cle"])
     expediteur = signature.splitlines()[1] if len(signature.splitlines()) > 1 else "Review Maker"
-    contenu = audit.pdf(c, expediteur, signature, R("site_prix"), R("site_delai"))
-    db.ajouter_historique(conn, c["cle"], "Fiche", "Audit PDF créé")
+    contenu = audit.pdf(c, expediteur, signature, prix, delai)
+    with VERROU:
+        db.ajouter_historique(conn, c["cle"], "Fiche", "Audit PDF créé")
     nom = re.sub(r'[\\/:*?"<>|]+', " ", c.get("nom") or "commerce").strip()
     return contenu, "application/pdf", f"Audit site - {nom}.pdf"
 
 
 def api_entreprise(d):
     """Corrige l'entreprise rattachée à la fiche (SIREN tapé à la main), ou relance la vérification."""
-    c = commerce(d["cle"])
     siren = re.sub(r"\D", "", d.get("siren") or "")
     if siren and len(siren) not in (9, 14):
         raise ErreurAPI("Un SIREN a 9 chiffres (ou un SIRET 14 chiffres).")
-    conn.execute("UPDATE commerces SET siren_force=? WHERE place_id=?", (siren[:9] or None, c["place_id"]))
+    with VERROU:
+        c = commerce(d["cle"])
+        conn.execute("UPDATE commerces SET siren_force=? WHERE place_id=?", (siren[:9] or None, c["place_id"]))
+        conn.commit()
+        minimum = ca_minimum()
     c["siren_force"] = siren[:9] or None
-    res = verifier_entreprise(conn, c)
-    recalculer_place(conn, c["place_id"])
+    res = entreprises.verifier(c, minimum)
+    with VERROU:
+        enregistrer_entreprise(conn, c, res)
+        recalculer_place(conn, c["place_id"])
     if res.get("erreur"):
         raise ErreurAPI(res["raison"])
     return {"ok": True, "verdict": res.get("verdict")}
 
 
 def api_reanalyser(d):
-    c = commerce(d["cle"])
+    with VERROU:
+        c = commerce(d["cle"])
     if not c.get("site_web"):
         raise ErreurAPI("Ce commerce n'a pas de site à analyser.")
-    analyser_site(conn, c)
-    recalculer_place(conn, c["place_id"])
+    res = enrich.enrichir_site(c["site_web"])
+    with VERROU:
+        enregistrer_analyse(conn, c, res)
+        recalculer_place(conn, c["place_id"])
     return {"ok": True}
 
 
@@ -769,12 +844,16 @@ def api_marketing_fait(d):
 GET = {"etat": api_etat, "tableau": api_tableau, "trouver": api_trouver, "prospects": api_prospects,
        "prospect": api_prospect, "reglages": api_reglages, "job": api_job,
        "marketing": api_marketing, "audit": api_audit, "codeur": api_codeur, "codeur_projet": api_codeur_projet,
-       "codeur_audit": api_codeur_audit}
+       "codeur_audit": api_codeur_audit, "journal": api_journal}
 POST = {"recherche": api_recherche, "enrichir": api_enrichir, "prospect": api_maj_prospect, "export": api_export,
         "reglages": api_enregistrer_reglages, "annuler": api_annuler,
         "choisir_dossier": api_choisir_dossier, "synchroniser": api_synchroniser, "quitter": lambda d: api_quitter(d),
         "marketing_fait": api_marketing_fait, "entreprise": api_entreprise, "reanalyser": api_reanalyser,
-        "codeur_actualiser": api_codeur_actualiser, "codeur_maj": api_codeur_maj}
+        "codeur_actualiser": api_codeur_actualiser, "codeur_maj": api_codeur_maj,
+        "journal_ecrire": api_journal_ecrire, "journal_vu": api_journal_vu}
+
+
+SANS_VERROU = {"choisir_dossier", "codeur_actualiser", "codeur_projet", "codeur_audit", "audit", "entreprise", "reanalyser"}
 
 
 # --- Serveur ---------------------------------------------------------------------
@@ -795,7 +874,7 @@ def fichier_statique(chemin):
 
 
 DERNIER_SIGNE = time.monotonic()  # dernière requête de la page ouverte dans le navigateur
-ARRET_APRES = 150                 # secondes sans signe de la page (onglet endormi…) avant l'arrêt
+ARRET_APRES = 30 * 60             # secondes sans signe de la page avant l'arrêt (Safari endort les onglets cachés)
 PAGE_FERMEE = None                # moment où la page a dit « je me ferme »
 DELAI_FERMETURE = 4               # secondes d'attente : une page rechargée se reconnecte avant
 
@@ -850,7 +929,7 @@ class Gestionnaire(BaseHTTPRequestHandler):
         if not fonction:
             return self._json(404, {"erreur": "Page inconnue."})
         try:
-            if nom in ("choisir_dossier", "codeur_actualiser"):  # peut être long : ne bloque pas le reste
+            if nom in SANS_VERROU:  # va sur internet : gère lui-même le verrou, pour ne pas bloquer le reste
                 resultat = fonction(donnees)
             else:
                 with VERROU:
@@ -966,6 +1045,12 @@ def main():
         serveur.serve_forever()
     except KeyboardInterrupt:
         pass
+    finally:
+        try:
+            with VERROU:
+                conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")  # tout ranger dans prospection.db avant de quitter
+        except Exception:
+            pass
 
 
 if __name__ == "__main__":

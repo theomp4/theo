@@ -68,19 +68,19 @@
     tl.to('.s1 .wipe i', { xPercent: 0, duration: .55, stagger: .08, ease: 'power2.inOut' }, end)
       .to({}, { duration: .3 });
   });
-  gsap.set('.s1 .wipe i', { xPercent: -260, skewX: -22 });
+  gsap.set('.s1 .wipe i', { xPercent: -460, skewX: -22 });
 
   /* ---------- scène 2 : compteur ---------- */
   const steps = $$('.s2__steps article'), ticks = $$('.s2__ticks i');
   gsap.set('.s2 .wipe i', { xPercent: 0, skewX: -22 });
   scene('#s2', 480, tl => {
-    tl.to('.s2 .wipe i', { xPercent: 260, duration: .6, stagger: .08, ease: 'power2.inOut' }, 0)
+    tl.to('.s2 .wipe i', { xPercent: 460, duration: .6, stagger: .08, ease: 'power2.inOut' }, 0)
       .fromTo('.s2__photo img', { scale: 1.3 }, { scale: 1, duration: 4.2 }, 0)
       .fromTo('.s2__over', { opacity: 0 }, { opacity: 1, duration: .3 }, .5)
       .fromTo('.odo', { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: .4 }, .55);
     steps.forEach((a, i) => {
       const t = .7 + i * .9;
-      if (i) tl.to('#odo', { yPercent: -25 * i, duration: .35, ease: 'power3.inOut' }, t - .1);
+      if (i) tl.to('#odo', { yPercent: -25 * i, duration: .28, ease: 'power3.inOut' }, t - .22);
       tl.fromTo(a, { opacity: 0, y: 70 }, { opacity: 1, y: 0, duration: .3, ease: 'power3.out' }, t)
         .fromTo(ticks[i], { '--f': 0 }, { '--f': 1, duration: .8 }, t);
       if (i < steps.length - 1) tl.to(a, { opacity: 0, y: -60, duration: .25 }, t + .62);

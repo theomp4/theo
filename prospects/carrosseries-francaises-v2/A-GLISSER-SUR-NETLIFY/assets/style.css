@@ -42,7 +42,7 @@ html.js .stage>*{position:absolute}
 /* S1 */
 .s1__photo{inset:0}
 .s1__shade{inset:0;background:linear-gradient(0deg,rgba(11,12,14,.9) 0%,rgba(11,12,14,.25) 50%,rgba(11,12,14,.55) 100%)}
-html.js .s1__photo{clip-path:inset(42% 46% 42% 46%)}
+html.js .s1__photo{clip-path:inset(50% 50% 50% 50%)}
 html.js .s1__shade{opacity:0}
 .s1__logo{inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px}
 .s1__logo svg{width:min(78vw,620px);overflow:visible}

@@ -82,7 +82,7 @@
     const size = () => {
       const r = cv.getBoundingClientRect(); W = r.width; H = r.height;
       cv.width = W * DPR; cv.height = H * DPR; if (layer.width !== V.w) { layer.width = V.w; layer.height = V.h; }
-      s = Math.min(W / V.w, H / 380) * .96; ox = (W - V.w * s) / 2; oy = (H - 380 * s) / 2 - 150 * s;
+      s = Math.min(W / V.w, H / 330) * .94; ox = (W - V.w * s) / 2; oy = H * .56 - 300 * s;
       dirty = true;
     };
     const keep = document.createElement('canvas');
@@ -212,7 +212,12 @@
   /* ---------- découpages ---------- */
   $$('[data-split]').forEach(el => {
     const t = el.textContent; el.textContent = '';
-    [...t].forEach(ch => { const w = document.createElement('span'); w.className = 'chw'; const s = document.createElement('span'); s.className = 'ch'; s.textContent = ch === ' ' ? ' ' : ch; w.appendChild(s); el.appendChild(w); });
+    t.split(' ').forEach((word, wi) => {
+      if (wi) el.appendChild(document.createTextNode(' '));
+      const wd = document.createElement('span'); wd.className = 'wd';
+      [...word].forEach(ch => { const w = document.createElement('span'); w.className = 'chw'; const s = document.createElement('span'); s.className = 'ch'; s.textContent = ch; w.appendChild(s); wd.appendChild(w); });
+      el.appendChild(wd);
+    });
   });
   // le dégradé tricolore couvre toute la ligne, lettre par lettre
   const tri = $('.hl--tri');

@@ -231,165 +231,267 @@ def verifications(commerce):
     ]
 
 
-# --- Le document PDF ------------------------------------------------------------------
+# --- Le document PDF (charte Review Maker : blanc, bleu #0055FD, marine #192340, Poppins) -----------
 
-def _euros_txt(prix):
-    return prix if prix and "[" not in prix else ""
+ASSETS = __import__("pathlib").Path(__file__).resolve().parent.parent / "assets"
+BLEU, MARINE, NUIT = "#0055FD", "#192340", "#0C1533"
+GRIS, LIGNE, FOND = "#5B6683", "#E4E9F5", "#F3F6FE"
+ROUGE, ORANGE, VERT = "#E5484D", "#F59E0B", "#16A34A"
+OFFRE_DEFAUT = {"vitrine": "990 €", "vitrine_detail": "ou 3 × 330 € sans frais", "boutique": "1 790 €",
+                "boutique_detail": "ou 3 × 597 € sans frais", "delai": "5 à 10 jours"}
 
 
-def pdf(commerce, expediteur="Review Maker", signature="", prix="", delai=""):
-    """Audit d'une à deux pages, prêt à joindre à l'email. Renvoie les octets du PDF."""
+def _polices():
+    """Poppins (la police du site reviewmaker.fr), avec Helvetica en secours si les fichiers manquent."""
+    from reportlab.pdfbase import pdfmetrics
+    from reportlab.pdfbase.ttfonts import TTFont
+    noms = {"r": "Poppins-Regular", "m": "Poppins-Medium", "sb": "Poppins-SemiBold", "b": "Poppins-Bold"}
+    try:
+        for nom in noms.values():
+            if nom not in pdfmetrics.getRegisteredFontNames():
+                pdfmetrics.registerFont(TTFont(nom, str(ASSETS / "polices" / f"{nom}.ttf")))
+        return noms
+    except Exception:
+        return {"r": "Helvetica", "m": "Helvetica", "sb": "Helvetica-Bold", "b": "Helvetica-Bold"}
+
+
+def pdf(commerce, contact=None, offre=None):
+    """Audit prêt à joindre à l'email, dans la charte Review Maker.
+
+    contact : {"prenom", "nom", "email", "telephone"} de celui qui envoie (Réglages de son ordinateur).
+    offre : prix et délai affichés dans la proposition (Réglages), sinon ceux du site reviewmaker.fr."""
     from reportlab.lib import colors
-    from reportlab.lib.enums import TA_CENTER
+    from reportlab.lib.enums import TA_CENTER, TA_RIGHT
     from reportlab.lib.pagesizes import A4
     from reportlab.lib.styles import ParagraphStyle
     from reportlab.lib.units import mm
-    from reportlab.platypus import (KeepTogether, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle)
-    from reportlab.graphics.shapes import Circle, Drawing, String, Wedge
+    from reportlab.platypus import (BaseDocTemplate, Flowable, Frame, Image, KeepTogether, PageTemplate, Paragraph,
+                                    Spacer, Table, TableStyle)
 
-    VIOLET, ENCRE, GRIS, FOND = colors.HexColor("#6D4AF0"), colors.HexColor("#17141F"), colors.HexColor("#6B6778"), colors.HexColor("#F4F1FE")
-    ROUGE, ORANGE, BLEU, VERT = colors.HexColor("#E5484D"), colors.HexColor("#F59E0B"), colors.HexColor("#6D4AF0"), colors.HexColor("#16A34A")
-    COUL_GRAV = {1: ROUGE, 2: ORANGE, 3: BLEU}
+    F = _polices()
+    C = colors.HexColor
+    contact = {k: (v or "").strip() for k, v in (contact or {}).items()}
+    offre = {**OFFRE_DEFAUT, **{k: v for k, v in (offre or {}).items() if v and "[" not in v}}
+    for f in ("vitrine", "boutique"):  # paiement en 3 fois : seulement pour les tarifs du site
+        if offre[f].replace("\u202f", " ") != OFFRE_DEFAUT[f] and offre.get(f"{f}_detail") == OFFRE_DEFAUT[f"{f}_detail"]:
+            offre[f"{f}_detail"] = "prix fixe, sans abonnement"
     esc = lambda t: (str(t or "")).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-
+    def S(nom, parent=None, **k):
+        if parent is not None:
+            return ParagraphStyle(nom, parent=parent, **k)
+        return ParagraphStyle(nom, **{"fontName": F["r"], "fontSize": 9.5, "leading": 14, "textColor": C(MARINE), **k})
     st = {
-        "h1": ParagraphStyle("h1", fontName="Helvetica-Bold", fontSize=22, leading=26, textColor=ENCRE),
-        "sur": ParagraphStyle("sur", fontName="Helvetica-Bold", fontSize=8.5, leading=11, textColor=VIOLET),
-        "h2": ParagraphStyle("h2", fontName="Helvetica-Bold", fontSize=13, leading=17, textColor=ENCRE, spaceBefore=10, spaceAfter=6),
-        "p": ParagraphStyle("p", fontName="Helvetica", fontSize=9.5, leading=13.5, textColor=ENCRE),
-        "gris": ParagraphStyle("gris", fontName="Helvetica", fontSize=8.5, leading=12, textColor=GRIS),
-        "b": ParagraphStyle("b", fontName="Helvetica-Bold", fontSize=10, leading=13, textColor=ENCRE),
-        "chiffre": ParagraphStyle("chiffre", fontName="Helvetica-Bold", fontSize=16, leading=19, textColor=ENCRE, alignment=TA_CENTER),
-        "leg": ParagraphStyle("leg", fontName="Helvetica", fontSize=8, leading=10, textColor=GRIS, alignment=TA_CENTER),
+        "sur": S("sur", fontName=F["sb"], fontSize=7.5, leading=10, textColor=C(BLEU)),
+        "h1": S("h1", fontName=F["sb"], fontSize=25, leading=29),
+        "h2": S("h2", fontName=F["sb"], fontSize=15, leading=19, spaceAfter=2),
+        "p": S("p", fontSize=9.2, leading=13), "gris": S("gris", fontSize=8.5, leading=12.5, textColor=C(GRIS)),
+        "b": S("b", fontName=F["sb"], fontSize=10.5, leading=14),
+        "chiffre": S("chiffre", fontName=F["sb"], fontSize=19, leading=22, alignment=TA_CENTER),
+        "leg": S("leg", fontSize=7.8, leading=10, textColor=C(GRIS), alignment=TA_CENTER),
     }
 
-    liste = constats(commerce)
-    note = note_site(commerce)
+    class Pastille(Flowable):
+        """Petite étiquette arrondie (« Urgent », « OK »…), comme les badges du site."""
+        def __init__(self, texte, fond, encre, taille=7):
+            super().__init__()
+            self.texte, self.fond, self.encre, self.taille = texte, fond, encre, taille
+            from reportlab.pdfbase.pdfmetrics import stringWidth
+            self.width, self.height = stringWidth(texte, F["sb"], taille) + 12, taille + 7
+
+        def draw(self):
+            c = self.canv
+            c.setFillColor(C(self.fond))
+            c.roundRect(0, 0, self.width, self.height, self.height / 2, stroke=0, fill=1)
+            c.setFillColor(C(self.encre))
+            c.setFont(F["sb"], self.taille)
+            c.drawCentredString(self.width / 2, 3.6, self.texte)
+
+    class Jauge(Flowable):
+        """Note du site sur 100 : anneau coloré, chiffre au centre."""
+        def __init__(self, note, d=30 * mm):
+            super().__init__()
+            self.note, self.width, self.height = note, d, d
+
+        def draw(self):
+            c, r = self.canv, self.width / 2
+            c.setLineWidth(3.2 * mm)
+            c.setStrokeColor(C(LIGNE))
+            c.circle(r, r, r - 2.2 * mm, stroke=1, fill=0)
+            if self.note:
+                c.setStrokeColor(C(VERT if self.note >= 75 else ORANGE if self.note >= 45 else ROUGE))
+                c.arc(2.2 * mm, 2.2 * mm, self.width - 2.2 * mm, self.height - 2.2 * mm, 90, -360 * self.note / 100)
+            c.setFillColor(C(MARINE))
+            c.setFont(F["sb"], 22)
+            c.drawCentredString(r, r - 2.5 * mm, "–" if self.note is None else str(self.note))
+            c.setFont(F["r"], 7.5)
+            c.setFillColor(C(GRIS))
+            c.drawCentredString(r, r - 7 * mm, "sur 100")
+
+    def grille(lignes, largeurs, **style):
+        t = Table(lignes, colWidths=largeurs, hAlign="LEFT")
+        t.setStyle(TableStyle([("LEFTPADDING", (0, 0), (-1, -1), 0), ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+                               ("TOPPADDING", (0, 0), (-1, -1), 0), ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+                               ("VALIGN", (0, 0), (-1, -1), style.get("valign", "MIDDLE"))]))
+        return t
+
+    def carte(contenu, largeur, fond="#FFFFFF", bord=LIGNE, pad=10, rayon=8):
+        """Carte arrondie de `largeur` (marges intérieures comprises)."""
+        t = Table([[contenu]], colWidths=[largeur], hAlign="LEFT")
+        t.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, -1), C(fond)), ("BOX", (0, 0), (-1, -1), 0.8, C(bord)),
+                               ("ROUNDEDCORNERS", [rayon] * 4), ("LEFTPADDING", (0, 0), (-1, -1), pad),
+                               ("RIGHTPADDING", (0, 0), (-1, -1), pad), ("TOPPADDING", (0, 0), (-1, -1), pad),
+                               ("BOTTOMPADDING", (0, 0), (-1, -1), pad), ("VALIGN", (0, 0), (-1, -1), "TOP")]))
+        return t
+
+    liste, note = constats(commerce), note_site(commerce)
     nom = commerce.get("nom") or "Votre établissement"
     aujourd_hui = datetime.now().strftime("%d/%m/%Y")
+    largeur = A4[0] - 36 * mm
     tampon = io.BytesIO()
+    signataire = " ".join(x for x in [contact.get("prenom"), contact.get("nom")] if x) or "L'équipe ReviewMaker"
 
-    def pied(canvas, doc):
+    def fond_page(canvas, doc):
         canvas.saveState()
-        canvas.setFillColor(VIOLET)
-        canvas.rect(0, A4[1] - 6 * mm, A4[0], 6 * mm, stroke=0, fill=1)
-        canvas.setFont("Helvetica", 7.5)
-        canvas.setFillColor(GRIS)
-        canvas.drawString(18 * mm, 10 * mm, f"Audit offert par {expediteur} · {aujourd_hui}")
-        canvas.drawRightString(A4[0] - 18 * mm, 10 * mm, f"Page {doc.page}")
+        canvas.setFillColor(C(BLEU))
+        canvas.rect(0, A4[1] - 2.2 * mm, A4[0], 2.2 * mm, stroke=0, fill=1)
+        canvas.setStrokeColor(C(LIGNE))
+        canvas.line(18 * mm, 14 * mm, A4[0] - 18 * mm, 14 * mm)
+        canvas.setFont(F["r"], 7.5)
+        canvas.setFillColor(C(GRIS))
+        canvas.drawString(18 * mm, 9.5 * mm, f"Audit offert par {signataire} · ReviewMaker · reviewmaker.fr")
+        canvas.drawRightString(A4[0] - 18 * mm, 9.5 * mm, f"{aujourd_hui}  ·  page {doc.page}")
         canvas.restoreState()
 
-    doc = SimpleDocTemplate(tampon, pagesize=A4, leftMargin=18 * mm, rightMargin=18 * mm, topMargin=16 * mm,
-                            bottomMargin=18 * mm, title=f"Audit du site internet · {nom}", author=expediteur)
-    largeur = A4[0] - 36 * mm
+    doc = BaseDocTemplate(tampon, pagesize=A4, title=f"Audit du site internet · {nom}", author=f"{signataire} · ReviewMaker")
+    cadre = Frame(18 * mm, 20 * mm, largeur, A4[1] - 34 * mm, leftPadding=0, rightPadding=0, topPadding=0, bottomPadding=0)
+    doc.addPageTemplates([PageTemplate(frames=[cadre], onPage=fond_page)])
     h = []
 
-    # En-tête : titre + jauge de la note
-    jauge = Drawing(34 * mm, 34 * mm)
-    cx = cy = 17 * mm
-    jauge.add(Circle(cx, cy, 15 * mm, fillColor=FOND, strokeColor=None))
-    if note:
-        coul = VERT if note >= 75 else ORANGE if note >= 45 else ROUGE
-        jauge.add(Wedge(cx, cy, 15 * mm, 90 - 360 * note / 100, 90, fillColor=coul, strokeColor=None))
-    jauge.add(Circle(cx, cy, 11.5 * mm, fillColor=colors.white, strokeColor=None))
-    jauge.add(String(cx, cy - 1 * mm, "–" if note is None else str(note), fontName="Helvetica-Bold", fontSize=20,
-                     fillColor=ENCRE, textAnchor="middle"))
-    jauge.add(String(cx, cy - 6 * mm, "sur 100", fontName="Helvetica", fontSize=7, fillColor=GRIS, textAnchor="middle"))
-    entete = [Paragraph("AUDIT DE PRÉSENCE EN LIGNE", st["sur"]), Spacer(1, 3),
-              Paragraph(esc(nom), st["h1"]), Spacer(1, 4),
-              Paragraph(esc(" · ".join(x for x in [commerce.get("adresse"), commerce.get("site_web")] if x)), st["gris"]),
-              Spacer(1, 2), Paragraph(f"Analyse du {aujourd_hui}", st["gris"])]
-    t = Table([[entete, jauge]], colWidths=[largeur - 38 * mm, 38 * mm])
-    t.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "MIDDLE"), ("LEFTPADDING", (0, 0), (-1, -1), 0)]))
-    h += [Spacer(1, 6), t, Spacer(1, 8)]
+    # En-tête : logo et date
+    logo = ASSETS / "marque" / "logo-couleurs.png"
+    tete = [Image(str(logo), width=42 * mm, height=42 * mm * 365 / 1663) if logo.exists() else Paragraph("ReviewMaker", st["h2"]),
+            Paragraph(f"Audit de présence en ligne<br/>{aujourd_hui}", S("d", fontSize=8, leading=11, textColor=C(GRIS), alignment=TA_RIGHT))]
+    h += [Spacer(1, 4), grille([tete], [largeur / 2, largeur / 2]), Spacer(1, 16)]
 
-    # Résumé en trois chiffres
+    # Titre + jauge
+    titre = [Paragraph("AUDIT OFFERT", st["sur"]), Spacer(1, 4), Paragraph(esc(nom), st["h1"]), Spacer(1, 5),
+             Paragraph(esc(" · ".join(x for x in [commerce.get("adresse"), commerce.get("site_web")] if x)), st["gris"])]
+    h += [grille([[titre, Jauge(note)]], [largeur - 34 * mm, 34 * mm]), Spacer(1, 12)]
+
+    # Trois chiffres
     urgents = sum(1 for c in liste if c["gravite"] == 1)
     importants = sum(1 for c in liste if c["gravite"] == 2)
     note_g = commerce.get("note")
-    cases = [
-        [Paragraph(f"{str(note_g).replace('.', ',')}/5" if note_g else "–", st["chiffre"]),
-         Paragraph(f"note Google ({commerce.get('nb_avis') or 0} avis)", st["leg"])],
-        [Paragraph(str(urgents), st["chiffre"]), Paragraph("point urgent" if urgents < 2 else "points urgents", st["leg"])],
-        [Paragraph(str(importants), st["chiffre"]), Paragraph("point important" if importants < 2 else "points importants", st["leg"])],
-    ]
-    t = Table([cases], colWidths=[largeur / 3] * 3)
-    t.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, -1), FOND), ("BOX", (0, 0), (-1, -1), 0, colors.white),
-                           ("LINEAFTER", (0, 0), (1, 0), 3, colors.white), ("TOPPADDING", (0, 0), (-1, -1), 9),
-                           ("BOTTOMPADDING", (0, 0), (-1, -1), 9)]))
-    h += [t, Spacer(1, 10)]
+    tuiles = [([Paragraph(f"{str(note_g).replace('.', ',')}/5" if note_g else "–", st["chiffre"]),
+                Paragraph(f"note Google · {commerce.get('nb_avis') or 0} avis", st["leg"])]),
+              ([Paragraph(str(urgents), S("cu", parent=st["chiffre"], textColor=C(ROUGE if urgents else MARINE))),
+                Paragraph("point urgent" if urgents < 2 else "points urgents", st["leg"])]),
+              ([Paragraph(str(importants), S("ci", parent=st["chiffre"], textColor=C(ORANGE if importants else MARINE))),
+                Paragraph("point important" if importants < 2 else "points importants", st["leg"])])]
+    g = 4 * mm
+    tuile = (largeur - 2 * g) / 3
+    h += [grille([[carte(tuiles[0], tuile, fond=FOND, bord=FOND, pad=10), "", carte(tuiles[1], tuile, fond=FOND, bord=FOND, pad=10), "",
+                   carte(tuiles[2], tuile, fond=FOND, bord=FOND, pad=10)]], [tuile, g, tuile, g, tuile]), Spacer(1, 12)]
 
-    # Phrase de synthèse
     sans_site = bool(liste) and liste[0]["cle"] in ("pas_de_site", "plateforme")
     if note_g and (commerce.get("nb_avis") or 0) >= 20 and note_g >= 4:
         intro = (f"Vos clients vous apprécient : {str(note_g).replace('.', ',')}/5 sur {commerce.get('nb_avis')} avis Google. "
                  + ("Mais un nouveau client qui vous cherche sur Google ne trouve pas de site à votre nom : c'est autant de "
                     "clients qui partent chez un concurrent." if sans_site else
-                    "Votre site internet devrait être à la hauteur de cette réputation : c'est souvent la première chose "
-                    "que voit un nouveau client avant de venir."))
+                    "Votre site devrait être à la hauteur de cette réputation : c'est souvent la première chose que voit "
+                    "un nouveau client avant de vous appeler ou de venir."))
     else:
-        intro = ("Votre site internet est souvent la première chose que voit un nouveau client avant de vous appeler "
-                 "ou de venir. Voici ce que nous avons relevé.")
+        intro = ("Votre site internet est souvent la première chose que voit un nouveau client avant de vous appeler ou "
+                 "de venir. Voici ce que nous avons relevé, et comment le corriger.")
     if not liste and note is not None:
         intro += " Bonne nouvelle : nous n'avons rien relevé d'important sur votre page d'accueil."
-    h += [Paragraph(esc(intro), st["p"]), Spacer(1, 6)]
+    h += [Paragraph(esc(intro), S("intro", fontSize=10, leading=15)), Spacer(1, 6)]
 
     # Ce qui a été vérifié
     lignes = verifications(commerce)
     if lignes:
-        libelle = {"ok": ("OK", VERT), "ko": ("À CORRIGER", ROUGE), "na": ("–", GRIS)}
-        donnees = []
-        for quoi, res, detail in lignes:
-            txt, coul = libelle[res]
-            donnees.append([Paragraph(esc(quoi), st["p"]),
-                            Paragraph(f'<font color="{coul.hexval().replace("0x", "#")}"><b>{txt}</b></font>', st["p"]),
-                            Paragraph(esc(detail), st["gris"])])
-        t = Table(donnees, colWidths=[62 * mm, 28 * mm, largeur - 90 * mm])
-        t.setStyle(TableStyle([("ROWBACKGROUNDS", (0, 0), (-1, -1), [colors.white, FOND]), ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                               ("TOPPADDING", (0, 0), (-1, -1), 3), ("BOTTOMPADDING", (0, 0), (-1, -1), 3)]))
-        h.append(KeepTogether([Paragraph("Ce que nous avons vérifié", st["h2"]), t]))
+        etiquettes = {"ok": ("OK", "#E8F7EE", VERT), "ko": ("À CORRIGER", "#FDECEC", ROUGE), "na": ("NON VÉRIFIÉ", FOND, GRIS)}
+        donnees = [[Paragraph(esc(q), S("q", fontName=F["m"], fontSize=9)), Pastille(*etiquettes[r]), Paragraph(esc(d), st["gris"])]
+                   for q, r, d in lignes]
+        t = Table(donnees, colWidths=[64 * mm, 30 * mm, largeur - 94 * mm], hAlign="LEFT")
+        t.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "MIDDLE"), ("LINEBELOW", (0, 0), (-1, -2), 0.6, C(LIGNE)),
+                               ("TOPPADDING", (0, 0), (-1, -1), 4.5), ("BOTTOMPADDING", (0, 0), (-1, -1), 4.5),
+                               ("LEFTPADDING", (0, 0), (-1, -1), 0)]))
+        h.append(KeepTogether([Spacer(1, 8), Paragraph("CE QUE NOUS AVONS VÉRIFIÉ", st["sur"]), Spacer(1, 3),
+                               Paragraph("Votre site en un coup d'œil", st["h2"]), Spacer(1, 4), t]))
 
     # Les points à corriger
     if liste:
-        h.append(Paragraph("Les points à corriger, par priorité", st["h2"]))
-        for c in liste:
-            pastille = Table([[Paragraph(f'<font color="white"><b>{c["niveau"].upper()}</b></font>',
-                                         ParagraphStyle("pa", fontName="Helvetica-Bold", fontSize=7, leading=9, alignment=TA_CENTER))]],
-                             colWidths=[22 * mm])
-            pastille.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, -1), COUL_GRAV[c["gravite"]]),
-                                          ("TOPPADDING", (0, 0), (-1, -1), 2.5), ("BOTTOMPADDING", (0, 0), (-1, -1), 2.5)]))
-            corps = [Paragraph(esc(c["titre"]), st["b"]), Spacer(1, 2),
-                     Paragraph(f'<font color="#6B6778">Pourquoi c\'est important :</font> {esc(c["pourquoi"])}', st["p"]),
-                     Spacer(1, 2),
-                     Paragraph(f'<font color="#6D4AF0"><b>Notre recommandation :</b></font> {esc(c["conseil"])}', st["p"])]
-            bloc = Table([[pastille, corps]], colWidths=[26 * mm, largeur - 26 * mm])
-            bloc.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"), ("LEFTPADDING", (0, 0), (-1, -1), 0),
-                                      ("LINEBELOW", (0, 0), (-1, -1), 0.4, colors.HexColor("#E7E3F3")),
-                                      ("TOPPADDING", (0, 0), (-1, -1), 5), ("BOTTOMPADDING", (0, 0), (-1, -1), 6)]))
-            h.append(KeepTogether(bloc))
+        couleurs = {1: ("#FDECEC", ROUGE), 2: ("#FEF3E2", "#B45309"), 3: ("#E8EFFF", BLEU)}
+        titre_section = [Spacer(1, 14), Paragraph("LES POINTS À CORRIGER", st["sur"]), Spacer(1, 3),
+                         Paragraph("Par ordre de priorité", st["h2"]), Spacer(1, 6)]
+        blocs = []
+        for c in [c for c in liste if c["gravite"] <= 2]:
+            fond_p, encre = couleurs[c["gravite"]]
+            corps = [Pastille(c["niveau"].upper(), fond_p, encre), Spacer(1, 5), Paragraph(esc(c["titre"]), st["b"]), Spacer(1, 3),
+                     Paragraph(f'<font color="{GRIS}">Pourquoi c\'est important : </font>{esc(c["pourquoi"])}', st["p"]), Spacer(1, 3),
+                     Paragraph(f'<font name="{F["sb"]}" color="{BLEU}">Notre recommandation : </font>{esc(c["conseil"])}', st["p"])]
+            blocs.append(carte(corps, largeur))
+        petits = [c for c in liste if c["gravite"] == 3]
+        if petits:
+            corps = [Pastille("À AMÉLIORER", *couleurs[3]), Spacer(1, 5),
+                     Paragraph("Plus petits, mais ils comptent pour Google", st["b"]), Spacer(1, 4)]
+            for c in petits:
+                corps += [Paragraph(f'<font name="{F["sb"]}">{esc(c["titre"])}</font> : {esc(c["conseil"])}',
+                                    S("pt3", fontSize=9, leading=13, leftIndent=9, bulletIndent=0, bulletFontName=F["sb"],
+                                      bulletColor=C(BLEU)), bulletText="•"), Spacer(1, 3)]
+            blocs.append(carte(corps, largeur))
+        h.append(KeepTogether(titre_section + blocs[:1]))
+        for b in blocs[1:]:
+            h += [Spacer(1, 5), KeepTogether(b)]
 
-    # La proposition
-    prix_txt, delai_txt = _euros_txt(prix), _euros_txt(delai)
-    offre = [Paragraph("Notre proposition", ParagraphStyle("po", parent=st["h2"], textColor=colors.white, spaceBefore=0)),
-             Paragraph("Nous créons pour vous un site simple et moderne, pensé pour le téléphone : horaires, photos, "
-                       "avis Google, plan d'accès et bouton d'appel. Tous les points de cet audit sont corrigés, et nous "
-                       "nous occupons de tout, à distance.",
-                       ParagraphStyle("pp", parent=st["p"], textColor=colors.white))]
-    if prix_txt or delai_txt:
-        offre += [Spacer(1, 5), Paragraph(" · ".join(x for x in [f"<b>{esc(prix_txt)}</b>" if prix_txt else "",
-                                                                  f"prêt en {esc(delai_txt)}" if delai_txt else ""] if x),
-                                          ParagraphStyle("pq", parent=st["p"], textColor=colors.white, fontSize=11, leading=15))]
-    offre += [Spacer(1, 5), Paragraph("Une question ? Répondez simplement à notre email, ou appelez-nous.",
-                                      ParagraphStyle("pr", parent=st["p"], textColor=colors.HexColor("#E4DCFF")))]
-    if signature:
-        offre += [Spacer(1, 6), Paragraph(esc(signature).replace("\n", "<br/>"),
-                                          ParagraphStyle("ps", parent=st["p"], textColor=colors.white, fontName="Helvetica-Bold"))]
-    t = Table([[offre]], colWidths=[largeur])
-    t.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, -1), VIOLET), ("LEFTPADDING", (0, 0), (-1, -1), 14),
-                           ("RIGHTPADDING", (0, 0), (-1, -1), 14), ("TOPPADDING", (0, 0), (-1, -1), 12),
-                           ("BOTTOMPADDING", (0, 0), (-1, -1), 14)]))
-    h += [Spacer(1, 12), KeepTogether(t), Spacer(1, 8),
-          Paragraph("Analyse automatique de la page d'accueil, réalisée le " + aujourd_hui + ". Elle donne une première "
-                    "idée et ne remplace pas un audit complet de toutes les pages.", st["gris"])]
-    doc.build(h, onFirstPage=pied, onLaterPages=pied)
+    # La proposition (bloc bleu, comme « Voyez votre site avant de payer » sur reviewmaker.fr)
+    blanc, bleu_clair = C("#FFFFFF"), C("#D6E2FF")
+    pad_bloc = 14
+    W = largeur - 2 * pad_bloc
+    formule = lambda titre, prix, detail, points: carte(
+        [Paragraph(titre, S("ft", fontName=F["sb"], fontSize=10.5, leading=13)),
+         Paragraph(esc(prix), S("fp", fontName=F["sb"], fontSize=20, leading=25)),
+         Paragraph(esc(detail), st["gris"]), Spacer(1, 5),
+         *[Paragraph(f'<font color="{BLEU}">•</font>  {esc(x)}', S("fx", fontSize=8.5, leading=12.5)) for x in points]],
+        (W - 4 * mm) / 2, pad=11)
+    t2 = grille([[formule("Site vitrine", offre["vitrine"], offre["vitrine_detail"],
+                         ["Toutes les pages utiles à votre activité", "Pensé pour le téléphone et pour Google",
+                          "Réservation ou prise de rendez-vous", "Tag NFC avis Google offert"]),
+                 formule("Boutique en ligne", offre["boutique"], offre["boutique_detail"],
+                         ["Vos produits en ligne, avec de belles fiches", "Paiement sécurisé depuis le téléphone",
+                          "Vous gérez ensuite vos produits", "Tag NFC avis Google offert"])]],
+                [(W - 4 * mm) / 2 + 4 * mm, (W - 4 * mm) / 2], valign="TOP")
+    # Le contact (prénom, nom, email, téléphone de celui qui envoie l'audit), en bas du bloc bleu
+    infos = [x for x in [contact.get("email"), contact.get("telephone")] if x] or ["contact@reviewmaker.fr"]
+    initiales = "".join(m[0] for m in signataire.split()[:2]).upper() if contact.get("prenom") else "RM"
+
+    class Avatar(Flowable):
+        def __init__(self):
+            super().__init__()
+            self.width = self.height = 12 * mm
+
+        def draw(self):
+            c = self.canv
+            c.setFillColor(C("#FFFFFF"))
+            c.circle(self.width / 2, self.height / 2, self.width / 2, stroke=0, fill=1)
+            c.setFillColor(C(BLEU))
+            c.setFont(F["sb"], 12)
+            c.drawCentredString(self.width / 2, self.height / 2 - 4.2, initiales)
+
+    contact_bloc = grille([[Avatar(), [
+        Paragraph("VOTRE CONTACT", S("vc", fontName=F["sb"], fontSize=7.5, leading=10, textColor=bleu_clair)),
+        Paragraph(esc(signataire), S("cn", fontName=F["sb"], fontSize=12.5, leading=16, textColor=blanc)),
+        Paragraph(" · ".join(esc(x) for x in infos) + " · reviewmaker.fr", S("ci2", fontSize=9.5, leading=13, textColor=blanc))]]],
+        [16 * mm, W - 16 * mm])
+    bloc = [Paragraph("NOTRE PROPOSITION", S("ps", fontName=F["sb"], fontSize=7.5, leading=10, textColor=bleu_clair)), Spacer(1, 4),
+            Paragraph("Voyez votre site avant de payer", S("pt", fontName=F["sb"], fontSize=17, leading=21, textColor=blanc)), Spacer(1, 5),
+            Paragraph(f"Nous corrigeons tous les points de cet audit. Nous préparons d'abord, gratuitement, l'aperçu de votre "
+                      f"page d'accueil : vous ne payez rien tant qu'il ne vous plaît pas. En ligne en {esc(offre['delai'])}, "
+                      f"prix fixe, sans abonnement.", S("pp", fontSize=9.5, leading=14, textColor=bleu_clair)), Spacer(1, 9), t2,
+            Spacer(1, 12), contact_bloc, Spacer(1, 10),
+            Paragraph(f"Analyse automatique de la page d'accueil, réalisée le {aujourd_hui} : une première idée, qui ne remplace "
+                      "pas un audit complet de toutes les pages.", S("mention", fontSize=7.2, leading=10, textColor=bleu_clair))]
+    h += [Spacer(1, 8), KeepTogether(carte(bloc, largeur, fond=BLEU, bord=BLEU, pad=pad_bloc, rayon=12))]
+    doc.build(h)
     return tampon.getvalue()

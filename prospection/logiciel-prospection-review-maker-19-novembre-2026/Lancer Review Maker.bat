@@ -45,19 +45,19 @@ rem    L icone est refaite a chaque fois : elle pointe toujours vers ce dossier-
 (
   rem    L icone est copiee dans un dossier local de Windows (jamais marque comme telecharge).
   if not exist "%LOCALAPPDATA%\ReviewMakerProspection" mkdir "%LOCALAPPDATA%\ReviewMakerProspection"
-  copy /y "assets\logiciel-prospection.ico" "%LOCALAPPDATA%\ReviewMakerProspection\icone.ico" >nul
-  powershell -NoProfile -ExecutionPolicy Bypass -Command "$i=$env:LOCALAPPDATA+'\ReviewMakerProspection\icone.ico'; Unblock-File -LiteralPath $i -ErrorAction SilentlyContinue; $b=[Environment]::GetFolderPath('Desktop'); Remove-Item -LiteralPath ($b+'\Review Maker.lnk'),($b+'\Logiciel de prospection Review Maker.lnk') -ErrorAction SilentlyContinue; $s=(New-Object -ComObject WScript.Shell).CreateShortcut($b+'\Logiciel de prospection Review Maker.lnk'); $s.TargetPath='%~dp0.venv\Scripts\pythonw.exe'; $s.Arguments='serveur.py'; $s.WorkingDirectory='%~dp0'; $s.IconLocation=$i+',0'; $s.Description='Logiciel de prospection Review Maker'; $s.Save()"
+  copy /y "assets\review-maker.ico" "%LOCALAPPDATA%\ReviewMakerProspection\icone.ico" >nul
+  powershell -NoProfile -ExecutionPolicy Bypass -Command "$i=$env:LOCALAPPDATA+'\ReviewMakerProspection\icone.ico'; Unblock-File -LiteralPath $i -ErrorAction SilentlyContinue; $b=[Environment]::GetFolderPath('Desktop'); $m=[Environment]::GetFolderPath('Programs'); Remove-Item -LiteralPath ($b+'\Review Maker.lnk'),($b+'\Logiciel de prospection Review Maker.lnk') -ErrorAction SilentlyContinue; foreach ($d in @($b,$m)) { $s=(New-Object -ComObject WScript.Shell).CreateShortcut($d+'\Review Maker.lnk'); $s.TargetPath='%~dp0.venv\Scripts\pythonw.exe'; $s.Arguments='app.py'; $s.WorkingDirectory='%~dp0'; $s.IconLocation=$i+',0'; $s.Description='Review Maker - logiciel de prospection'; $s.Save() }"
   rem    Windows garde parfois l ancienne image en memoire : on lui demande de rafraichir les icones.
   ie4uinit.exe -ClearIconCache >nul 2>nul
   ie4uinit.exe -show >nul 2>nul
-  echo L icone "Logiciel de prospection Review Maker" est sur ton Bureau : utilise-la pour ouvrir le logiciel.
+  echo L application "Review Maker" est sur ton Bureau et dans le menu Demarrer : utilise-la pour ouvrir le logiciel.
 )
 
 rem --- 4. Lancer ---------------------------------------------------------------
-rem    pythonw = sans fenetre. Le logiciel s arrete tout seul quand la page est fermee.
+rem    L application s ouvre dans sa propre fenetre (sans navigateur). Fermer la fenetre ferme le logiciel.
 rem    Les messages et erreurs sont notes dans data\journal.txt.
-echo Le logiciel s ouvre dans ton navigateur...
-start "" ".venv\Scripts\pythonw.exe" serveur.py
+echo Review Maker s ouvre...
+start "" ".venv\Scripts\pythonw.exe" app.py
 exit /b 0
 
 :erreur_internet

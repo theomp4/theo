@@ -1,10 +1,10 @@
 # Logiciel de prospection Review Maker
 
-Une petite application qui tourne **sur ton ordinateur Windows** et s'ouvre dans ton navigateur.
-Elle fait deux choses, simplement : **trouver des commerces** (partout dans le monde, avec une
-**note de priorité sur 100**, leur email et leur Instagram) et **suivre tes prospects** jusqu'à la vente.
-Le logiciel n'envoie rien tout seul : chaque fiche te prépare un email et un message Instagram à copier,
-que tu envoies toi-même depuis ta boîte mail ou ton téléphone.
+Une **application pour Mac et Windows**, avec l'icône Review Maker : elle s'ouvre dans **sa propre
+fenêtre**, sans navigateur (ni Chrome, ni Safari). Elle fait deux choses, simplement : **trouver des
+commerces** (avec une **note de priorité sur 100**, leur email et leur Instagram) et **suivre tes
+prospects** jusqu'à la vente. Le logiciel n'envoie rien tout seul : chaque fiche te prépare un email,
+un message Instagram et un **audit PDF** aux couleurs de Review Maker, que tu envoies toi-même.
 
 Deux espaces, en haut de l'écran : **Sites internet** (affiché en premier) et **Tags NFC** (Review Maker). Chaque espace a ses
 propres prospects et ses chiffres. Le fond d'écran est une vraie photo, à choisir avec le bouton « Fond »
@@ -16,44 +16,28 @@ Aucun abonnement. Tes données restent dans le dossier `data` de ton ordinateur.
 
 ## 1. Installer (une seule fois, environ 15 minutes)
 
-### Étape 1 : récupérer le logiciel
+1. Télécharge le ZIP du logiciel (son nom donne la date de la version) et décompresse-le
+   (double-clic sur Mac ; clic droit > **Extraire tout** sur Windows). Range le dossier dans Documents.
+2. Lance l'installation :
+   - **Mac** : clic droit sur **`Lancer Review Maker.command`** > **Ouvrir** > **Ouvrir** (le premier
+     lancement doit se faire par clic droit). Si Python manque, son installateur officiel s'ouvre :
+     va jusqu'au bout, puis relance `Lancer Review Maker.command`.
+   - **Windows** : double-clic sur **`Lancer Review Maker.bat`** (si Windows affiche « Windows a protégé
+     votre ordinateur » : **Informations complémentaires** > **Exécuter quand même**).
+3. La première fois, tout s'installe tout seul (5 à 10 minutes), puis **l'application Review Maker
+   s'ouvre**.
+4. Ensuite, ouvre-la comme n'importe quelle application :
+   - **Mac** : **Review Maker** est dans ton dossier **Applications** (et un raccourci sur le Bureau).
+     Fais-la glisser dans le Dock pour l'ouvrir en un clic.
+   - **Windows** : icône **Review Maker** sur le Bureau et dans le menu Démarrer (clic droit >
+     **Épingler à la barre des tâches**).
+5. Va dans **Réglages > Tes coordonnées** : prénom, nom, email et téléphone. Ils s'affichent sur tes
+   audits PDF et dans ta signature. Chacun remplit les siens sur son ordinateur.
 
-1. Télécharge le fichier ZIP du logiciel (son nom donne la date de la version) que Claude t'a envoyé.
-2. Fais un clic droit dessus > **Extraire tout** > **Extraire**.
-3. Déplace le dossier `prospection` sur ton Bureau (ou dans Documents).
-
-### Étape 2 : double-cliquer sur « Lancer Review Maker »
-
-1. Ouvre le dossier `prospection` et double-clique sur **`Lancer Review Maker.bat`**.
-2. Si Windows affiche « Windows a protégé votre ordinateur », clique sur **Informations complémentaires**
-   puis **Exécuter quand même** (c'est normal pour un fichier que tu as téléchargé toi-même).
-3. La première fois, une fenêtre noire installe tout toute seule (Python, puis le logiciel) :
-   compte 5 à 10 minutes. Si Windows demande une autorisation pour Python, clique sur **Oui**.
-4. Ton navigateur s'ouvre sur le logiciel, et une icône **Logiciel de prospection Review Maker** (loupe violette) apparaît sur ton Bureau.
-   Le logiciel débloque aussi ses fichiers : l'avertissement « Éditeur inconnu » de Windows ne
-   revient plus.
-
-Les fois suivantes, double-clique simplement sur l'icône **Logiciel de prospection Review Maker** du Bureau : le logiciel
-s'ouvre en quelques secondes, sans fenêtre noire. Quand tu as fini, ferme simplement la page :
-le logiciel s'arrête tout seul dans les secondes qui suivent (une recherche en cours va toujours
-jusqu'au bout). Les messages d'erreur éventuels sont notés dans `data\journal.txt`.
-
-### Sur Mac
-
-1. Double-clique sur le ZIP : le Mac crée le dossier du logiciel. Range-le dans Documents.
-2. Dans ce dossier, fais un **clic droit** sur **`Lancer Review Maker.command`** > **Ouvrir** > **Ouvrir**.
-   (Le premier lancement doit se faire par clic droit : sinon le Mac dit « développeur non identifié ».)
-   Si le Mac refuse quand même : **Réglages Système** > **Confidentialité et sécurité** > en bas,
-   **Ouvrir quand même**.
-3. La première fois, si Python n'est pas installé, son installateur officiel s'ouvre : clique sur
-   **Continuer** jusqu'à la fin (ton mot de passe Mac est demandé), puis relance
-   `Lancer Review Maker.command`. L'installation du logiciel prend ensuite 3 à 5 minutes.
-4. Ton navigateur s'ouvre sur le logiciel, et un raccourci **Logiciel de prospection Review Maker**
-   apparaît sur ton Bureau : utilise-le les fois suivantes.
-5. **Laisse la fenêtre du Terminal ouverte** pendant que tu utilises le logiciel : c'est lui qui tourne
-   dedans. Si le logiciel s'arrête à cause d'une erreur, elle s'affiche dans cette fenêtre.
-
-N'ouvre pas `Lancer Review Maker.bat` sur Mac : c'est le lanceur pour Windows.
+Fermer la fenêtre ferme le logiciel. Les audits et les exports Excel sont rangés dans
+**Documents > ReviewMaker** (dossiers Audits et Exports) et s'ouvrent tout seuls.
+Si la fenêtre d'application ne peut pas s'ouvrir (composant manquant), le logiciel s'ouvre dans ton
+navigateur, comme avant. Les messages d'erreur éventuels sont notés dans `data/journal.txt`.
 
 ---
 
@@ -166,9 +150,11 @@ informations lisibles par Google, images sans description. Chaque point est clas
 - Dans la fiche, le bloc **Son site internet** liste ces points avec une note sur 100.
 - L'**email** et le **message Instagram** reprennent les 3 points les plus graves et annoncent
   l'audit gratuit.
-- **Télécharger l'audit (PDF)** crée un document de 2 à 3 pages au nom du commerce : la note, ce qui a
-  été vérifié, chaque problème avec pourquoi il compte et comment le corriger, puis ta proposition
-  (prix et délai des Réglages, ta signature). **Joins-le à ton email.**
+- **Télécharger l'audit (PDF)** crée un document de 1 à 3 pages au nom du commerce, dans la charte de
+  reviewmaker.fr (logo, bleu Review Maker, police Poppins) : la note du site, ce qui a été vérifié,
+  chaque problème avec pourquoi il compte et comment le corriger, puis la proposition « Voyez votre site
+  avant de payer » avec les deux formules (site vitrine, boutique en ligne : prix et délai des Réglages)
+  et **ton contact** (prénom, nom, email, téléphone des Réglages). **Joins-le à ton email.**
 - **Refaire l'analyse** relit le site (utile pour les sites analysés par une ancienne version).
 
 L'analyse ne regarde que la page d'accueil : le document le précise.
@@ -295,7 +281,7 @@ En haut de l'écran, la pastille verte « Partagé avec … » confirme que tout
 | Problème | Solution |
 | --- | --- |
 | « Python n'a pas pu être installé » | Installe-le depuis python.org en cochant « Add python.exe to PATH », puis relance `Lancer Review Maker.bat`. |
-| Le navigateur ne s'ouvre pas | Ouvre-le toi-même sur http://127.0.0.1:8765 |
+| L'application ne s'ouvre pas | Relance `Lancer Review Maker` (.command sur Mac, .bat sur Windows) : il affiche l'erreur et ouvre le logiciel dans le navigateur à la place. Le détail est dans `data/journal.txt`. |
 | « Google a répondu 403 » | La clé est mauvaise ou l'API Places (New) n'est pas activée. |
 | Pas de photo en fond | Il faut Internet la première fois pour la télécharger ; en attendant, le fond « Aurore violette » s'affiche. |
 | La pastille dit « Partage en pause » | Google Drive n'est pas ouvert sur cet ordinateur, ou le dossier a été déplacé : rechoisis-le dans Réglages. |

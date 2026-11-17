@@ -3,8 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Logiciel de prospection Review Maker</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<title>Review Maker · Prospection</title>
+<link rel="icon" href="/assets/review-maker.png">
+<style>
+/* Polices intégrées au logiciel (plus rien n'est chargé depuis Google) */
+@font-face { font-family: "Poppins"; font-weight: 400; font-style: normal; font-display: swap; src: url("/assets/polices/Poppins-Regular.ttf") format("truetype") }
+@font-face { font-family: "Poppins"; font-weight: 500; font-style: normal; font-display: swap; src: url("/assets/polices/Poppins-Medium.ttf") format("truetype") }
+@font-face { font-family: "Poppins"; font-weight: 600; font-style: normal; font-display: swap; src: url("/assets/polices/Poppins-SemiBold.ttf") format("truetype") }
+@font-face { font-family: "Poppins"; font-weight: 700; font-style: normal; font-display: swap; src: url("/assets/polices/Poppins-Bold.ttf") format("truetype") }
+@font-face { font-family: "Geist Mono"; font-weight: 400; font-style: normal; font-display: swap; src: url("/assets/polices/GeistMono-Regular.ttf") format("truetype") }
+@font-face { font-family: "Geist Mono"; font-weight: 500; font-style: normal; font-display: swap; src: url("/assets/polices/GeistMono-Medium.ttf") format("truetype") }
+</style>
 <style>
 :root {
   color-scheme: dark;
@@ -375,7 +384,25 @@ async function suivre(id, barre, texte) {
 }
 const nb = n => Number(n || 0).toLocaleString("fr-FR");
 const dateFr = d => d ? new Date(d).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" }) : "";
-async function copier(texte) { try { await navigator.clipboard.writeText(texte); toast("Copié."); } catch { toast("Copie impossible : sélectionne le texte à la main."); } }
+async function copier(texte) {
+  try { await navigator.clipboard.writeText(texte); return toast("Copié."); } catch {}
+  // Secours (fenêtre d'application) : copie par une zone de texte invisible.
+  const zone = document.createElement("textarea"); zone.value = texte; zone.setAttribute("readonly", "");
+  zone.style.cssText = "position:fixed;left:-9999px;top:0"; document.body.appendChild(zone); zone.select();
+  let ok = false; try { ok = document.execCommand("copy"); } catch {}
+  zone.remove(); toast(ok ? "Copié." : "Copie impossible : sélectionne le texte à la main.");
+}
+// Fenêtre d'application : les liens (site, Google Maps, Instagram, email, téléphone) s'ouvrent dans le
+// navigateur ou la messagerie de l'ordinateur, pas dans la fenêtre du logiciel.
+document.addEventListener("click", e => {
+  const a = e.target.closest?.("a[href]");
+  if (!a || !S.etat?.appli) return;
+  const url = a.getAttribute("href");
+  if (!/^(https?:|mailto:|tel:)/i.test(url) || url.startsWith(location.origin)) return;
+  e.preventDefault(); e.stopPropagation();
+  api("ouvrir", { url }).catch(er => toast(er.message));
+}, true);
+const dossierTexte = d => d.replace(/^.*?(Documents|ReviewMaker)/, (m, x) => x).replace(/[\\/]/g, " › ");
 
 // --- Animations (design Verre fumé) ---------------------------------------------
 function replay(panel) {
@@ -740,7 +767,9 @@ async function rendreProspects(el) {
   ["#pVille", "#pType", "#pPrio"].forEach(s => $(s).onchange = () => maj(true));
   $("#pExport").onclick = async () => {
     try {
-      const blob = await api("export", { cles: filtrer(prospects).map(p => p.cle) });
+      const cles = filtrer(prospects).map(p => p.cle);
+      if (S.etat.appli) { const r = await api("export", { cles, enregistrer: true }); return toast(`Fichier Excel rangé dans ${dossierTexte(r.dossier)}.`); }
+      const blob = await api("export", { cles });
       const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "prospects.xlsx"; a.click(); toast("Fichier Excel téléchargé.");
     } catch (e) { toast(e.message); }
   };
@@ -951,6 +980,11 @@ function blocSite(c) {
 async function telechargerAudit(c, bouton) {
   const texte = bouton.innerHTML; bouton.disabled = true; bouton.textContent = "Création de l'audit…";
   try {
+    if (S.etat.appli) {  // fenêtre d'application : le PDF est rangé dans Documents › ReviewMaker › Audits et s'ouvre
+      const r = await api("audit?" + qs({ cle: c.cle, enregistrer: 1 }));
+      toast(`Audit rangé dans ${dossierTexte(r.dossier)} : joins-le à ton email.`); FICHE.change = true;
+      bouton.disabled = false; bouton.innerHTML = texte; return;
+    }
     const r = await fetch("/api/audit?" + qs({ cle: c.cle }));
     if (!r.ok) { let m = "Erreur"; try { m = (await r.json()).erreur; } catch {} throw new Error(m); }
     const a = document.createElement("a"); a.href = URL.createObjectURL(await r.blob());
@@ -1194,7 +1228,7 @@ async function rendreReglages(el) {
       ${champ("cle_google", "Clé API Google Places", "password", "AIza…")}${champ("limite_google", "Limite de requêtes par mois (sécurité)", "number")}
       <p class="dim" style="font-size:12.5px">Tu trouves ta clé sur console.cloud.google.com, dans « Identifiants ». La limite garde ta recherche dans le quota gratuit.</p></div>
     <div class="glass card rise s6"><h2>Travail en équipe</h2><p class="sub">Toi et ton coéquipier voyez les mêmes prospects, grâce à un dossier Google Drive commun.</p>
-      ${champ("prenom", "Ton prénom (affiché sur les fiches que tu modifies)", "text", "ex. Théo")}
+      <p class="dim" style="font-size:12px">Ton prénom (dans « Tes coordonnées ») s'affiche sur les fiches que tu modifies.</p>
       <label class="f">Dossier Google Drive commun<div class="line" style="flex-wrap:nowrap;gap:6px"><input data-r="equipe_dossier" id="rDossier" value="${esc(v.equipe_dossier)}" placeholder="ex. G:\\Mon Drive\\Review Maker équipe" style="flex:1;min-width:0"><button id="rChoisir" type="button">Choisir…</button></div></label>
       ${detectes.length ? `<p class="dim" style="font-size:12px">Trouvé sur cet ordinateur : ${detectes.map(d => `<a href="#" data-dossier="${esc(d)}">${esc(d)}</a>`).join(" · ")}<br>Crée dedans un dossier « Review Maker équipe » et choisis-le.</p>` : `<p class="dim" style="font-size:12px">Installe « Google Drive pour ordinateur » pour voir ton Drive ici.</p>`}
       <div class="line" style="justify-content:space-between;margin-top:4px"><span style="font-size:12.5px;color:${eq.erreur ? "#FF8FA3" : "var(--muted)"}">${!eq.actif ? "Partage désactivé : mets ton prénom et le dossier, puis enregistre." : eq.erreur ? esc(eq.erreur) : `Synchronisé ${depuis(eq.derniere)}${(eq.coequipiers || []).length ? ` · avec ${esc(eq.coequipiers.map(c => c.prenom).join(", "))}` : " · ton coéquipier n'est pas encore connecté"}`}</span>${eq.actif ? `<button id="rSync" type="button">Synchroniser maintenant</button>` : ""}</div></div>
@@ -1203,9 +1237,13 @@ async function rendreReglages(el) {
     <div class="glass card rise s6"><h2>Messages Instagram</h2><p class="sub">Variables : {nom}, {ville}, {note}, {nb_avis}, {phrase_avis}, {phrase_site}</p>
       <label class="f">Tags NFC<textarea data-r="modele_dm_nfc" rows="5">${esc(v.modele_dm_nfc)}</textarea></label>
       <label class="f">Sites internet<textarea data-r="modele_dm_web" rows="5">${esc(v.modele_dm_web)}</textarea></label></div>
-    <div class="glass card rise s6"><h2>Pour les emails prêts à copier</h2><p class="sub">Le logiciel n'envoie rien : tu copies l'email, ou tu l'ouvres dans ta boîte mail.</p>
-      <label class="f">Signature<textarea data-r="signature" rows="3">${esc(v.signature)}</textarea></label>
-      <div class="grid2">${champ("site_prix", "Prix d'un site", "text", "ex. 490 €")}${champ("site_delai", "Délai de création d'un site", "text", "ex. 10 jours")}</div></div>
+    <div class="glass card rise s6"><h2>Tes coordonnées</h2><p class="sub">Sur tes audits PDF et dans ta signature. Chacun remplit les siennes sur son ordinateur.</p>
+      <div class="grid2">${champ("prenom", "Prénom", "text", "ex. Théo")}${champ("nom", "Nom", "text", "ex. Martin")}</div>
+      <div class="grid2">${champ("email_pro", "Ton email", "email", "ex. theo@reviewmaker.fr")}${champ("telephone_pro", "Ton téléphone", "tel", "ex. 06 12 34 56 78")}</div></div>
+    <div class="glass card rise s6"><h2>Tarifs et emails</h2><p class="sub">Les prix et le délai s'affichent dans les emails et dans la proposition des audits.</p>
+      <div class="grid2">${champ("site_prix", "Prix site vitrine", "text", "990 €")}${champ("prix_boutique", "Prix boutique en ligne", "text", "1 790 €")}</div>
+      ${champ("site_delai", "Délai de création", "text", "5 à 10 jours")}
+      <label class="f">Signature des emails<textarea data-r="signature" rows="3" placeholder="Laisse vide : signature faite avec tes coordonnées">${esc(v.signature)}</textarea></label></div>
     <div class="glass card rise s6"><h2>Entreprises ciblées</h2><p class="sub">Seulement des PME, vérifiées dans l'annuaire officiel des entreprises (France).</p>
       ${champ("ca_minimum", "Chiffre d'affaires annuel minimum (€)", "number", "200000")}
       <p class="dim" style="font-size:12.5px">Si une entreprise ne publie pas ses comptes, le logiciel estime avec son effectif (à partir de 3 salariés) et l'indique sur la fiche. Changer ce montant relance la vérification.</p></div>

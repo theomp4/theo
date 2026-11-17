@@ -220,8 +220,13 @@ def test_analyse_du_site_message_et_audit_pdf():
     assert audit.constats({"nom": "B", "site_web": None})[0]["cle"] == "pas_de_site"
     texte = mailer.remplir(mailer.modele("web", "fr", "premier")["corps"], c, "Théo")
     assert "audit gratuit" in texte and "non sécurisé" in texte
-    contenu = audit.pdf(c, "Review Maker", "Théo", "990 €", "10 jours")
+    contenu = audit.pdf(c, {"prenom": "Théo", "nom": "Martin", "email": "theo@reviewmaker.fr"}, {"vitrine": "1 200 €"})
     assert contenu.startswith(b"%PDF") and len(contenu) > 3000
+    import io as _io
+    PdfReader = __import__("pytest").importorskip("pypdf").PdfReader
+    texte_pdf = " ".join(page.extract_text() for page in PdfReader(_io.BytesIO(contenu)).pages)
+    assert "Théo Martin" in texte_pdf and "theo@reviewmaker.fr" in texte_pdf and "1 200 €" in texte_pdf
+    assert "3 × 330" not in texte_pdf  # paiement en 3 fois : seulement avec le tarif du site
 
 
 def test_journal_partage_entre_theo_et_luke(tmp_path):

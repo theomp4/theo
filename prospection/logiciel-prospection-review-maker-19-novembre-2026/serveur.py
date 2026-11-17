@@ -34,7 +34,7 @@ if sys.stdout is None or sys.stderr is None:
 ICI = Path(__file__).resolve().parent
 WEB = ICI / "web"
 PORT = int(os.environ.get("RM_PORT", "8765"))  # RM_PORT : tests
-VERSION = "18 novembre 2026 (reprises + marchés)"  # affichée dans Réglages : permet de vérifier que la mise à jour est bien installée
+VERSION = "19 novembre 2026 (application)"  # affichée dans Réglages : permet de vérifier que la mise à jour est bien installée
 EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$")
 
 
@@ -91,10 +91,35 @@ def dm_defaut(espace):
 # Réglages modifiables depuis l'écran Réglages, avec leur valeur par défaut.
 REGLAGES = {
     "fond": "salon", "cle_google": "", "limite_google": "900",
-    "site_prix": "[TON PRIX]", "site_delai": "[DÉLAI]", "signature": "Ton prénom\nReview Maker\nreviewmaker.fr",
+    "site_prix": "990 €", "prix_boutique": "1 790 €", "site_delai": "5 à 10 jours", "signature": "",
+    "nom": "", "email_pro": "", "telephone_pro": "",
     "modele_dm_nfc": dm_defaut("nfc"), "modele_dm_web": dm_defaut("web"),
     "prenom": "", "equipe_dossier": "", "ca_minimum": "200000", "reprises_departements": "",
 }
+
+
+ANCIENNE_SIGNATURE = "Ton prénom\nReview Maker\nreviewmaker.fr"
+
+
+def contact():
+    """Mes coordonnées (Réglages de cet ordinateur) : sur mes audits et dans ma signature."""
+    return {"prenom": R("prenom"), "nom": R("nom"), "email": R("email_pro"), "telephone": R("telephone_pro")}
+
+
+def signature():
+    """La signature des emails : celle des Réglages, sinon faite avec mes coordonnées."""
+    s = R("signature").strip()
+    if s and s != ANCIENNE_SIGNATURE:
+        return s
+    c = contact()
+    lignes = [" ".join(x for x in [c["prenom"], c["nom"]] if x), "ReviewMaker · reviewmaker.fr",
+              " · ".join(x for x in [c["email"], c["telephone"]] if x)]
+    return "\n".join(l for l in lignes if l)
+
+
+def offre():
+    return {"vitrine": R("site_prix", REGLAGES["site_prix"]), "boutique": R("prix_boutique", REGLAGES["prix_boutique"]),
+            "delai": R("site_delai", REGLAGES["site_delai"])}
 
 
 def ca_minimum():
@@ -105,6 +130,10 @@ def ca_minimum():
 # L'ancien message Instagram par défaut (jamais modifié) est remplacé par le nouveau, qui annonce l'audit.
 if db.get_reglage(conn, "modele_dm_web") == ANCIEN_DM_WEB:
     db.set_reglage(conn, "modele_dm_web", dm_defaut("web"))
+# Anciennes valeurs « à remplir » : remplacées par les tarifs du site reviewmaker.fr.
+for _cle, _ancienne in (("site_prix", "[TON PRIX]"), ("site_delai", "[DÉLAI]"), ("signature", ANCIENNE_SIGNATURE)):
+    if db.get_reglage(conn, _cle, None) == _ancienne:
+        db.set_reglage(conn, _cle, REGLAGES[_cle])
 
 # Photos de fond (Unsplash, licence libre), téléchargées une fois dans le dossier fonds/.
 FONDS = {
@@ -580,7 +609,7 @@ def api_marches_maj(d):
 
 def api_etat(q):
     return {
-        "fond": R("fond", "salon"), "espaces": db.ESPACES, "statuts": db.STATUTS, "version": VERSION, "dossier": str(ICI),
+        "fond": R("fond", "salon"), "espaces": db.ESPACES, "statuts": db.STATUTS, "version": VERSION, "dossier": str(ICI), "appli": APPLI,
         "requetes": db.requetes_du_mois(conn), "limite_google": int(R("limite_google", "900")),
         "equipe": SYNCHRO, "journal_nouveaux": journal_nouveaux(),
     }
@@ -709,7 +738,7 @@ def api_prospect(q):
     o = origine_de(c)
     reprise = o.get("type") == "reprise"
     m = mailer.modele(c["espace"], lg, "premier", reprise)
-    remplir = lambda t: mailer.remplir(t, c, R("signature"), lg, R("site_prix", "[TON PRIX]"), R("site_delai", "[DÉLAI]"))
+    remplir = lambda t: mailer.remplir(t, c, signature(), lg, R("site_prix", REGLAGES["site_prix"]), R("site_delai", REGLAGES["site_delai"]))
     e = entreprise_de(c)
     if e:
         e = {**e, "libelle": entreprises.LIBELLES.get(e.get("verdict"), ""),
@@ -731,7 +760,7 @@ def api_audit(q):
     """Le document d'audit du site, en PDF, à joindre au message de prospection."""
     with VERROU:
         c = commerce(q["cle"])
-        signature, prix, delai = R("signature", REGLAGES["signature"]), R("site_prix"), R("site_delai")
+        moi, tarifs = contact(), offre()
     etat = etat_site(c)
     if c.get("site_web") and not sans_vrai_site(c["site_web"]) and (etat is None or not etat.get("analyse")):
         res = enrich.enrichir_site(c["site_web"])  # pas encore analysé, ou par une ancienne version : on le refait
@@ -739,11 +768,12 @@ def api_audit(q):
             enregistrer_analyse(conn, c, res)
             recalculer_place(conn, c["place_id"])
             c = commerce(q["cle"])
-    expediteur = signature.splitlines()[1] if len(signature.splitlines()) > 1 else "Review Maker"
-    contenu = audit.pdf(c, expediteur, signature, prix, delai)
+    contenu = audit.pdf(c, moi, tarifs)
     with VERROU:
         db.ajouter_historique(conn, c["cle"], "Fiche", "Audit PDF créé")
     nom = re.sub(r'[\\/:*?"<>|]+', " ", c.get("nom") or "commerce").strip()
+    if q.get("enregistrer"):
+        return enregistrer_fichier("Audits", f"Audit site - {nom}.pdf", contenu)
     return contenu, "application/pdf", f"Audit site - {nom}.pdf"
 
 
@@ -806,6 +836,44 @@ def api_maj_prospect(d):
     return {"ok": True}
 
 
+DOSSIER_FICHIERS = Path.home() / "Documents" / "ReviewMaker"
+
+
+def ouvrir_fichier(chemin):
+    """Ouvre un fichier (PDF, Excel) avec l'application habituelle de l'ordinateur."""
+    try:
+        if sys.platform == "darwin":
+            subprocess.Popen(["open", str(chemin)])
+        elif sys.platform == "win32":
+            os.startfile(str(chemin))  # noqa: S606 (Windows uniquement)
+        else:
+            subprocess.Popen(["xdg-open", str(chemin)])
+    except OSError:
+        pass
+
+
+def enregistrer_fichier(sous_dossier, nom, contenu):
+    """Dans l'application il n'y a pas de dossier Téléchargements du navigateur : on range le fichier dans
+    Documents > ReviewMaker > sous_dossier, puis on l'ouvre."""
+    dossier = DOSSIER_FICHIERS / sous_dossier
+    if not (Path.home() / "Documents").is_dir():
+        dossier = Path.home() / "ReviewMaker" / sous_dossier
+    dossier.mkdir(parents=True, exist_ok=True)
+    chemin = dossier / nom
+    chemin.write_bytes(contenu)
+    ouvrir_fichier(chemin)
+    return {"chemin": str(chemin), "dossier": str(dossier)}
+
+
+def api_ouvrir(d):
+    """Lien cliqué dans l'application : site, Google Maps, Instagram, email (mailto:) ou appel (tel:)."""
+    url = (d.get("url") or "").strip()
+    if not re.match(r"^(https?://|mailto:|tel:)", url, re.I):
+        raise ErreurAPI("Lien non pris en charge.")
+    webbrowser.open(url)
+    return {"ok": True}
+
+
 def api_export(d):
     cles = d.get("cles") or []
     if not cles:
@@ -815,6 +883,8 @@ def api_export(d):
                      f"ORDER BY score DESC", conn, params=cles)
     tampon = io.BytesIO()
     df.to_excel(tampon, index=False)
+    if d.get("enregistrer"):
+        return enregistrer_fichier("Exports", f"prospects {datetime.now():%Y-%m-%d %Hh%M}.xlsx", tampon.getvalue())
     return tampon.getvalue()
 
 
@@ -908,7 +978,7 @@ POST = {"recherche": api_recherche, "enrichir": api_enrichir, "prospect": api_ma
         "choisir_dossier": api_choisir_dossier, "synchroniser": api_synchroniser, "quitter": lambda d: api_quitter(d),
         "marketing_fait": api_marketing_fait, "entreprise": api_entreprise, "reanalyser": api_reanalyser,
         "journal_ecrire": api_journal_ecrire, "journal_vu": api_journal_vu,
-        "reprises_chercher": api_reprises_chercher, "marches_actualiser": api_marches_actualiser, "marches_maj": api_marches_maj}
+        "ouvrir": api_ouvrir, "reprises_chercher": api_reprises_chercher, "marches_actualiser": api_marches_actualiser, "marches_maj": api_marches_maj}
 
 
 SANS_VERROU = {"choisir_dossier", "audit", "entreprise", "reanalyser", "marches_actualiser"}
@@ -923,7 +993,7 @@ def fichier_statique(chemin):
     m = re.fullmatch(r"/fonds/([a-z]+)(-mini)?\.jpg", chemin)
     if m:
         return photo_fond(m.group(1), bool(m.group(2)))
-    for prefixe, dossier in (("/web/", WEB),):
+    for prefixe, dossier in (("/web/", WEB), ("/assets/", ICI / "assets")):
         if chemin.startswith(prefixe):
             cible = (dossier / chemin[len(prefixe):]).resolve()
             if cible.is_file() and dossier.resolve() in cible.parents:
@@ -1068,14 +1138,18 @@ def arreter_ancien_logiciel():
                            creationflags=subprocess.CREATE_NO_WINDOW)
 
 
-def main():
+APPLI = False  # True quand le logiciel est ouvert dans sa propre fenêtre (app.py), pas dans un navigateur
+
+
+def demarrer(navigateur=True, arret_auto=True):
+    """Démarre le serveur local et ses tâches de fond. Renvoie le serveur, ou None si cette même version
+    tourne déjà (on se contente alors de la réafficher)."""
     adresse = f"http://127.0.0.1:{PORT}/"
     try:
         serveur = ThreadingHTTPServer(("127.0.0.1", PORT), Gestionnaire)
     except OSError:
-        if version_deja_lancee() == (VERSION, str(ICI)):  # même version, même dossier
-            webbrowser.open(adresse)  # déjà ouvert : on rouvre simplement la page
-            return
+        if version_deja_lancee() == (VERSION, str(ICI)):  # même version, même dossier : déjà ouvert
+            return None
         # Une autre version (ou une copie dans un autre dossier, peut-être supprimé) tourne encore :
         # on la ferme pour lancer celle-ci.
         print(f"{datetime.now():%d/%m %H:%M} Ancienne version encore ouverte : fermeture.")
@@ -1088,27 +1162,43 @@ def main():
             except OSError:
                 continue
         else:
-            print("Impossible de fermer l'ancienne version : redémarre l'ordinateur.")
-            webbrowser.open(adresse)
-            return
-    print(f"{datetime.now():%d/%m %H:%M} Review Maker est ouvert dans ton navigateur : {adresse}")
-    if "--sans-navigateur" not in sys.argv:
+            raise RuntimeError("Impossible de fermer l'ancienne version du logiciel : redémarre l'ordinateur.")
+    print(f"{datetime.now():%d/%m %H:%M} Review Maker est ouvert : {adresse}")
+    if navigateur:
         threading.Timer(0.8, lambda: webbrowser.open(adresse)).start()
     threading.Thread(target=boucle_synchro, daemon=True).start()
     if "--sans-marches" not in sys.argv:
         threading.Thread(target=boucle_marches, daemon=True).start()
-    if "--sans-arret" not in sys.argv:
+    if arret_auto:
         threading.Thread(target=surveiller_arret, args=(serveur,), daemon=True).start()
+    return serveur
+
+
+def ranger():
+    """Avant de quitter : dernières modifications envoyées au coéquipier, base rangée dans prospection.db."""
+    try:
+        synchroniser_maintenant()
+    except Exception:
+        pass
+    try:
+        with VERROU:
+            conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")
+    except Exception:
+        pass
+
+
+def main():
+    """Ancien lancement, dans le navigateur (sert aussi de secours si la fenêtre d'application ne s'ouvre pas)."""
+    serveur = demarrer(navigateur="--sans-navigateur" not in sys.argv, arret_auto="--sans-arret" not in sys.argv)
+    if serveur is None:
+        webbrowser.open(f"http://127.0.0.1:{PORT}/")
+        return
     try:
         serveur.serve_forever()
     except KeyboardInterrupt:
         pass
     finally:
-        try:
-            with VERROU:
-                conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")  # tout ranger dans prospection.db avant de quitter
-        except Exception:
-            pass
+        ranger()
 
 
 if __name__ == "__main__":

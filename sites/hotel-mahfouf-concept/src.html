@@ -512,6 +512,7 @@ function updateUI(p) {
 document.getElementById("again").addEventListener("click", function () { window.scrollTo({ top: 0, behavior: "smooth" }); });
 
 /* ---------- Boucle : une seule passe de rendu par image ---------- */
+var INSTANT = /[?&]instant/.test(location.search); // capture vidéo image par image
 var target = 0, prog = 0, ptr = { x: 0, y: 0, tx: 0, ty: 0 };
 function readScroll() { var max = document.documentElement.scrollHeight - window.innerHeight; target = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0; }
 window.addEventListener("scroll", readScroll, { passive: true });
@@ -520,7 +521,7 @@ readScroll();
 var last = performance.now(), inside = false, clock = 0;
 function frame(now) {
   var dt = Math.min(0.25, (now - last) / 1000); last = now; clock += dt;
-  var k = 1 - Math.exp(-dt * 3.2);                  // lissage indépendant de la fréquence d'affichage
+  var k = INSTANT ? 1 : 1 - Math.exp(-dt * 3.2);    // lissage indépendant de la fréquence d'affichage
   prog += (target - prog) * k;
   if (Math.abs(target - prog) < 0.00002) prog = target;
   ptr.x += (ptr.tx - ptr.x) * (1 - Math.exp(-dt * 3)); ptr.y += (ptr.ty - ptr.y) * (1 - Math.exp(-dt * 3));

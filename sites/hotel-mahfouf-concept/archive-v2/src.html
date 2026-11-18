@@ -1,0 +1,753 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hôtel Mahfouf Concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Concept : un hôtel qu'on visite en scrollant. Lobby → ascenseur (étages = collections) → couloir des chambres (portes = produits) → "Ne pas déranger" → enseigne néon. */
+:root{
+  --paper:#FBEFF0;   /* papier à lettres de l'hôtel, rosé */
+  --rose:#F5B9C6;    /* moquette du couloir */
+  --cherry:#C8102E;  /* rouge enseigne */
+  --wine:#4E0C19;    /* boiseries de l'ascenseur */
+  --brass:#D4AA55;   /* laiton : poignées, boutons, plaques */
+  --ink:#22070E;     /* nuit, néon */
+  --display:"Gloock", "Bodoni 72", Didot, Georgia, serif;
+  --body:"Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono:"DM Mono", ui-monospace, Menlo, monospace;
+  --gutter:max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r:max(16px, env(safe-area-inset-right, 0px));
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;overflow-x:clip;-webkit-font-smoothing:antialiased}
+img,svg{max-width:100%}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px;border-radius:4px}
+.wrap{padding-left:var(--gutter);padding-right:var(--gutter-r)}
+.mono{font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;font-size:.75rem}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance;line-height:.95}
+
+/* ---------- Loader : portes d'ascenseur ---------- */
+#loader{position:fixed;inset:0;z-index:100;display:grid;place-items:center;pointer-events:none;animation:loaderFallback .6s 7s forwards}
+#loader .door{position:absolute;top:0;bottom:0;width:50.5%;background:
+  repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 2px, transparent 2px 9px),
+  linear-gradient(90deg,var(--wine),#6b1526 50%,var(--wine));}
+#loader .door.l{left:0;border-right:2px solid var(--brass)}
+#loader .door.r{right:0;border-left:2px solid var(--brass)}
+#loader .door::after{content:"";position:absolute;top:50%;width:6px;height:90px;margin-top:-45px;border-radius:3px;background:var(--brass)}
+#loader .door.l::after{right:18px}
+#loader .door.r::after{left:18px}
+#loader .panel{position:relative;z-index:2;display:grid;justify-items:center;gap:14px;color:var(--brass)}
+#loader .screen{font-family:var(--mono);font-size:clamp(2.4rem,8vw,4rem);color:#FFB547;background:#1a0408;border:2px solid var(--brass);border-radius:10px;padding:.15em .6em;min-width:3.2em;text-align:center;text-shadow:0 0 18px rgba(255,181,71,.7)}
+#loader .label{font-family:var(--mono);letter-spacing:.3em;font-size:.75rem;text-transform:uppercase}
+@keyframes loaderFallback{to{opacity:0;visibility:hidden}}
+.no-motion #loader{display:none}
+
+/* ---------- Bandeau concept + nav ---------- */
+.concept{position:relative;z-index:60;background:var(--ink);color:var(--rose);text-align:center;font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;padding-block:7px}
+.nav{position:fixed;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 30px);z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px;transition:transform .5s cubic-bezier(.2,.7,.2,1),top .4s}
+.nav.scrolled{top:env(safe-area-inset-top,0px)}
+.nav .brand{font-family:var(--display);font-size:1.25rem;color:var(--paper);text-decoration:none;display:flex;align-items:center;gap:10px;white-space:nowrap;background:rgba(34,7,14,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(212,170,85,.35);border-radius:999px;padding:8px 16px}
+.nav .brand .stars{font-size:.6rem;letter-spacing:.2em;color:var(--brass)}
+.nav-pill{display:flex;align-items:center;gap:6px;background:rgba(34,7,14,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(212,170,85,.35);border-radius:999px;padding:6px}
+.nav-pill a{font-size:.85rem;color:var(--paper);text-decoration:none;padding:8px 14px;border-radius:999px;transition:background .25s}
+.nav-pill a:hover{background:rgba(245,185,198,.18)}
+.cart-btn{display:flex;align-items:center;gap:8px;background:var(--brass);color:var(--ink);border:0;border-radius:999px;padding:9px 16px 9px 12px;font-weight:600;font-size:.88rem}
+.cart-btn svg{width:20px;height:20px}
+.cart-btn .count{display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:999px;background:var(--ink);color:var(--brass);font-size:.75rem;font-family:var(--mono)}
+@media (max-width:760px){.nav-pill a.opt{display:none}.nav .brand .stars{display:none}}
+@media (max-width:420px){.nav-pill{display:none}}
+
+/* ---------- Indicateur d'étage fixe ---------- */
+.lift{position:fixed;right:max(14px, env(safe-area-inset-right,0px));top:50%;z-index:40;transform:translateY(-50%);display:grid;justify-items:center;gap:6px;background:rgba(34,7,14,.82);border:1px solid var(--brass);border-radius:999px;padding:12px 8px;color:#FFB547;font-family:var(--mono)}
+.lift .arrow{width:14px;height:14px;transition:transform .3s}
+.lift .arrow.down{transform:rotate(180deg)}
+.lift .num{font-size:1.05rem;min-width:2.2ch;text-align:center;text-shadow:0 0 10px rgba(255,181,71,.6)}
+.lift .lbl{writing-mode:vertical-rl;transform:rotate(180deg);font-size:.6rem;letter-spacing:.2em;color:var(--rose);text-transform:uppercase}
+@media (max-width:600px){.lift{display:none}}
+
+/* ---------- Hero / Lobby ---------- */
+.hero{position:relative;min-height:100svh;background:
+  radial-gradient(120% 80% at 50% 0%, #e0253f 0%, var(--cherry) 45%, #8d0b20 100%);
+  color:var(--paper);overflow:hidden;display:grid;align-content:center;padding-block:120px 80px}
+.hero::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg, rgba(255,255,255,.045) 0 1px, transparent 1px 64px);pointer-events:none}
+.hero .inner{position:relative;z-index:2;display:grid;justify-items:center;text-align:center;gap:clamp(12px,2vw,22px)}
+.hero .eyebrow{display:flex;gap:10px;align-items:center;color:var(--rose)}
+.hero .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:#7CFFB0;box-shadow:0 0 10px #7CFFB0;animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.25}}
+.sign{display:grid;justify-items:center;gap:0;line-height:.82}
+.sign .stars{font-size:clamp(1rem,2.2vw,1.6rem);letter-spacing:.5em;color:var(--brass);margin-bottom:.3em;padding-left:.5em}
+.sign .l1{font-family:var(--display);font-size:clamp(2.6rem,9vw,8rem);letter-spacing:.08em}
+.sign .l2{font-family:var(--display);font-size:clamp(3.6rem,17vw,16rem);letter-spacing:-.01em;color:var(--paper)}
+.sign .ch{display:inline-block;will-change:transform}
+.sign .line{display:block;overflow:hidden;padding:.16em .04em 0;margin-top:-.16em}
+.hero .tag{max-width:34ch;font-size:clamp(1rem,1.6vw,1.2rem);color:#ffe3e8}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.btn{display:inline-flex;align-items:center;gap:10px;border-radius:999px;padding:14px 24px;font-weight:600;text-decoration:none;border:0;transition:transform .25s cubic-bezier(.2,.7,.2,1),background .25s,color .25s}
+.btn:hover{transform:translateY(-2px)}
+.btn.solid{background:var(--paper);color:var(--cherry)}
+.btn.ghost{background:transparent;color:var(--paper);box-shadow:inset 0 0 0 1.5px rgba(251,239,240,.6)}
+.btn.ghost:hover{background:rgba(251,239,240,.1)}
+.float{position:absolute;z-index:1;width:clamp(150px,21vw,330px);aspect-ratio:1;max-width:100%;display:grid;place-items:center;filter:drop-shadow(0 30px 40px rgba(60,0,10,.45));pointer-events:none}
+.float svg{width:80%}
+.gl .float{filter:none}
+.float.f1{left:2%;top:14%}
+.float.f2{right:3%;top:12%;width:clamp(130px,17vw,260px)}
+.float.f3{left:7%;bottom:4%;width:clamp(130px,16vw,240px)}
+.float.f4{right:5%;bottom:5%;width:clamp(150px,19vw,290px)}
+.gl [data-model] > svg{visibility:hidden}
+@media (max-width:700px){.float,.float.f2,.float.f3,.float.f4{width:clamp(120px,36vw,170px)}.float.f1{left:-8%;top:9%}.float.f2{right:-6%;top:8%}.float.f3{left:-6%;bottom:2%}.float.f4{right:-8%;bottom:2%}}
+.bell{position:absolute;z-index:3;left:50%;bottom:22px;transform:translateX(-50%);background:none;border:0;padding:6px;display:grid;justify-items:center;gap:4px;color:var(--rose)}
+.bell svg{width:54px;height:40px;transform-origin:50% 90%}
+.bell .ring{position:absolute;left:50%;top:22px;width:50px;height:50px;margin-left:-25px;border-radius:50%;border:2px solid var(--brass);opacity:0;pointer-events:none}
+.bell .hint{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase}
+
+/* ---------- Rubans ---------- */
+.ribbons{position:relative;height:clamp(150px,22vw,240px);overflow:hidden;background:var(--paper);display:grid;place-items:center}
+.ribbon{position:absolute;left:-5%;width:110%;padding-block:14px;white-space:nowrap;overflow:hidden}
+.ribbon.a{background:var(--ink);color:var(--rose);transform:rotate(-3deg);z-index:2}
+.ribbon.b{background:var(--rose);color:var(--wine);transform:rotate(2.5deg)}
+.ribbon .track{display:inline-flex;gap:36px;font-family:var(--display);font-size:clamp(1.4rem,3vw,2.4rem);will-change:transform}
+.ribbon .track span{display:inline-flex;align-items:center;gap:36px}
+.ribbon .track i{font-style:normal;color:var(--brass);font-size:.7em}
+
+/* ---------- Manifeste ---------- */
+.manifesto{padding-block:clamp(90px,14vw,180px)}
+.manifesto .k{display:flex;justify-content:space-between;align-items:center;gap:16px;max-width:1100px;margin:0 auto 36px;color:var(--cherry)}
+.manifesto .k .key{display:flex;align-items:center;gap:10px}
+.manifesto p{max-width:1100px;margin:0 auto;font-family:var(--display);font-size:clamp(1.9rem,5.2vw,4.6rem);line-height:1.08;color:var(--wine);text-wrap:balance}
+.manifesto .w{display:inline-block}
+.manifesto em{font-style:italic;color:var(--cherry)}
+
+/* ---------- Ascenseur (pinned) ---------- */
+.elevator{position:relative;height:100svh;min-height:560px;background:
+  radial-gradient(80% 60% at 50% 40%, #6d1426, var(--wine) 60%, #2c0710);color:var(--paper);overflow:hidden;display:grid;place-items:center;padding-block:70px 30px}
+.elevator .top{position:absolute;top:clamp(70px,10vh,96px);left:0;right:0;display:flex;justify-content:center;align-items:center;gap:18px}
+.floor-screen{display:flex;align-items:center;gap:10px;background:#1a0408;border:2px solid var(--brass);border-radius:10px;padding:6px 16px;font-family:var(--mono);color:#FFB547;font-size:1.6rem;text-shadow:0 0 14px rgba(255,181,71,.7)}
+.floor-screen svg{width:16px;height:16px}
+.elevator .cab{position:relative;width:min(900px,92vw);height:min(66svh,600px);margin-top:60px;border:3px solid var(--brass);border-radius:6px;background:#2a0810;box-shadow:0 0 0 10px rgba(212,170,85,.12),0 40px 120px rgba(0,0,0,.5);overflow:hidden}
+.room{position:absolute;inset:0;display:grid;grid-template-columns:1.05fr 1fr;align-items:center;gap:clamp(12px,3vw,40px);padding:clamp(18px,4vw,48px);visibility:hidden}
+.room.first{visibility:visible}
+.room .art{position:relative;display:grid;place-items:center;height:100%;min-height:0}
+.room .art::before{content:"";position:absolute;width:78%;aspect-ratio:1;max-width:100%;border-radius:50%;background:var(--halo,var(--rose));opacity:.95}
+.room .art svg{position:relative;width:min(100%,380px);height:auto;filter:drop-shadow(0 24px 30px rgba(0,0,0,.35))}
+.room .txt{display:grid;gap:14px;min-width:0}
+.room .fl{color:var(--brass)}
+.room h3{font-size:clamp(2rem,5vw,4.2rem)}
+.room p{margin:0;color:#f3d3da;max-width:36ch}
+.room .row{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+.room .price{font-family:var(--mono);font-size:1.1rem;color:var(--paper)}
+.add{display:inline-flex;align-items:center;gap:8px;background:var(--brass);color:var(--ink);border:0;border-radius:999px;padding:12px 18px;font-weight:600;font-size:.92rem;transition:transform .2s,background .2s}
+.add:hover{transform:translateY(-2px);background:#e6c06d}
+.add:active{transform:scale(.96)}
+.add svg{width:16px;height:16px}
+.cab .ldoor,.cab .rdoor{position:absolute;top:0;bottom:0;width:50%;z-index:5;background:
+  repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 2px, transparent 2px 10px),linear-gradient(90deg,#8a6a2c,var(--brass) 50%,#8a6a2c);transform:translateX(-100%);pointer-events:none}
+.cab .ldoor{left:0}
+.cab .rdoor{right:0;transform:translateX(100%)}
+.buttons{position:absolute;right:max(24px,4vw);top:50%;transform:translateY(-50%);display:grid;gap:10px;padding:14px 10px;border-radius:12px;background:linear-gradient(#3a0b16,#2a0810);border:1px solid rgba(212,170,85,.5)}
+.buttons span{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;border:2px solid var(--brass);font-family:var(--mono);font-size:.85rem;color:var(--brass);transition:background .3s,color .3s,box-shadow .3s}
+.buttons span.on{background:#FFB547;color:var(--ink);box-shadow:0 0 18px rgba(255,181,71,.8)}
+@media (max-width:1180px){.buttons{display:none}}
+@media (max-width:720px){
+  .elevator .cab{height:min(74svh,640px);margin-top:70px}
+  .room{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto;align-items:end;text-align:left;gap:8px}
+  .room .art svg{width:min(70%,260px)}
+  .room p{font-size:.92rem}
+}
+
+/* ---------- Couloir horizontal ---------- */
+.corridor{position:relative;background:var(--rose);overflow:hidden;min-height:100svh;display:flex;flex-direction:column;justify-content:center}
+.corridor::before{content:"";position:absolute;inset:0;opacity:.35;background-image:radial-gradient(circle at 12px 12px, var(--cherry) 1.6px, transparent 2px),radial-gradient(circle at 36px 36px, var(--wine) 1.2px, transparent 1.6px);background-size:48px 48px;pointer-events:none}
+.corridor .head{position:relative;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px 18px;padding-block:clamp(76px,10vh,100px) 20px}
+.corridor .head h2{font-size:clamp(2.4rem,6vw,5rem);color:var(--wine)}
+@media (max-width:600px){.corridor .head p{font-size:.9rem}}
+.corridor .head p{margin:0;max-width:34ch;color:var(--wine)}
+.hscroll{position:relative}
+.htrack{display:flex;gap:clamp(18px,3vw,40px);padding-block:10px clamp(40px,6vh,80px);width:max-content}
+.no-motion .hscroll{overflow-x:auto}
+html:not(.no-motion) .htrack{padding-left:62vw;padding-right:50vw}
+.cardroom{position:relative;width:min(340px,76vw,calc((100svh - 380px) * .62));min-width:200px;flex:none;perspective:1400px}
+.frame{position:relative;aspect-ratio:3/4.6;max-width:100%;border:10px solid var(--wine);border-bottom-width:0;border-radius:180px 180px 0 0;background:var(--paper);overflow:hidden;box-shadow:0 30px 60px rgba(78,12,25,.25)}
+.frame .inside{position:absolute;inset:0;display:grid;grid-template-rows:1fr auto;padding:28px 22px 22px;background:radial-gradient(70% 50% at 50% 38%, var(--halo,#fff) 0, var(--paper) 72%)}
+.frame .inside .pv{display:grid;place-items:center;min-height:0;margin:-10px -10px 0}
+.frame .inside svg{width:88%;max-height:100%;filter:drop-shadow(0 18px 18px rgba(78,12,25,.25))}
+.frame .meta{display:grid;gap:10px}
+.frame .meta .r{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.frame .meta h3{font-size:1.6rem;color:var(--wine)}
+.frame .meta .price{font-family:var(--mono);color:var(--cherry)}
+.frame .meta .add{justify-self:start;background:var(--cherry);color:var(--paper)}
+.frame .meta .add:hover{background:#a70d26}
+.panel-door{position:absolute;inset:0;z-index:3;transform-origin:0 50%;background:linear-gradient(100deg,var(--cherry),#a90c25);border-radius:170px 170px 0 0;pointer-events:none;box-shadow:inset 0 0 0 14px rgba(0,0,0,.06)}
+.panel-door::before{content:"";position:absolute;inset:16% 14% 46%;border:2px solid rgba(251,239,240,.25);border-radius:120px 120px 6px 6px}
+.panel-door::after{content:"";position:absolute;inset:60% 14% 8%;border:2px solid rgba(251,239,240,.25);border-radius:6px}
+.panel-door .plate{position:absolute;top:9%;left:50%;transform:translateX(-50%);background:var(--brass);color:var(--ink);font-family:var(--mono);font-size:1rem;padding:4px 12px;border-radius:4px;z-index:2}
+.panel-door .knob{position:absolute;right:12%;top:54%;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff4cf,var(--brass) 55%,#7a5a1c)}
+.no-motion .panel-door{display:none}
+.carpet{height:14px;margin-top:-2px;background:repeating-linear-gradient(90deg,var(--wine) 0 14px,var(--cherry) 14px 28px);border-radius:0 0 4px 4px}
+
+/* ---------- Ne pas déranger ---------- */
+.dnd{position:relative;background:var(--paper);padding-block:clamp(90px,12vw,160px);overflow:hidden}
+.dnd .grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;gap:clamp(30px,7vw,110px);align-items:center}
+.hanger{width:clamp(200px,26vw,300px);aspect-ratio:220/470;max-width:100%;justify-self:center;display:grid}
+.hanger svg{width:100%;height:auto;transform-origin:50% 26px}
+.dnd h2{font-size:clamp(2.4rem,6vw,5rem);color:var(--wine)}
+.dnd p{max-width:44ch;color:#5a2b35}
+.news{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;max-width:520px}
+.news input{flex:1 1 220px;min-width:0;border:1.5px solid var(--wine);background:transparent;border-radius:999px;padding:14px 20px;font:inherit;color:var(--ink)}
+.news input::placeholder{color:#8f5a66}
+.news button{background:var(--wine);color:var(--paper);border:0;border-radius:999px;padding:14px 22px;font-weight:600}
+@media (max-width:760px){.dnd .grid{grid-template-columns:1fr;text-align:left}}
+
+/* ---------- Néon / footer ---------- */
+.neon{background:var(--ink);color:var(--rose);padding-block:clamp(90px,12vw,150px) 36px;overflow:hidden;position:relative}
+.neon .sign2{text-align:center;font-family:var(--display);font-size:clamp(3rem,13vw,13rem);line-height:.9;color:#ffd9e1;text-shadow:0 0 6px #fff,0 0 22px #ff5c86,0 0 60px #ff2e63;animation:flicker 5s infinite}
+.neon .sign2 small{display:block;font-size:.32em;letter-spacing:.35em;color:var(--brass);text-shadow:0 0 18px rgba(212,170,85,.6);margin-bottom:.2em}
+@keyframes flicker{0%,18%,22%,62%,64%,100%{opacity:1}20%,63%{opacity:.55}}
+.neon .cols{max-width:1100px;margin:80px auto 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;font-size:.9rem}
+.neon .cols h4{margin:0 0 10px;font-family:var(--mono);font-weight:400;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--brass)}
+.neon .cols a{display:block;text-decoration:none;color:#f0c6cf;padding-block:3px}
+.neon .cols a:hover{color:#fff}
+.neon .legal{max-width:1100px;margin:60px auto 0;padding-top:20px;border-top:1px solid rgba(245,185,198,.2);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:.78rem;color:#c99aa5}
+@media (max-width:640px){.neon .cols{grid-template-columns:1fr 1fr}}
+
+/* ---------- Valise (panier) ---------- */
+.scrim{position:fixed;inset:0;z-index:80;background:rgba(34,7,14,.45);opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+.scrim.open{opacity:1;visibility:visible}
+.drawer{position:fixed;top:0;right:0;bottom:0;z-index:81;width:min(420px,100%);background:var(--paper);display:grid;grid-template-rows:auto 1fr auto;transform:translateX(105%);transition:transform .55s cubic-bezier(.2,.8,.2,1);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-right:env(safe-area-inset-right,0px)}
+.drawer.open{transform:none}
+.drawer header{display:flex;justify-content:space-between;align-items:center;padding:22px;border-bottom:1px solid #ecd0d6}
+.drawer header h3{font-size:1.8rem;color:var(--wine)}
+.drawer .x{background:none;border:1.5px solid var(--wine);width:38px;height:38px;border-radius:50%;font-size:1.1rem;color:var(--wine)}
+.drawer .items{overflow:auto;padding:12px 22px;display:grid;align-content:start;gap:12px}
+.drawer .empty{color:#8f5a66;padding:30px 0;text-align:center}
+.it{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;padding:10px;border-radius:14px;background:#fff}
+.it .th{width:64px;height:64px;border-radius:10px;background:var(--rose);display:grid;place-items:center}
+.it .th svg,.it .th img{width:56px;height:56px;object-fit:contain}
+.it .n{font-weight:600;color:var(--wine);font-size:.95rem}
+.it .p{font-family:var(--mono);font-size:.8rem;color:var(--cherry)}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--wine);background:none;color:var(--wine);line-height:1}
+.qty span{font-family:var(--mono);min-width:2ch;text-align:center}
+.drawer footer{padding:22px;border-top:1px solid #ecd0d6;display:grid;gap:12px}
+.drawer .tot{display:flex;justify-content:space-between;font-family:var(--mono);font-size:1rem;color:var(--wine)}
+.drawer .checkout{background:var(--cherry);color:var(--paper);border:0;border-radius:999px;padding:16px;font-weight:600}
+.drawer .note{font-size:.75rem;color:#8f5a66;text-align:center}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:90;transform:translate(-50%,140%);background:var(--ink);color:var(--paper);padding:12px 20px;border-radius:999px;font-size:.9rem;display:flex;align-items:center;gap:10px;border:1px solid var(--brass);transition:transform .5s cubic-bezier(.2,.8,.2,1);max-width:calc(100% - 32px)}
+.toast.show{transform:translate(-50%,0)}
+.toast b{color:var(--brass);font-weight:600}
+.fly{position:fixed;z-index:95;width:22px;height:22px;border-radius:50%;background:var(--brass);box-shadow:0 0 0 4px rgba(212,170,85,.3);pointer-events:none}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important}
+  .neon .sign2{animation:none}
+}
+</style>
+</head>
+<body>
+
+<div id="loader" aria-hidden="true">
+  <div class="door l"></div><div class="door r"></div>
+  <div class="panel">
+    <div class="label">Check-in en cours</div>
+    <div class="screen" id="ldScreen">5</div>
+    <div class="label">Hôtel Mahfouf · Paris</div>
+  </div>
+</div>
+
+<div class="concept">Concept de refonte non officiel · Réalisé par ReviewMaker</div>
+
+<header class="nav wrap" id="nav">
+  <a class="brand" href="#lobby">Hôtel Mahfouf <span class="stars">★★★★★</span></a>
+  <nav class="nav-pill" aria-label="Navigation">
+    <a href="#etages">Étages</a>
+    <a href="#chambres">Chambres</a>
+    <a class="opt" href="#reception">Réception</a>
+  </nav>
+  <button class="cart-btn" id="cartBtn" aria-label="Ouvrir la valise">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M8 11v5M16 11v5"/></svg>
+    Valise <span class="count" id="cartCount">0</span>
+  </button>
+</header>
+
+<aside class="lift" aria-hidden="true">
+  <svg class="arrow" id="liftArrow" viewBox="0 0 14 14"><path d="M7 2 L12 9 H2 Z" fill="#FFB547"/></svg>
+  <div class="num" id="liftNum">RDC</div>
+  <div class="lbl" id="liftLbl">Lobby</div>
+</aside>
+
+<main>
+  <!-- LOBBY -->
+  <section class="hero wrap" id="lobby" data-floor="RDC" data-label="Lobby">
+    <div class="float f1" data-speed="-0.35" id="fSweat" data-model="suitcase"></div>
+    <div class="float f2" data-speed="-0.6" id="fCap" data-model="cap"></div>
+    <div class="float f3" data-speed="-0.2" id="fKey" data-model="key"></div>
+    <div class="float f4" data-speed="-0.5" id="fTote" data-model="bell"></div>
+    <div class="inner">
+      <div class="eyebrow mono"><span class="dot"></span>Chambres disponibles · Réception ouverte 24/7</div>
+      <h1 class="sign" aria-label="Hôtel Mahfouf">
+        <span class="stars" aria-hidden="true">★★★★★</span>
+        <span class="line l1" aria-hidden="true" data-split>HÔTEL</span>
+        <span class="line l2" aria-hidden="true" data-split>Mahfouf</span>
+      </h1>
+      <p class="tag">Des vêtements qui ont un numéro de chambre. Montez dans l'ascenseur, chaque étage cache une collection.</p>
+      <div class="ctas">
+        <a class="btn solid" href="#etages">Prendre l'ascenseur
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5"/></svg></a>
+        <a class="btn ghost" href="#chambres">Voir les chambres</a>
+      </div>
+    </div>
+    <button class="bell" id="bell" aria-label="Sonner à la réception">
+      <span class="ring"></span>
+      <svg viewBox="0 0 54 40"><rect x="2" y="34" width="50" height="5" rx="2" fill="#D4AA55"/><path d="M6 34 Q6 12 27 12 Q48 12 48 34 Z" fill="#D4AA55"/><path d="M12 30 Q13 18 24 16" stroke="#fff4cf" stroke-width="2" fill="none" opacity=".7"/><rect x="24" y="5" width="6" height="7" rx="2" fill="#D4AA55"/></svg>
+      <span class="hint">Sonnez</span>
+    </button>
+  </section>
+
+  <!-- RUBANS -->
+  <div class="ribbons" aria-hidden="true">
+    <div class="ribbon b"><div class="track" data-dir="-1"></div></div>
+    <div class="ribbon a"><div class="track" data-dir="1"></div></div>
+  </div>
+
+  <!-- MANIFESTE -->
+  <section class="manifesto wrap" data-floor="RDC" data-label="Lobby">
+    <div class="k mono"><span class="key">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="12" r="4.5"/><path d="M12.5 12H22M18 12v3.5M21 12v2.5"/></svg>
+      Règlement intérieur, article 1</span><span>Clé n°001</span></div>
+    <p id="manifesto">Ici, chaque pièce a son <em>numéro de chambre</em>. On entre en sweat, on ressort avec <em>une histoire.</em> Le room service passe à toute heure, le lobby ne ferme jamais, et la clé reste <em>à votre nom.</em></p>
+  </section>
+
+  <!-- ASCENSEUR -->
+  <section class="elevator" id="etages" data-floor="1" data-label="Ascenseur">
+    <div class="top">
+      <div class="floor-screen"><svg viewBox="0 0 14 14"><path d="M7 2 L12 9 H2 Z" fill="#FFB547"/></svg><span id="floorNum">1</span></div>
+      <span class="mono" style="color:var(--brass)" id="floorName">Le Lobby</span>
+    </div>
+    <div class="cab" id="cab">
+      <div class="ldoor"></div><div class="rdoor"></div>
+    </div>
+    <div class="buttons" id="liftButtons" aria-hidden="true"></div>
+  </section>
+
+  <!-- COULOIR -->
+  <section class="corridor" id="chambres" data-floor="6" data-label="Couloir">
+    <div class="head wrap">
+      <h2>Le couloir<br>des chambres</h2>
+      <p>Sept portes, sept pièces. Faites défiler, elles s'ouvrent toutes seules. Le room service s'occupe du reste.</p>
+    </div>
+    <div class="hscroll" id="hscroll">
+      <div class="htrack wrap" id="htrack"></div>
+    </div>
+  </section>
+
+  <!-- NE PAS DÉRANGER -->
+  <section class="dnd wrap" id="reception" data-floor="7" data-label="Réception">
+    <div class="grid">
+      <div class="hanger" data-model="hanger" data-zoom="1.08"><svg id="hanger" viewBox="0 0 220 460" aria-hidden="true">
+        <defs><linearGradient id="hg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C8102E"/><stop offset="1" stop-color="#8d0b20"/></linearGradient></defs>
+        <path d="M20 20 Q20 0 40 0 H180 Q200 0 200 20 V440 Q200 460 180 460 H40 Q20 460 20 440 Z" fill="url(#hg)"/>
+        <circle cx="110" cy="70" r="38" fill="#FBEFF0"/>
+        <rect x="104" y="0" width="12" height="40" fill="#FBEFF0"/>
+        <text x="110" y="190" text-anchor="middle" font-family="Gloock, Georgia, serif" font-size="40" fill="#FBEFF0">NE PAS</text>
+        <text x="110" y="240" text-anchor="middle" font-family="Gloock, Georgia, serif" font-size="40" fill="#FBEFF0">DÉRANGER</text>
+        <line x1="50" y1="275" x2="170" y2="275" stroke="#D4AA55" stroke-width="2"/>
+        <text x="110" y="315" text-anchor="middle" font-family="DM Mono, monospace" font-size="14" letter-spacing="3" fill="#F5B9C6">DO NOT DISTURB</text>
+        <text x="110" y="400" text-anchor="middle" font-family="Gloock, Georgia, serif" font-size="26" fill="#D4AA55">★★★★★</text>
+      </svg></div>
+      <div>
+        <span class="mono" style="color:var(--cherry)">Réception · Liste des clients</span>
+        <h2>Laissez votre clé à la réception</h2>
+        <p>Les nouvelles collections arrivent d'abord chez les clients de l'hôtel. Une lettre par mois, pas plus, glissée sous la porte.</p>
+        <form class="news" id="newsForm" novalidate>
+          <label for="email" class="mono" style="position:absolute;left:-9999px">Adresse e-mail</label>
+          <input id="email" type="email" placeholder="votre@adresse.fr" required autocomplete="email">
+          <button type="submit">S'inscrire</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- NÉON -->
+  <footer class="neon wrap" data-floor="8" data-label="Rooftop">
+    <div class="sign2"><small>★★★★★ Paris</small>Hôtel<br>Mahfouf</div>
+    <div class="cols">
+      <div><h4>Étages</h4><a href="#etages">Le Lobby</a><a href="#etages">Room Service</a><a href="#etages">Le Spa</a><a href="#etages">Le Rooftop</a></div>
+      <div><h4>Réception</h4><a href="#reception">Lettre de l'hôtel</a><a href="#chambres">Les chambres</a><a href="#lobby">Retour au lobby</a></div>
+      <div><h4>Ce site</h4><a href="#lobby">Concept de refonte</a><a href="#lobby">Réalisé par ReviewMaker</a></div>
+    </div>
+    <div class="legal">
+      <span>Concept de refonte non officiel, réalisé par ReviewMaker. Non affilié à Hôtel Mahfouf ni à Léna Situations. Produits, visuels et prix illustratifs. Aucune commande possible.</span>
+      <span>© 2026 ReviewMaker</span>
+    </div>
+  </footer>
+</main>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Votre valise" aria-hidden="true">
+  <header><h3>Votre valise</h3><button class="x" id="closeCart" aria-label="Fermer">✕</button></header>
+  <div class="items" id="items"></div>
+  <footer>
+    <div class="tot"><span>Total</span><span id="total">0,00 €</span></div>
+    <button class="checkout" id="checkout">Check-out</button>
+    <div class="note">Concept de démonstration : aucun paiement n'est possible.</div>
+  </footer>
+</aside>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!--VENDOR-->
+<!--SCENE3D-->
+<script>
+(function(){
+"use strict";
+var hasGsap = typeof window.gsap !== "undefined" && typeof window.ScrollTrigger !== "undefined";
+var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var motion = hasGsap && !reduce;
+if(!motion) document.documentElement.classList.add("no-motion");
+
+/* ================= Illustrations produits (SVG) ================= */
+var uidN = 0;
+function emb(x,y,size,col){ return '<text x="'+x+'" y="'+y+'" text-anchor="middle" font-family="Gloock, Georgia, serif" font-size="'+size+'" fill="'+col+'">'; }
+var ART = {
+  sweat: function(c){ var u="s"+(uidN++); return '<svg viewBox="0 0 300 300" aria-hidden="true"><defs><linearGradient id="'+u+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+c.a+'"/><stop offset="1" stop-color="'+c.b+'"/></linearGradient></defs>'+
+    '<path d="M95,48 Q150,70 205,48 L262,80 Q278,90 274,108 L262,196 Q260,208 248,207 L230,204 L224,122 L222,262 Q222,274 210,274 H90 Q78,274 78,262 L76,122 L70,204 L52,207 Q40,208 38,196 L26,108 Q22,90 38,80 Z" fill="url(#'+u+')"/>'+
+    '<path d="M108,52 Q150,84 192,52" fill="none" stroke="'+c.line+'" stroke-width="7" stroke-linecap="round"/>'+
+    '<rect x="80" y="252" width="140" height="20" rx="6" fill="'+c.line+'" opacity=".35"/>'+
+    '<rect x="40" y="188" width="30" height="16" rx="5" fill="'+c.line+'" opacity=".35"/><rect x="230" y="188" width="30" height="16" rx="5" fill="'+c.line+'" opacity=".35"/>'+
+    '<path d="M76,122 L80,180 M224,122 L220,180" stroke="#000" stroke-opacity=".12" stroke-width="3"/>'+
+    emb(150,128,15,c.ink)+'★★★★★</text>'+emb(150,160,30,c.ink)+'HÔTEL</text>'+emb(150,190,22,c.ink)+'Mahfouf</text></svg>'; },
+  tee: function(c){ var u="t"+(uidN++); return '<svg viewBox="0 0 300 300" aria-hidden="true"><defs><linearGradient id="'+u+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+c.a+'"/><stop offset="1" stop-color="'+c.b+'"/></linearGradient></defs>'+
+    '<path d="M100,40 Q150,64 200,40 L268,74 L246,124 L222,114 L222,266 Q222,276 212,276 H88 Q78,276 78,266 L78,114 L54,124 L32,74 Z" fill="url(#'+u+')"/>'+
+    '<path d="M112,44 Q150,74 188,44" fill="none" stroke="'+c.line+'" stroke-width="6" stroke-linecap="round"/>'+
+    '<g transform="translate(150 168)"><circle r="44" fill="none" stroke="'+c.ink+'" stroke-width="2.5"/>'+
+    '<text y="-8" text-anchor="middle" font-family="DM Mono, monospace" font-size="10" letter-spacing="2" fill="'+c.ink+'">ROOM</text>'+
+    '<text y="18" text-anchor="middle" font-family="Gloock, Georgia, serif" font-size="26" fill="'+c.ink+'">Service</text></g></svg>'; },
+  cap: function(c){ var u="c"+(uidN++); return '<svg viewBox="0 0 300 300" aria-hidden="true"><defs><linearGradient id="'+u+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+c.a+'"/><stop offset="1" stop-color="'+c.b+'"/></linearGradient></defs>'+
+    '<path d="M54,186 Q50,84 150,78 Q250,84 246,186 Z" fill="url(#'+u+')"/>'+
+    '<path d="M150,80 V186 M100,92 Q92,140 96,186 M200,92 Q208,140 204,186" stroke="#000" stroke-opacity=".14" stroke-width="2.5" fill="none"/>'+
+    '<circle cx="150" cy="80" r="7" fill="'+c.b+'"/>'+
+    '<path d="M40,186 Q150,168 262,186 Q290,192 286,206 Q280,222 236,220 Q150,212 64,220 Q22,222 16,206 Q12,192 40,186 Z" fill="'+c.b+'"/>'+
+    emb(150,150,24,c.ink)+'Groom</text>'+'<text x="150" y="170" text-anchor="middle" font-family="DM Mono, monospace" font-size="9" letter-spacing="3" fill="'+c.ink+'">HÔTEL MAHFOUF</text></svg>'; },
+  tote: function(c){ return '<svg viewBox="0 0 300 300" aria-hidden="true">'+
+    '<path d="M108,96 Q108,34 150,34 Q192,34 192,96" fill="none" stroke="'+c.b+'" stroke-width="12" stroke-linecap="round"/>'+
+    '<path d="M62,92 H238 L250,276 Q250,282 244,282 H56 Q50,282 50,276 Z" fill="'+c.a+'"/>'+
+    '<path d="M62,92 H238" stroke="#000" stroke-opacity=".1" stroke-width="6"/>'+
+    '<rect x="96" y="128" width="108" height="108" rx="54" fill="none" stroke="'+c.ink+'" stroke-width="2.5"/>'+
+    '<text x="150" y="168" text-anchor="middle" font-family="DM Mono, monospace" font-size="10" letter-spacing="3" fill="'+c.ink+'">BAGAGERIE</text>'+
+    emb(150,200,34,c.ink)+'HM</text>'+'<text x="150" y="222" text-anchor="middle" font-family="DM Mono, monospace" font-size="9" letter-spacing="2" fill="'+c.ink+'">PARIS</text></svg>'; },
+  socks: function(c){ var one=function(tx,rot){ return '<g transform="translate('+tx+' 0) rotate('+rot+' 80 150)">'+
+    '<path d="M50,36 H110 V176 Q110,196 126,206 L150,222 Q176,240 160,262 Q146,280 120,268 L66,236 Q50,226 50,204 Z" fill="'+c.a+'"/>'+
+    '<rect x="50" y="36" width="60" height="26" fill="'+c.b+'"/><rect x="50" y="72" width="60" height="8" fill="'+c.b+'"/><rect x="50" y="88" width="60" height="8" fill="'+c.b+'"/>'+
+    '<path d="M128,207 L150,222 Q176,240 160,262 Q146,280 120,268 L112,263 Q140,246 128,207 Z" fill="'+c.b+'"/>'+
+    '<text x="80" y="150" text-anchor="middle" font-family="DM Mono, monospace" font-size="9" letter-spacing="1" fill="'+c.ink+'" transform="rotate(-90 80 150)">NE PAS DÉRANGER</text></g>'; };
+    return '<svg viewBox="0 0 300 300" aria-hidden="true">'+one(10,-6)+one(110,6)+'</svg>'; },
+  key: function(c){ return '<svg viewBox="0 0 300 300" aria-hidden="true">'+
+    '<circle cx="150" cy="54" r="30" fill="none" stroke="'+c.b+'" stroke-width="9"/>'+
+    '<rect x="143" y="80" width="14" height="30" rx="5" fill="'+c.b+'"/>'+
+    '<path d="M150,104 L232,186 L150,284 L68,186 Z" fill="'+c.a+'"/>'+
+    '<path d="M150,118 L220,186 L150,270 L80,186 Z" fill="none" stroke="'+c.ink+'" stroke-opacity=".35" stroke-width="2"/>'+
+    '<circle cx="150" cy="132" r="7" fill="'+c.line+'"/>'+
+    '<text x="150" y="204" text-anchor="middle" font-family="Gloock, Georgia, serif" font-size="46" fill="'+c.ink+'">104</text>'+
+    '<text x="150" y="232" text-anchor="middle" font-family="DM Mono, monospace" font-size="9" letter-spacing="2" fill="'+c.ink+'">HÔTEL MAHFOUF</text></svg>'; }
+};
+
+/* Couleurs */
+var C = {
+  rose:{a:"#F9C9D3",b:"#EFA2B3",line:"#E58AA0",ink:"#8d0b20"},
+  white:{a:"#FFFFFF",b:"#F1E4E7",line:"#E9D3D8",ink:"#C8102E"},
+  cherry:{a:"#D7203C",b:"#9E0C24",line:"#7a0a1c",ink:"#FBEFF0"},
+  ecru:{a:"#F3E6D2",b:"#C8102E",line:"#D9C7AC",ink:"#4E0C19"},
+  stripe:{a:"#FBEFF0",b:"#C8102E",line:"#C8102E",ink:"#4E0C19"},
+  brass:{a:"#C8102E",b:"#D4AA55",line:"#D4AA55",ink:"#FBEFF0"},
+  wine:{a:"#6b1526",b:"#3f0913",line:"#2c0710",ink:"#D4AA55"},
+  pink2:{a:"#FFD3DD",b:"#F5B9C6",line:"#E58AA0",ink:"#4E0C19"}
+};
+
+/* Produits (illustratifs) */
+var P = [
+  {id:"sweat", model:"sweat", name:"Sweat Réception", price:79, art:"sweat", col:C.rose, halo:"#ffd9e1", room:"101", floor:"Le Lobby", desc:"Molleton épais, broderie de l'enseigne sur la poitrine. La pièce qu'on garde à la réception."},
+  {id:"tee", model:"tee", name:"T-shirt Room Service", price:39, art:"tee", col:C.white, halo:"#ffe1e7", room:"102", floor:"Room Service", desc:"Coton lourd, coupe ample, écusson Room Service. Livré à la porte, à toute heure."},
+  {id:"spa", model:"spa", name:"Sweat Le Spa", price:85, art:"sweat", col:C.cherry, halo:"#F5B9C6", room:"103", floor:"Le Spa", desc:"Le même sweat, en rouge enseigne. Pour les après-midi en peignoir, sans le peignoir."},
+  {id:"cap", model:"cap", name:"Casquette Groom", price:35, art:"cap", col:C.wine, halo:"#D4AA55", room:"104", floor:"Le Rooftop", desc:"Six pans, broderie laiton, réglable. Le groom la porte, vous aussi."},
+  {id:"key", model:"key", name:"Porte-clés Chambre 104", price:12, art:"key", col:C.brass, halo:"#ffe1e7", room:"105", floor:"Suite Présidentielle", desc:"La vraie clé d'hôtel, version cuir et laiton. Ne la rendez pas au check-out."},
+  {id:"tote", model:"tote", name:"Tote Bagagerie", price:29, art:"tote", col:C.ecru, halo:"#ffe1e7", room:"106", floor:"", desc:"Toile épaisse, anses longues. Tout ce qu'on n'a pas pu mettre dans la valise."},
+  {id:"socks", model:"socks", name:"Chaussettes Ne pas déranger", price:15, art:"socks", col:C.stripe, halo:"#ffd9e1", room:"107", floor:"", desc:"La paire à garder aux pieds le dimanche matin."}
+];
+var byId = {}; P.forEach(function(p){ byId[p.id]=p; });
+function art(p){ return ART[p.art](p.col); }
+function euro(n){ return n.toFixed(2).replace(".",",")+" €"; }
+var plusIcon = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>';
+
+/* Hero flottants */
+document.getElementById("fSweat").innerHTML = ART.sweat(C.rose);
+document.getElementById("fCap").innerHTML = ART.cap(C.wine);
+document.getElementById("fKey").innerHTML = ART.key(C.brass);
+document.getElementById("fTote").innerHTML = ART.tote(C.ecru);
+
+/* Ascenseur : 5 étages */
+var floors = [P[0],P[1],P[2],P[3],P[4]];
+var cab = document.getElementById("cab");
+var btns = document.getElementById("liftButtons");
+floors.forEach(function(p,i){
+  var r = document.createElement("div");
+  r.className = "room"+(i===0?" first":"");
+  r.style.setProperty("--halo", p.halo);
+  r.innerHTML = '<div class="art" data-zoom="1.15" data-model="'+p.model+'">'+art(p)+'</div><div class="txt"><span class="fl mono">Étage '+(i+1)+' · '+p.floor+'</span><h3>'+p.name+'</h3><p>'+p.desc+'</p><div class="row"><span class="price">'+euro(p.price)+'</span><button class="add" data-add="'+p.id+'">'+plusIcon+'Ajouter à la valise</button></div></div>';
+  cab.insertBefore(r, cab.querySelector(".ldoor"));
+});
+for(var b=5;b>=1;b--){ var s=document.createElement("span"); s.textContent=b; s.dataset.f=b; if(b===1) s.className="on"; btns.appendChild(s); }
+
+/* Couloir : 6 portes */
+var track = document.getElementById("htrack");
+P.slice(0,7).forEach(function(p){
+  var d = document.createElement("article");
+  d.className = "cardroom";
+  d.innerHTML = '<div class="frame"><div class="inside" style="--halo:'+p.halo+'"><div class="pv" data-zoom="1.1" data-model="'+p.model+'">'+art(p)+'</div><div class="meta"><div class="r"><h3>'+p.name+'</h3><span class="price">'+euro(p.price)+'</span></div><button class="add" data-add="'+p.id+'">'+plusIcon+'Ajouter</button></div></div><div class="panel-door"><span class="plate">'+p.room+'</span><span class="knob"></span></div></div><div class="carpet"></div>';
+  track.appendChild(d);
+});
+
+/* Rubans */
+var ribbonTexts = {
+  "1":["Check-in 24/7","Room service","Ne pas déranger","Clé n°104","Lobby ouvert"],
+  "-1":["Paris","Suite présidentielle","Bagagerie","Petit-déjeuner servi","Groom"]
+};
+document.querySelectorAll(".ribbon .track").forEach(function(t){
+  var words = ribbonTexts[t.dataset.dir];
+  var html = words.map(function(w){ return w+'<i>★</i>'; }).join("");
+  t.innerHTML = '<span>'+html+'</span><span>'+html+'</span><span>'+html+'</span><span>'+html+'</span>';
+});
+
+/* ================= Valise ================= */
+var cart = {};
+var countEl = document.getElementById("cartCount"), itemsEl = document.getElementById("items"), totalEl = document.getElementById("total");
+var drawer = document.getElementById("drawer"), scrim = document.getElementById("scrim");
+function renderCart(){
+  var ids = Object.keys(cart), n = 0, tot = 0;
+  ids.forEach(function(id){ n += cart[id]; tot += cart[id]*byId[id].price; });
+  countEl.textContent = n; totalEl.textContent = euro(tot);
+  if(!ids.length){ itemsEl.innerHTML = '<div class="empty">Votre valise est vide.<br>Les chambres vous attendent.</div>'; return; }
+  itemsEl.innerHTML = ids.map(function(id){ var p=byId[id];
+    var th = (window.HM && HM.thumbs && HM.thumbs[id]) ? '<img src="'+HM.thumbs[id]+'" alt="">' : art(p);
+    return '<div class="it"><div class="th">'+th+'</div><div><div class="n">'+p.name+'</div><div class="p">'+euro(p.price)+'</div></div><div class="qty"><button data-dec="'+id+'" aria-label="Retirer un">−</button><span>'+cart[id]+'</span><button data-inc="'+id+'" aria-label="Ajouter un">+</button></div></div>'; }).join("");
+}
+function openCart(){ drawer.classList.add("open"); scrim.classList.add("open"); drawer.setAttribute("aria-hidden","false"); if(lenis) lenis.stop(); }
+function closeCart(){ drawer.classList.remove("open"); scrim.classList.remove("open"); drawer.setAttribute("aria-hidden","true"); if(lenis) lenis.start(); }
+var toastEl = document.getElementById("toast"), toastT;
+function toast(html){ toastEl.innerHTML = html; toastEl.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(function(){ toastEl.classList.remove("show"); }, 2200); }
+var cartBtn = document.getElementById("cartBtn");
+function fly(from){
+  if(!motion) return;
+  var a = from.getBoundingClientRect(), z = cartBtn.getBoundingClientRect();
+  var dot = document.createElement("div"); dot.className = "fly"; document.body.appendChild(dot);
+  var x0 = a.left + a.width/2 - 11, y0 = a.top + a.height/2 - 11, x1 = z.left + z.width - 26, y1 = z.top + z.height/2 - 11;
+  gsap.set(dot,{x:x0,y:y0});
+  gsap.timeline({onComplete:function(){ dot.remove(); gsap.fromTo(cartBtn,{scale:1.18},{scale:1,duration:.6,ease:"elastic.out(1,.4)"}); }})
+    .to(dot,{x:x1,duration:.75,ease:"power1.inOut"},0)
+    .to(dot,{y:Math.min(y0,y1)-120,duration:.36,ease:"power2.out"},0)
+    .to(dot,{y:y1,duration:.39,ease:"power2.in"},.36)
+    .to(dot,{scale:.4,duration:.2},.55);
+}
+document.addEventListener("click", function(e){
+  var add = e.target.closest("[data-add]");
+  if(add){ var id = add.dataset.add; cart[id]=(cart[id]||0)+1; fly(add); setTimeout(renderCart, motion?700:0); toast('Ajouté à la valise : <b>'+byId[id].name+'</b>'); return; }
+  var inc = e.target.closest("[data-inc]"); if(inc){ cart[inc.dataset.inc]++; renderCart(); return; }
+  var dec = e.target.closest("[data-dec]"); if(dec){ var k=dec.dataset.dec; cart[k]--; if(cart[k]<=0) delete cart[k]; renderCart(); return; }
+});
+cartBtn.addEventListener("click", openCart);
+document.getElementById("closeCart").addEventListener("click", closeCart);
+scrim.addEventListener("click", closeCart);
+document.addEventListener("keydown", function(e){ if(e.key==="Escape") closeCart(); });
+document.getElementById("checkout").addEventListener("click", function(){ toast(Object.keys(cart).length ? "Concept de démonstration : le <b>check-out</b> est fermé." : "Votre valise est vide."); });
+document.getElementById("newsForm").addEventListener("submit", function(e){
+  e.preventDefault(); var i = document.getElementById("email");
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(i.value)){ toast("Entrez une adresse e-mail valide, par exemple <b>nom@mail.fr</b>"); i.focus(); return; }
+  i.value = ""; toast("Clé déposée. <b>Bienvenue à l'hôtel.</b>");
+});
+renderCart();
+window.HM = {products:P, renderCart:renderCart, getVel:function(){ return lenis ? lenis.velocity : 0; }, getSwing:function(){ return typeof swing === "number" ? swing : 0; }};
+
+/* Sonnette */
+var bell = document.getElementById("bell");
+bell.addEventListener("click", function(){
+  toast("Ding ! <b>La réception arrive.</b>");
+  document.dispatchEvent(new CustomEvent("hm:bell"));
+  if(!motion) return;
+  gsap.fromTo(bell.querySelector("svg"),{rotate:-14},{rotate:0,duration:.8,ease:"elastic.out(1.2,.3)"});
+  gsap.fromTo(bell.querySelector(".ring"),{scale:.4,opacity:1},{scale:2.6,opacity:0,duration:.9,ease:"power2.out"});
+});
+
+/* ================= Sans animation : on s'arrête ici ================= */
+var lenis = null;
+var loaderEl = document.getElementById("loader");
+if(!motion){ if(loaderEl) loaderEl.remove(); return; }
+
+gsap.registerPlugin(ScrollTrigger);
+if(typeof window.Lenis !== "undefined"){
+  lenis = new Lenis({duration:1.15, smoothWheel:true});
+  lenis.on("scroll", ScrollTrigger.update);
+  gsap.ticker.add(function(t){ lenis.raf(t*1000); });
+  gsap.ticker.lagSmoothing(0);
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener("click", function(e){ var t=document.querySelector(a.getAttribute("href")); if(t){ e.preventDefault(); lenis.scrollTo(t,{offset:0,duration:1.6}); } });
+  });
+}
+
+/* Découpe des lettres */
+document.querySelectorAll("[data-split]").forEach(function(el){
+  el.innerHTML = el.textContent.split("").map(function(ch){ return '<span class="ch">'+ch+'</span>'; }).join("");
+});
+
+/* --- Loader : compte à rebours puis ouverture des portes --- */
+if(lenis) lenis.stop();
+window.scrollTo(0,0);
+var scr = document.getElementById("ldScreen");
+var heroChars = gsap.utils.toArray(".sign .ch");
+gsap.set(heroChars,{yPercent:115, rotate:8});
+gsap.set(".sign .stars, .hero .eyebrow, .hero .tag, .hero .ctas, .bell",{autoAlpha:0, y:24});
+gsap.set(".float",{autoAlpha:0, scale:.6});
+gsap.set(".nav",{yPercent:-160});
+var seq = ["5","4","3","2","1","RDC"], si = {v:0};
+var intro = gsap.timeline({delay:.25});
+intro.to(si,{v:seq.length-1, duration:1.1, ease:"none", onUpdate:function(){ scr.textContent = seq[Math.round(si.v)]; }})
+  .to("#loader .panel",{autoAlpha:0, y:-20, duration:.35},"+=.15")
+  .to("#loader .door.l",{xPercent:-100, duration:1.1, ease:"power3.inOut"},"<")
+  .to("#loader .door.r",{xPercent:100, duration:1.1, ease:"power3.inOut"},"<")
+  .to(heroChars,{yPercent:0, rotate:0, duration:1, ease:"power4.out", stagger:.045},"-=.55")
+  .to(".sign .stars",{autoAlpha:1, y:0, duration:.6},"-=.8")
+  .to(".float",{autoAlpha:1, scale:1, duration:1.1, ease:"back.out(1.6)", stagger:.08},"-=.9")
+  .to(".hero .eyebrow, .hero .tag, .hero .ctas, .bell",{autoAlpha:1, y:0, duration:.7, stagger:.08},"-=.9")
+  .to(".nav",{yPercent:0, duration:.8, ease:"power3.out"},"-=.7")
+  .add(function(){ if(loaderEl) loaderEl.remove(); if(lenis) lenis.start(); ScrollTrigger.refresh(); });
+
+/* Flottement permanent */
+gsap.utils.toArray(".float").forEach(function(f,i){
+  var inner = f.firstElementChild;
+  gsap.to(inner,{y:i%2?-16:16, rotate:i%2?4:-4, duration:2.6+i*.4, ease:"sine.inOut", yoyo:true, repeat:-1});
+});
+
+/* Nav compacte */
+ScrollTrigger.create({start:60, end:"max", onToggle:function(s){ document.getElementById("nav").classList.toggle("scrolled", s.isActive); }});
+
+/* --- Hero au scroll --- */
+var heroTl = gsap.timeline({scrollTrigger:{trigger:".hero", start:"top top", end:"bottom top", scrub:true}});
+heroTl.to(".sign",{scale:.82, yPercent:-18, ease:"none"},0)
+  .to(".sign .l2 .ch",{yPercent:function(i){ return (i%2? -1:1)*30; }, ease:"none"},0)
+  .to(".hero .inner",{autoAlpha:.2, ease:"none"},0);
+gsap.utils.toArray(".float").forEach(function(f){
+  heroTl.to(f,{yPercent:parseFloat(f.dataset.speed)*260, rotate:"+=18", ease:"none"},0);
+});
+
+/* --- Rubans, vitesse liée au scroll --- */
+var tracks = gsap.utils.toArray(".ribbon .track").map(function(t){ return {el:t, dir:+t.dataset.dir, x:0, w:0}; });
+function measure(){ tracks.forEach(function(t){ t.w = t.el.firstElementChild.getBoundingClientRect().width + 36; }); }
+measure(); window.addEventListener("resize", measure);
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ measure(); ScrollTrigger.refresh(); });
+var vel = 0, skew = gsap.quickSetter(".ribbon .track","skewX","deg");
+gsap.ticker.add(function(){
+  var v = lenis ? lenis.velocity : 0;
+  vel += (v - vel) * .1;
+  tracks.forEach(function(t){
+    if(!t.w) return;
+    t.x += t.dir * (0.6 + Math.min(Math.abs(vel)*.35, 14)) * (vel < -0.1 ? -1 : 1);
+    if(t.x <= -t.w) t.x += t.w; if(t.x > 0) t.x -= t.w;
+    t.el.style.transform = "translate3d("+t.x+"px,0,0)";
+  });
+  skew(gsap.utils.clamp(-10,10,-vel*.6));
+});
+
+/* --- Manifeste : remplissage mot à mot --- */
+var man = document.getElementById("manifesto");
+(function splitWords(node){
+  Array.prototype.slice.call(node.childNodes).forEach(function(n){
+    if(n.nodeType===3){
+      var frag = document.createDocumentFragment();
+      n.textContent.split(/(\s+)/).forEach(function(part){
+        if(!part) return;
+        if(/^\s+$/.test(part)) frag.appendChild(document.createTextNode(part));
+        else { var s=document.createElement("span"); s.className="w"; s.textContent=part; frag.appendChild(s); }
+      });
+      n.parentNode.replaceChild(frag, n);
+    } else if(n.nodeType===1) splitWords(n);
+  });
+})(man);
+gsap.fromTo(man.querySelectorAll(".w"),{opacity:.12, y:10},{opacity:1, y:0, stagger:.05, ease:"none",
+  scrollTrigger:{trigger:man, start:"top 80%", end:"bottom 45%", scrub:.6}});
+
+/* --- Ascenseur : 5 étages, portes qui se ferment et s'ouvrent --- */
+var rooms = gsap.utils.toArray(".room");
+var floorNum = document.getElementById("floorNum"), floorName = document.getElementById("floorName");
+var btnSpans = gsap.utils.toArray("#liftButtons span");
+var curFloor = 1;
+function setFloor(f){
+  if(f===curFloor) return; curFloor = f;
+  floorNum.textContent = f; floorName.textContent = floors[f-1].floor;
+  btnSpans.forEach(function(s){ s.classList.toggle("on", +s.dataset.f===f); });
+  gsap.fromTo(".floor-screen",{scale:1.12},{scale:1,duration:.4,ease:"back.out(3)"});
+}
+var lt = gsap.timeline({scrollTrigger:{trigger:".elevator", start:"top top", end:function(){ return "+="+(window.innerHeight*4.2); }, pin:true, scrub:.5, anticipatePin:1,
+  onUpdate:function(){ var t = lt.time(), f = 1; for(var k=0;k<4;k++){ if(t >= k+.8) f = k+2; } setFloor(f); }}});
+gsap.set(rooms[0].querySelectorAll(".art svg, .txt > *"),{y:0});
+lt.fromTo(rooms[0].querySelector(".art svg"),{scale:.85, rotate:-6},{scale:1, rotate:0, duration:.5, ease:"none"},0);
+for(var k=0;k<4;k++){
+  var st = k+.5;
+  lt.to(".cab .ldoor",{xPercent:100, duration:.3, ease:"power2.in"}, st)
+    .to(".cab .rdoor",{xPercent:-100, duration:.3, ease:"power2.in"}, st)
+    .set(rooms[k],{visibility:"hidden"}, st+.3)
+    .set(rooms[k+1],{visibility:"visible"}, st+.3)
+    .to(".cab .ldoor",{xPercent:0, duration:.3, ease:"power2.out"}, st+.32)
+    .to(".cab .rdoor",{xPercent:0, duration:.3, ease:"power2.out"}, st+.32)
+    .fromTo(rooms[k+1].querySelector(".art svg"),{scale:.7, rotate:10},{scale:1, rotate:0, duration:.5, ease:"power2.out", immediateRender:false}, st+.35)
+    .fromTo(rooms[k+1].querySelectorAll(".txt > *"),{y:40, autoAlpha:0},{y:0, autoAlpha:1, duration:.35, stagger:.04, ease:"power2.out", immediateRender:false}, st+.4);
+}
+lt.to({}, {duration:.4});
+
+/* --- Couloir horizontal + portes qui s'ouvrent --- */
+var htrack = document.getElementById("htrack");
+function hDist(){ return Math.max(0, htrack.scrollWidth - window.innerWidth); }
+var hTween = gsap.to(htrack,{x:function(){ return -hDist(); }, ease:"none",
+  scrollTrigger:{trigger:"#chambres", start:"top top", end:function(){ return "+="+hDist(); }, pin:"#chambres", pinSpacing:true, scrub:.6, invalidateOnRefresh:true, anticipatePin:1}});
+gsap.utils.toArray(".cardroom").forEach(function(card){
+  var door = card.querySelector(".panel-door");
+  gsap.fromTo(door,{rotateY:0},{rotateY:-105, ease:"power1.inOut",
+    scrollTrigger:{trigger:card, containerAnimation:hTween, start:"left 66%", end:"left 22%", scrub:true}});
+  gsap.fromTo(card.querySelector(".inside .pv > svg"),{scale:.75, y:30},{scale:1, y:0, ease:"none",
+    scrollTrigger:{trigger:card, containerAnimation:hTween, start:"left 70%", end:"left 25%", scrub:true}});
+});
+gsap.from(".corridor .head h2",{yPercent:40, autoAlpha:0, duration:1, ease:"power3.out", scrollTrigger:{trigger:".corridor", start:"top 75%"}});
+
+/* --- Ne pas déranger : balancier --- */
+var hanger = document.getElementById("hanger"), swing = 0, swingV = 0;
+gsap.ticker.add(function(){
+  var v = lenis ? lenis.velocity : 0;
+  swingV += (-swing*.04) + v*.06; swingV *= .9; swing += swingV;
+  swing = gsap.utils.clamp(-14,14,swing);
+  hanger.style.transform = "rotate("+swing.toFixed(2)+"deg)";
+});
+gsap.from(".dnd h2, .dnd p, .news",{y:40, autoAlpha:0, duration:.9, stagger:.1, ease:"power3.out", scrollTrigger:{trigger:".dnd", start:"top 70%"}});
+
+/* --- Néon --- */
+gsap.from(".neon .sign2",{scale:.8, autoAlpha:0, duration:1.3, ease:"expo.out", scrollTrigger:{trigger:".neon", start:"top 70%"}});
+
+/* --- Indicateur d'étage --- */
+var liftNum = document.getElementById("liftNum"), liftLbl = document.getElementById("liftLbl"), liftArrow = document.getElementById("liftArrow");
+gsap.utils.toArray("[data-floor]").forEach(function(sec){
+  ScrollTrigger.create({trigger:sec, start:"top 50%", end:"bottom 50%",
+    onToggle:function(s){ if(!s.isActive) return;
+      liftNum.textContent = sec.id==="etages" ? curFloor : sec.dataset.floor; liftLbl.textContent = sec.dataset.label;
+      liftArrow.classList.toggle("down", s.direction < 0); }});
+});
+ScrollTrigger.create({trigger:".elevator", start:"top 50%", end:"bottom 50%", onUpdate:function(){ liftNum.textContent = curFloor; }});
+window.addEventListener("load", function(){ ScrollTrigger.refresh(); });
+})();
+</script>
+</body>
+</html>

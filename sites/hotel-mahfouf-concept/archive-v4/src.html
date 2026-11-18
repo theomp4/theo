@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hôtel Mahfouf Concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Inter+Tight:wght@400;500&display=swap">
+<style>
+/* Un film au scroll, pensé pour être filmé écran : chaque section est une scène.
+   01 Lobby (plongée dans la clé) · 02 La grille · 03 Typo cinétique · 04 Le tunnel · 05 La pellicule · 06 Les chambres · 07 La traversée · 08 Check-out */
+:root{
+  --night:#0B0A09;
+  --stone:#ECE7DF;
+  --mute:#8A8378;
+  --brass:#C2A36B;
+  --serif:"Bodoni Moda", Didot, "Bodoni 72", Georgia, serif;
+  --sans:"Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  --gl:max(20px, env(safe-area-inset-left, 0px));
+  --gr:max(20px, env(safe-area-inset-right, 0px));
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{margin:0;background:var(--night);color:var(--stone);font-family:var(--sans);font-size:15px;line-height:1.55;overflow-x:clip;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;padding:0}
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;line-height:.95}
+.lab{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;font-weight:500}
+.wrap{padding-left:var(--gl);padding-right:var(--gr)}
+.scene{position:relative;height:100svh;min-height:560px;overflow:hidden}
+.cover{width:100%;height:100%;object-fit:cover}
+
+/* ---------- Habillage : grain, curseur, progression, nav ---------- */
+.grain{position:fixed;inset:-50%;z-index:70;pointer-events:none;opacity:.07;animation:grain 1.2s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-4%,3%)}40%{transform:translate(3%,-5%)}60%{transform:translate(-6%,-2%)}80%{transform:translate(5%,4%)}100%{transform:translate(0,0)}}
+.cur{position:fixed;left:0;top:0;z-index:95;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:#fff;mix-blend-mode:difference;pointer-events:none;transition:width .35s,height .35s,margin .35s;display:none}
+.cur.big{width:70px;height:70px;margin:-35px 0 0 -35px}
+@media (pointer:fine){.cur{display:block}}
+.bar{position:fixed;left:0;right:0;top:0;height:2px;z-index:96;background:var(--brass);transform-origin:0 50%;transform:scaleX(0)}
+.nav{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);z-index:60;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding-block:20px;color:#fff;mix-blend-mode:difference}
+.nav .mark{font-family:var(--serif);font-size:1.2rem;white-space:nowrap}
+.nav .ch{display:flex;gap:12px;overflow:hidden;height:1.2em;line-height:1.2em}
+.nav .ch span{display:block}
+.nav .by{justify-self:end;white-space:nowrap}
+@media (max-width:560px){.nav{grid-template-columns:1fr auto}.nav .by{display:none}}
+
+/* ---------- Ouverture ---------- */
+#loader{position:fixed;inset:0;z-index:100;background:var(--night);display:grid;place-items:center;clip-path:inset(0% 0% 0% 0%);animation:loaderOut .6s 8s forwards}
+#loader .in{display:grid;justify-items:center;gap:20px;text-align:center}
+#loader .num{font-family:var(--serif);font-size:clamp(5rem,16vw,12rem);line-height:1;font-variant-numeric:tabular-nums}
+#loader .sub{color:var(--mute)}
+@keyframes loaderOut{to{opacity:0;visibility:hidden}}
+.no-motion #loader{display:none}
+
+/* ---------- 01 Lobby ---------- */
+.hero{background:radial-gradient(60% 55% at 50% 48%, #221d18 0%, var(--night) 72%)}
+.hero .title{position:absolute;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none}
+.hero h1{font-size:clamp(4rem,18vw,20rem);letter-spacing:-.02em;line-height:.86}
+.hero h1 .l{display:block;padding-top:.06em}
+.hero h1 .l2{font-style:italic}
+.hero h1 .ch{display:inline-block;will-change:transform}
+.hero .stage{position:absolute;inset:0}
+.hero .meta{position:absolute;left:var(--gl);right:var(--gr);bottom:max(26px, env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;align-items:end;gap:20px;color:var(--mute)}
+.hero .meta i{display:block;width:1px;height:48px;margin:0 auto 10px;background:linear-gradient(var(--brass),transparent);animation:drip 2.2s infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.hero .veil{position:absolute;inset:0;z-index:40;background:var(--night);opacity:0;pointer-events:none}
+
+/* ---------- 02 La grille ---------- */
+.gz{display:grid;place-items:center;background:var(--night)}
+.gz-grid{--ch:min(27svh, 40vw);display:grid;grid-template-columns:repeat(3, calc(var(--ch) * .75));grid-auto-rows:var(--ch);gap:clamp(8px,1.1vw,16px)}
+.gz-cell{position:relative;overflow:hidden;background:#1a1816}
+.gz-cell img{position:absolute;inset:0}
+.gz-cell.c{z-index:3}
+.gz .cap{position:absolute;left:0;right:0;bottom:max(30px, env(safe-area-inset-bottom,0px));text-align:center;z-index:5}
+.gz .cap h2{font-size:clamp(2rem,5vw,4.6rem)}
+.gz .cap h2 em{font-style:italic}
+
+/* ---------- 03 Typo cinétique ---------- */
+.type{padding-block:12vh;display:grid;gap:1vh;overflow:hidden;background:var(--night)}
+.line{white-space:nowrap;font-family:var(--serif);font-size:clamp(4rem,15vw,15rem);line-height:1}
+.line .tr{display:inline-flex;will-change:transform}
+.line .tr span{padding-right:.35em}
+.line.o{font-style:italic;color:transparent;-webkit-text-stroke:1.2px var(--stone)}
+.line.p .tr span{color:transparent;-webkit-background-clip:text;background-clip:text;background-size:cover;background-position:center 30%}
+
+/* ---------- 04 Le tunnel ---------- */
+.tunnel{background:radial-gradient(50% 50% at 50% 50%, #1d1915, var(--night) 75%)}
+.tunnel .stage{position:absolute;inset:0}
+.tunnel .mid{position:absolute;inset:0;display:grid;place-content:center;text-align:center;gap:16px;pointer-events:none}
+.tunnel .mid h2{font-size:clamp(3rem,10vw,9rem);font-style:italic}
+.tunnel .mid .lab{color:var(--mute)}
+
+/* ---------- 05 La pellicule ---------- */
+.film{display:flex;flex-direction:column;justify-content:center;background:var(--stone);color:var(--night)}
+.film .hd{display:flex;justify-content:space-between;align-items:end;gap:20px;padding-bottom:4vh}
+.film .hd h2{font-size:clamp(2.6rem,7vw,6.5rem)}
+.film .hd h2 em{font-style:italic}
+.ftrack{display:flex;gap:clamp(16px,2.4vw,36px);width:max-content;will-change:transform;padding-right:30vw}
+.fcard{width:clamp(220px,26vw,400px);flex:none;display:grid;gap:12px}
+.fcard .ph{position:relative;aspect-ratio:3/4;max-width:100%;overflow:hidden;background:#dcd6cc}
+.fcard .ph img{position:absolute;top:0;left:-10%;width:120%;height:100%;object-fit:cover}
+.fcard .n{position:absolute;left:12px;top:8px;z-index:2;font-family:var(--serif);font-size:3.2rem;line-height:1;color:var(--stone);mix-blend-mode:difference}
+.fcard .row{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.fcard h3{font-size:1.35rem}
+.fcard .pr{font-variant-numeric:tabular-nums;font-size:.86rem;color:#6b645a;white-space:nowrap}
+@media (max-width:640px){.fcard{width:64vw}}
+
+/* ---------- 06 Les chambres (cartes empilées) ---------- */
+.stack{position:relative;background:var(--night)}
+.sc{position:sticky;top:0;height:100svh;overflow:hidden}
+.sc .in{position:absolute;inset:0;overflow:hidden;will-change:transform;background:#111}
+.sc img{position:absolute;inset:0}
+.sc .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,10,9,.15),rgba(11,10,9,.05) 40%,rgba(11,10,9,.75));}
+.sc .dim{position:absolute;inset:0;background:var(--night);opacity:0}
+.sc .txt{position:absolute;left:var(--gl);right:var(--gr);bottom:max(34px, env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap}
+.sc h2{font-size:clamp(2.6rem,8vw,8rem)}
+.sc h2 em{font-style:italic}
+.sc .lab{color:#d9d2c7}
+
+/* ---------- 07 La traversée ---------- */
+.through{isolation:isolate;background:var(--night)}
+.through .img{position:absolute;inset:0}
+.through .mask{position:absolute;inset:0;background:#000;mix-blend-mode:multiply;display:grid;place-items:center;will-change:transform}
+.through .mask span{font-family:var(--serif);font-size:clamp(4rem,24vw,30rem);line-height:1;color:#fff;letter-spacing:-.02em}
+.through .cap{position:absolute;left:var(--gl);right:var(--gr);bottom:max(34px, env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;align-items:end;gap:20px;opacity:0}
+.through .cap h2{font-size:clamp(2.4rem,6vw,6rem)}
+.through .cap h2 em{font-style:italic}
+
+/* ---------- 08 Check-out ---------- */
+.end{display:grid;grid-template-rows:1fr auto;background:var(--night)}
+.end .stage{position:absolute;inset:0}
+.end .mid{position:relative;display:grid;place-content:center;text-align:center;gap:22px;pointer-events:none}
+.end h2{font-size:clamp(3.4rem,12vw,12rem);letter-spacing:-.02em}
+.end h2 em{font-style:italic}
+.end .again{pointer-events:auto;justify-self:center;display:inline-flex;align-items:center;gap:12px;border:1px solid rgba(236,231,223,.5);padding:15px 26px;font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;font-weight:500;transition:background .3s,color .3s;position:relative;z-index:45}
+.end .again:hover{background:var(--stone);color:var(--night)}
+.end .legal{position:relative;padding-bottom:max(22px, env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:.72rem;color:var(--mute)}
+
+.no-motion .scene{height:auto;min-height:100svh}
+@media (prefers-reduced-motion: reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+
+<div id="loader" aria-hidden="true"><div class="in">
+  <div class="num" id="ldNum">000</div>
+  <div class="lab sub">Hôtel Mahfouf · Check-in</div>
+  <div class="lab sub" style="opacity:.6">Concept non officiel · Réalisé par ReviewMaker</div>
+</div></div>
+<div class="grain" id="grain" aria-hidden="true"></div>
+<div class="cur" id="cur" aria-hidden="true"></div>
+<div class="bar" id="bar" aria-hidden="true"></div>
+
+<header class="nav wrap">
+  <span class="mark">Hôtel Mahfouf</span>
+  <span class="lab ch" id="chap"><span>01 — Lobby</span></span>
+  <span class="lab by">Concept · ReviewMaker</span>
+</header>
+
+<main>
+  <section class="scene hero" data-ch="01 — Lobby">
+    <div class="title" aria-label="Hôtel Mahfouf"><h1><span class="l" data-split aria-hidden="true">Hôtel</span><span class="l l2" data-split aria-hidden="true">Mahfouf</span></h1></div>
+    <div class="stage" data-model="key" data-hero data-zoom="1.12"></div>
+    <div class="meta lab"><span>Chambre 104</span><span style="text-align:center"><i></i>Défiler</span><span>Paris</span></div>
+    <div class="veil"></div>
+  </section>
+
+  <section class="scene gz" data-ch="02 — La grille">
+    <div class="gz-grid" id="gzGrid"></div>
+    <div class="cap"><h2>Neuf pièces, <em>une adresse</em></h2></div>
+  </section>
+
+  <section class="type" data-ch="03 — Le registre" aria-label="Manteaux, robes, tailleurs. Hôtel Mahfouf. Paris, automne, hiver.">
+    <div class="line" aria-hidden="true"><div class="tr" data-dir="-1"></div></div>
+    <div class="line o" aria-hidden="true"><div class="tr" data-dir="1"></div></div>
+    <div class="line p" aria-hidden="true"><div class="tr" data-dir="-1"></div></div>
+  </section>
+
+  <section class="scene tunnel" data-ch="04 — Le couloir">
+    <div class="mid"><span class="lab">Entrez</span><h2>la collection</h2><span class="lab">Automne · Hiver</span></div>
+    <div class="stage" data-helix></div>
+  </section>
+
+  <section class="scene film" data-ch="05 — La pellicule">
+    <div class="hd wrap"><h2>Pièce par <em>pièce</em></h2><span class="lab" style="color:#6b645a">Manteaux · Tailleurs · Robes</span></div>
+    <div class="ftrack wrap" id="ftrack"></div>
+  </section>
+
+  <section class="stack" data-ch="06 — Les chambres" id="stack"></section>
+
+  <section class="scene through" data-ch="07 — La traversée">
+    <img class="img cover" data-img="ed-room" alt="Robe Terrabella portée dans une chambre d'hôtel">
+    <div class="mask" id="mask"><span id="maskWord">Hô<span id="maskH">t</span>el</span></div>
+    <div class="cap"><h2>Ne pas <em>déranger</em></h2><span class="lab">Chambre 103 · Robe Terrabella</span></div>
+  </section>
+
+  <section class="scene end wrap" data-ch="08 — Check-out">
+    <div class="stage" data-model="key" data-zoom=".72"></div>
+    <div class="mid">
+      <span class="lab" style="color:var(--mute)">Merci de votre visite</span>
+      <h2>Hôtel <em>Mahfouf</em></h2>
+      <button class="again" id="again">Rejouer le séjour ↑</button>
+    </div>
+    <div class="legal"><span>Concept de refonte non officiel réalisé par ReviewMaker. Non affilié à Hôtel Mahfouf. Produits et photos : hotelmahfouf.com.</span><span>© 2026 ReviewMaker</span></div>
+  </section>
+</main>
+
+<!--IMAGES-->
+<!--VENDOR-->
+<script>
+(function(){
+"use strict";
+var IMG = window.HM_IMG || {};
+var hasGsap = typeof window.gsap !== "undefined" && typeof window.ScrollTrigger !== "undefined";
+var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var motion = hasGsap && !reduce;
+if(!motion) document.documentElement.classList.add("no-motion");
+window.HM = window.HM || {};
+
+var P = [
+  {img:"highland-noir", name:"Manteau Highland", pr:"66,15 €"},
+  {img:"highland-marine", name:"Manteau Highland", pr:"66,15 €"},
+  {img:"glen", name:"Veste Glen", pr:"47,70 €"},
+  {img:"duncan", name:"Robe Duncan", pr:"45,15 €"},
+  {img:"mead", name:"Robe Mead", pr:"53,70 €"},
+  {img:"cajon", name:"Pantalon Cajon", pr:"41,70 €"},
+  {img:"neola", name:"Gilet Neola", pr:"24,15 €"},
+  {img:"terrabella", name:"Robe Terrabella", pr:"56,70 €"},
+  {img:"hackberry", name:"Écharpe Hackberry", pr:"35,00 €"}
+];
+var ED = ["ed-street","ed-airway","ed-room","ed-checker","ed-fig"];
+function src(k){ return IMG[k] || ""; }
+function pad(n){ return (n<10?"0":"")+n; }
+
+/* Images statiques */
+document.querySelectorAll("img[data-img]").forEach(function(im){ im.src = src(im.dataset.img); });
+
+/* 02 Grille : la photo du centre est éditoriale */
+var gridOrder = ["highland-noir","glen","mead","duncan","ed-street","cajon","terrabella","highland-marine","hackberry"];
+document.getElementById("gzGrid").innerHTML = gridOrder.map(function(k,i){
+  return '<div class="gz-cell'+(i===4?' c':'')+'"><img class="cover" alt="" src="'+src(k)+'"></div>'; }).join("");
+
+/* 03 Typo */
+var lines = {0:["Manteaux","Robes","Tailleurs","Maille"],1:["Hôtel Mahfouf","Chambre 104","Paris"],2:["Automne","Hiver","Late check-out"]};
+document.querySelectorAll(".type .tr").forEach(function(t,i){
+  var seg = lines[i].map(function(w){ return '<span>'+w+' ·</span>'; }).join("");
+  t.innerHTML = '<div style="display:inline-flex">'+seg+'</div><div style="display:inline-flex">'+seg+'</div><div style="display:inline-flex">'+seg+'</div>';
+});
+document.querySelectorAll(".line.p .tr span").forEach(function(s,i){ s.style.backgroundImage = "url("+src(ED[i % 4])+")"; });
+
+/* 04 Tunnel : photos produits + éditoriales, deux tours */
+HM.helix = [].concat(P.map(function(p){return src(p.img);}), ED.map(src), P.map(function(p){return src(p.img+"-b");})).filter(Boolean);
+
+/* 05 Pellicule */
+document.getElementById("ftrack").innerHTML = P.map(function(p,i){
+  return '<article class="fcard"><div class="ph"><span class="n">'+pad(i+1)+'</span><img alt="'+p.name+'" src="'+src(p.img)+'"></div><div class="row"><h3>'+p.name+'</h3><span class="pr">'+p.pr+'</span></div></article>'; }).join("");
+
+/* 06 Chambres */
+var rooms = [["ed-street","Le manteau <em>Highland</em>","Chambre 101"],["ed-airway","Le pull <em>Airway</em>","Chambre 102"],["ed-checker","La robe <em>Duncan</em>","Chambre 104"],["ed-fig","It smells <em>like fig</em>","Le minibar"]];
+document.getElementById("stack").innerHTML = rooms.map(function(r){
+  return '<div class="sc"><div class="in"><img class="cover" alt="" src="'+src(r[0])+'"><div class="shade"></div><div class="txt"><h2>'+r[1]+'</h2><span class="lab">'+r[2]+'</span></div><div class="dim"></div></div></div>'; }).join("");
+
+/* Grain (bruit généré une fois) */
+(function(){ try{ var c=document.createElement("canvas"); c.width=c.height=160; var x=c.getContext("2d"), d=x.createImageData(160,160);
+  for(var i=0;i<d.data.length;i+=4){ var v=Math.random()*255|0; d.data[i]=d.data[i+1]=d.data[i+2]=v; d.data[i+3]=255; }
+  x.putImageData(d,0,0); document.getElementById("grain").style.backgroundImage="url("+c.toDataURL()+")"; }catch(e){} })();
+
+var lenis = null;
+HM.getVel = function(){ return lenis ? lenis.velocity : 0; };
+HM.heroIn = !motion; HM.heroP = 0; HM.helixP = 0;
+var loaderEl = document.getElementById("loader");
+document.getElementById("again").addEventListener("click", function(){ if(lenis) lenis.scrollTo(0,{duration:5, easing:function(t){ return t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }}); else window.scrollTo({top:0, behavior:"smooth"}); });
+if(!motion){ if(loaderEl) loaderEl.remove(); HM.helixP = .3; return; }
+
+/* ================= Mise en scène ================= */
+gsap.registerPlugin(ScrollTrigger);
+lenis = new Lenis({duration:1.25, smoothWheel:true});
+lenis.on("scroll", ScrollTrigger.update);
+gsap.ticker.add(function(t){ lenis.raf(t*1000); });
+gsap.ticker.lagSmoothing(0);
+window.scrollTo(0,0);
+
+/* Curseur */
+var cur = document.getElementById("cur"), cx = innerWidth/2, cy = innerHeight/2, tx = cx, ty = cy;
+window.addEventListener("pointermove", function(e){ tx = e.clientX; ty = e.clientY; }, {passive:true});
+document.addEventListener("pointerover", function(e){ cur.classList.toggle("big", !!e.target.closest("img, .gz-cell, .fcard, button")); });
+gsap.ticker.add(function(){ cx += (tx-cx)*.18; cy += (ty-cy)*.18; cur.style.transform = "translate3d("+cx+"px,"+cy+"px,0)"; });
+
+/* Barre de progression + chapitres */
+var bar = document.getElementById("bar"), chap = document.getElementById("chap"), curCh = "";
+ScrollTrigger.create({start:0, end:"max", onUpdate:function(s){ bar.style.transform = "scaleX("+s.progress+")"; }});
+function setChap(t){
+  if(t===curCh) return; curCh = t; var sp = chap.firstElementChild; gsap.killTweensOf(sp);
+  gsap.timeline().to(sp,{yPercent:-110, duration:.25, ease:"power2.in"}).add(function(){ sp.textContent = t; }).fromTo(sp,{yPercent:110},{yPercent:0, duration:.45, ease:"power3.out"});
+}
+
+/* --- Ouverture --- */
+document.querySelectorAll("[data-split]").forEach(function(el){ el.innerHTML = el.textContent.split("").map(function(c){ return '<span class="ch">'+c+'</span>'; }).join(""); });
+lenis.stop();
+var chars = gsap.utils.toArray(".hero h1 .ch");
+gsap.set(chars,{yPercent:120, opacity:0});
+gsap.set(".hero .meta, .nav",{autoAlpha:0});
+var cnt = {v:0}, ldNum = document.getElementById("ldNum");
+gsap.timeline({delay:.2})
+  .to(cnt,{v:104, duration:1.6, ease:"power3.inOut", onUpdate:function(){ ldNum.textContent = ("00"+Math.round(cnt.v)).slice(-3); }})
+  .to("#loader .in",{yPercent:-30, autoAlpha:0, duration:.6, ease:"power3.in"},"+=.15")
+  .to("#loader",{clipPath:"inset(0% 0% 100% 0%)", duration:1.1, ease:"expo.inOut"},"-=.25")
+  .add(function(){ HM.heroIn = true; },"-=.7")
+  .to(chars,{yPercent:0, opacity:1, duration:1.4, ease:"expo.out", stagger:.045},"-=.6")
+  .to(".hero .meta, .nav",{autoAlpha:1, duration:.9},"-=1")
+  .add(function(){ if(loaderEl) loaderEl.remove(); lenis.start(); ScrollTrigger.refresh(); });
+
+/* --- 01 Lobby : plongée dans la clé, les lettres s'envolent --- */
+function rnd(i, k){ var x = Math.sin(i*12.9898 + k*78.233)*43758.5453; return x - Math.floor(x); }
+var heroTl = gsap.timeline({scrollTrigger:{trigger:".hero", start:"top top", end:"+=150%", pin:true, scrub:true, anticipatePin:1,
+  onUpdate:function(s){ HM.heroP = s.progress; }}});
+heroTl.fromTo(chars,{x:0, y:0, rotation:0, scale:1, opacity:1},{
+    x:function(i){ return (rnd(i,1)-.5)*innerWidth*1.4; }, y:function(i){ return (rnd(i,2)-.5)*innerHeight*1.3; },
+    rotation:function(i){ return (rnd(i,3)-.5)*160; }, scale:function(i){ return .6+rnd(i,4)*1.8; }, opacity:0,
+    ease:"power2.in", duration:.7, stagger:{each:.012, from:"center"}}, 0)
+  .fromTo(".hero .meta",{autoAlpha:1},{autoAlpha:0, duration:.2},0)
+  .to(".hero .veil",{opacity:1, duration:.18, ease:"none"},.82)
+  .to({}, {duration:.02});
+
+/* --- 02 La grille : plein écran → grille --- */
+var cells = gsap.utils.toArray(".gz-cell"), center = cells[4];
+function coverScale(){ var r = center.getBoundingClientRect(); var w = r.width/(gsap.getProperty(center,"scale")||1), h = r.height/(gsap.getProperty(center,"scale")||1); return Math.max(innerWidth/w, innerHeight/h)*1.02; }
+var gzTl = gsap.timeline({scrollTrigger:{trigger:".gz", start:"top top", end:"+=230%", pin:true, scrub:1, anticipatePin:1, invalidateOnRefresh:true}});
+gzTl.fromTo(center,{scale:coverScale},{scale:1, ease:"power2.inOut", duration:1},0)
+  .fromTo(center.querySelector("img"),{scale:1},{scale:1.15, ease:"none", duration:1},0);
+cells.forEach(function(c,i){
+  if(i===4) return;
+  var col = i%3 - 1, row = Math.floor(i/3) - 1;
+  gzTl.fromTo(c,{x:function(){ return col*innerWidth*.7; }, y:function(){ return row*innerHeight*.8; }, rotation:col*10+row*4, autoAlpha:0},
+    {x:0, y:0, rotation:0, autoAlpha:1, ease:"power3.out", duration:.75}, .35 + (Math.abs(col)+Math.abs(row))*.07);
+  gzTl.fromTo(c.querySelector("img"),{scale:1.5},{scale:1, ease:"power2.out", duration:.9}, .35);
+});
+gzTl.to(".gz-grid",{scale:.82, rotation:-5, ease:"power2.inOut", duration:.6},1.15)
+  .fromTo(".gz .cap",{yPercent:60, autoAlpha:0},{yPercent:0, autoAlpha:1, duration:.4},1.3)
+  .to({}, {duration:.15});
+
+/* --- 03 Typo cinétique : vitesse liée au scroll --- */
+var tracks = gsap.utils.toArray(".type .tr").map(function(t){ return {el:t, dir:+t.dataset.dir, x:0, w:0}; });
+function measure(){ tracks.forEach(function(t){ t.w = t.el.firstElementChild.getBoundingClientRect().width; }); }
+measure(); window.addEventListener("resize", measure);
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ measure(); ScrollTrigger.refresh(); });
+var vel = 0, skewSet = gsap.quickSetter(".type .tr","skewX","deg");
+gsap.ticker.add(function(){
+  vel += (lenis.velocity - vel) * .1;
+  var speed = 1 + Math.min(Math.abs(vel)*.6, 30), sign = vel < -0.2 ? -1 : 1;
+  tracks.forEach(function(t){ if(!t.w) return; t.x += t.dir*speed*sign; if(t.x <= -t.w) t.x += t.w; if(t.x > 0) t.x -= t.w; t.el.style.transform = "translate3d("+t.x+"px,0,0)"; });
+  skewSet(gsap.utils.clamp(-14,14,-vel*.5));
+});
+
+/* --- 04 Le tunnel --- */
+ScrollTrigger.create({trigger:".tunnel", start:"top top", end:"+=420%", pin:true, anticipatePin:1, onUpdate:function(s){ HM.helixP = s.progress; }});
+gsap.timeline({scrollTrigger:{trigger:".tunnel", start:"top top", end:"+=420%", scrub:true}})
+  .fromTo(".tunnel .mid",{scale:.7, autoAlpha:0},{scale:1, autoAlpha:1, duration:.12})
+  .to(".tunnel .mid",{scale:1.6, autoAlpha:0, duration:.2},.7);
+
+/* --- 05 La pellicule --- */
+var ftrack = document.getElementById("ftrack");
+function fDist(){ return Math.max(0, ftrack.scrollWidth - innerWidth); }
+var fTween = gsap.to(ftrack,{x:function(){ return -fDist(); }, ease:"none",
+  scrollTrigger:{trigger:".film", start:"top top", end:function(){ return "+="+fDist(); }, pin:true, scrub:.8, invalidateOnRefresh:true, anticipatePin:1}});
+gsap.utils.toArray(".fcard").forEach(function(c){
+  gsap.fromTo(c.querySelector("img"),{xPercent:-8},{xPercent:8, ease:"none", scrollTrigger:{trigger:c, containerAnimation:fTween, start:"left right", end:"right left", scrub:true}});
+  gsap.fromTo(c,{y:80, rotation:4},{y:0, rotation:0, ease:"none", scrollTrigger:{trigger:c, containerAnimation:fTween, start:"left 110%", end:"left 60%", scrub:true}});
+});
+var fSkew = gsap.quickSetter(".fcard .ph","skewX","deg");
+gsap.ticker.add(function(){ fSkew(gsap.utils.clamp(-8,8, -vel*.35)); });
+gsap.from(".film .hd h2",{yPercent:60, autoAlpha:0, duration:1.2, ease:"expo.out", scrollTrigger:{trigger:".film", start:"top 70%"}});
+
+/* --- 06 Les chambres : cartes empilées --- */
+var scs = gsap.utils.toArray(".sc");
+scs.forEach(function(s,i){
+  var inr = s.querySelector(".in");
+  gsap.fromTo(s.querySelector("img"),{scale:1.3},{scale:1, ease:"none", scrollTrigger:{trigger:s, start:"top bottom", end:"top top", scrub:true}});
+  gsap.from(s.querySelectorAll(".txt > *"),{yPercent:80, autoAlpha:0, duration:1.1, stagger:.08, ease:"expo.out", scrollTrigger:{trigger:s, start:"top 40%"}});
+  if(i < scs.length-1){
+    gsap.to(inr,{scale:.84, rotation:i%2?2:-2, borderRadius:24, ease:"none", scrollTrigger:{trigger:scs[i+1], start:"top bottom", end:"top top", scrub:true}});
+    gsap.to(s.querySelector(".dim"),{opacity:.7, ease:"none", scrollTrigger:{trigger:scs[i+1], start:"top bottom", end:"top top", scrub:true}});
+  }
+});
+
+/* --- 07 La traversée : zoom à travers le H --- */
+var mask = document.getElementById("mask"), word = document.getElementById("maskWord");
+var letterH = document.getElementById("maskH");
+function originOnStem(){ var m = mask.getBoundingClientRect(), hr = letterH.getBoundingClientRect(), sc = gsap.getProperty(mask,"scale") || 1;
+  // fût épais du t, posé sur la robe blanche de la photo (mesures ramenées à l'échelle 1)
+  return ((hr.left - m.left)/sc + (hr.width/sc)*0.42) + "px " + ((hr.top - m.top)/sc + (hr.height/sc)*0.62) + "px"; }
+var thTl = gsap.timeline({scrollTrigger:{trigger:".through", start:"top top", end:"+=220%", pin:true, scrub:1, anticipatePin:1, invalidateOnRefresh:true}});
+thTl.fromTo(mask,{scale:1, transformOrigin:originOnStem},{scale:90, ease:"power3.in", duration:1, immediateRender:false},0)
+  .fromTo(".through .img",{scale:1.35},{scale:1, ease:"power2.out", duration:1.4},0)
+  .to(mask,{autoAlpha:0, ease:"none", duration:.3},.62)
+  .to(".through .cap",{opacity:1, duration:.3},1.05)
+  .fromTo(".through .cap > *",{yPercent:60},{yPercent:0, duration:.3, stagger:.05},1.05)
+  .to({}, {duration:.25});
+
+/* --- 08 Check-out --- */
+gsap.from(".end .mid > *",{y:50, autoAlpha:0, duration:1.2, stagger:.1, ease:"expo.out", scrollTrigger:{trigger:".end", start:"top 60%"}});
+
+/* Chapitres : créés après les épinglages pour tenir compte de leur durée */
+gsap.utils.toArray("[data-ch]").forEach(function(s){
+  ScrollTrigger.create({trigger:s, start:"top 50%", end:"bottom 50%", onToggle:function(st){ if(st.isActive) setChap(s.dataset.ch); }});
+});
+window.addEventListener("load", function(){ ScrollTrigger.refresh(); });
+})();
+</script>
+</body>
+</html>

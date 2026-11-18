@@ -1,19 +1,20 @@
 # Hôtel Mahfouf, concept de refonte (non officiel)
 
-Film au scroll réalisé par ReviewMaker, pensé pour être filmé écran (Reels / TikTok).
-Concept non officiel : non affilié à Hôtel Mahfouf. Produits et photos issus de hotelmahfouf.com.
+Site vitrine animé réalisé par ReviewMaker, pensé pour être filmé écran (Reels / TikTok).
+Concept non officiel : non affilié à Hôtel Mahfouf. Photos et produits issus de hotelmahfouf.com.
 
 - `index.html` : le site complet et autonome (photos, Three.js, GSAP, ScrollTrigger, Lenis intégrés). Ouvrir dans Chrome.
-- `src.html` : scènes et animations. `scene3d.js` : clé 3D et tunnel de photos.
-- `assets/` : photos (webp) intégrées par `build.py`. Après modification : `python3 build.py`.
-- `archive-v2/`, `archive-v3/` : versions précédentes.
+- `src.html` : page et animations. `scene3d.js` : toute la 3D (clé, sonnette, casier à clés, anneau, photos liquides).
+- `assets/` : photos (webp). `build.py` n'intègre que celles utilisées dans `src.html`.
+- `archive-v2/` à `archive-v4/` : versions précédentes.
 
-## Les scènes
-1. Lobby : la caméra plonge dans le porte-clé 3D, les lettres du titre explosent
-2. La grille : une photo plein écran se rétracte dans une grille de 9 images
-3. Le registre : lignes de typo géantes dont la vitesse suit le scroll
-4. Le couloir : tunnel 3D de photos traversé par la caméra
-5. La pellicule : défilement horizontal, cartes qui se déforment à la vitesse
-6. Les chambres : photos plein écran qui s'empilent
-7. La traversée : zoom à travers la lettre « t » jusqu'à la photo
-8. Check-out : bouton « Rejouer le séjour » qui remonte tout en 5 secondes (boucle de vidéo)
+## Parcours
+1. Portes d'ascenseur en laiton qui s'ouvrent (indicateur 5 → RDC)
+2. Lobby : plongée dans la clé 3D (court passage épinglé)
+3. Règlement intérieur : phrase qui se lève mot à mot
+4. Les chambres : 6 photos d'intérieurs en WebGL (révélation en vague avec liseré laiton, onde au survol, déformation à la vitesse)
+5. La réception : casier à clés 3D en bois et laiton, la caméra le parcourt et la clé 104 sort (court passage épinglé)
+6. Le dressing : anneau 3D de 9 pièces qui tourne pendant la traversée de la section
+7. Typo cinétique liée à la vitesse du scroll
+8. Room service : traversée de la lettre jusqu'à la photo (court passage épinglé)
+9. Sonnette 3D : cliquer la fait sonner et remonte tout le site (boucle de vidéo)

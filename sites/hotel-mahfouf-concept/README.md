@@ -1,0 +1,17 @@
+# Hôtel Mahfouf, concept de refonte (non officiel)
+
+Site vitrine animé réalisé par ReviewMaker pour une vidéo Instagram / TikTok.
+Concept non officiel : non affilié à Hôtel Mahfouf ni à Léna Situations. Produits et prix illustratifs, aucun paiement.
+
+- `index.html` : le site complet, autonome (GSAP, ScrollTrigger et Lenis intégrés). Ouvrir dans Chrome.
+- `src.html` : source éditable. Après modification : `python3 build.py` pour régénérer `index.html`.
+
+## Parcours au scroll
+1. Ouverture en portes d'ascenseur (compte à rebours 5 → RDC)
+2. Lobby : enseigne animée, produits flottants, sonnette cliquable
+3. Rubans croisés dont la vitesse suit le scroll
+4. Règlement intérieur : texte qui se remplit mot à mot
+5. Ascenseur épinglé : 5 étages, les portes se ferment et s'ouvrent sur chaque collection
+6. Couloir horizontal : 7 portes de chambre qui s'ouvrent sur les produits
+7. Panneau « Ne pas déranger » qui se balance selon la vitesse du scroll
+8. Enseigne néon finale

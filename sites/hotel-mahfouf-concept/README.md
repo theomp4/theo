@@ -1,20 +1,19 @@
 # Hôtel Mahfouf, concept de refonte (non officiel)
 
-Site vitrine animé réalisé par ReviewMaker, pensé pour être filmé écran (Reels / TikTok).
+Visite 3D d'un hôtel au scroll, réalisée par ReviewMaker pour être filmée écran (Reels / TikTok).
 Concept non officiel : non affilié à Hôtel Mahfouf. Photos et produits issus de hotelmahfouf.com.
 
-- `index.html` : le site complet et autonome (photos, Three.js, GSAP, ScrollTrigger, Lenis intégrés). Ouvrir dans Chrome.
-- `src.html` : page et animations. `scene3d.js` : toute la 3D (clé, sonnette, casier à clés, anneau, photos liquides).
-- `assets/` : photos (webp). `build.py` n'intègre que celles utilisées dans `src.html`.
-- `archive-v2/` à `archive-v4/` : versions précédentes.
+- `index.html` : le site complet et autonome (Three.js et photos intégrés). Ouvrir dans Chrome.
+- `src.html` : toute la scène et l'interface. `python3 build.py` régénère `index.html` (photos redimensionnées à 760 px).
+- `archive-v2/` à `archive-v5/` : versions précédentes.
 
-## Parcours
-1. Portes d'ascenseur en laiton qui s'ouvrent (indicateur 5 → RDC)
-2. Lobby : plongée dans la clé 3D (court passage épinglé)
-3. Règlement intérieur : phrase qui se lève mot à mot
-4. Les chambres : 6 photos d'intérieurs en WebGL (révélation en vague avec liseré laiton, onde au survol, déformation à la vitesse)
-5. La réception : casier à clés 3D en bois et laiton, la caméra le parcourt et la clé 104 sort (court passage épinglé)
-6. Le dressing : anneau 3D de 9 pièces qui tourne pendant la traversée de la section
-7. Typo cinétique liée à la vitesse du scroll
-8. Room service : traversée de la lettre jusqu'à la photo (court passage épinglé)
-9. Sonnette 3D : cliquer la fait sonner et remonte tout le site (boucle de vidéo)
+## Parcours (une seule scène 3D, le scroll déplace la caméra)
+1. La rue au crépuscule : façade haussmannienne, fenêtres éclairées, balcons, marquise, enseigne, pavés mouillés
+2. Les portes en laiton et verre s'ouvrent
+3. Le lobby : damier bordeaux et crème, boiseries, lustre, réception
+4. L'ascenseur vitré monte dans l'atrium et pivote vers une boutique par étage (manteaux, robes, bureau, room service, suite)
+5. Le toit sous le ciel : fin, bouton pour redescendre
+
+## Performance
+Un seul rendu par image, pas de bibliothèque d'animation, pas d'ombres calculées, géométries répétées instanciées
+(environ 20 à 55 appels de dessin), résolution plafonnée à 1,5x, lissage du scroll indépendant de la fréquence d'écran.

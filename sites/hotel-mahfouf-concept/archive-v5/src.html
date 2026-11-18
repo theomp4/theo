@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hôtel Mahfouf Concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Inter+Tight:wght@400;500&display=swap">
+<style>
+/* Un grand hôtel parisien, la nuit. Laiton, bois, cuir, pierre.
+   Ascenseur (ouverture) → Lobby : plongée dans la clé → Règlement → Chambres (photos liquides) → Réception : casier à clés 3D
+   → Le dressing : anneau de pièces → Room service : traversée de lettre → Sonnette (rejouer). */
+:root{
+  --night:#0B0A09;
+  --wood:#1A1410;
+  --stone:#ECE6DC;
+  --mute:#8C8478;
+  --brass:#C9A86A;
+  --brass-hi:#F3DFAE;
+  --serif:"Bodoni Moda", Didot, "Bodoni 72", Georgia, serif;
+  --sans:"Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  --gl:max(20px, env(safe-area-inset-left, 0px));
+  --gr:max(20px, env(safe-area-inset-right, 0px));
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{margin:0;background:var(--night);color:var(--stone);font-family:var(--sans);font-size:15px;line-height:1.55;overflow-x:clip;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;padding:0}
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;line-height:.95}
+em{font-style:italic}
+.lab{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;font-weight:500}
+.mute{color:var(--mute)}
+.wrap{padding-left:var(--gl);padding-right:var(--gr)}
+.cover{width:100%;height:100%;object-fit:cover}
+/* reflet laiton qui balaie les titres */
+.sheen{background:linear-gradient(105deg,var(--stone) 0%,var(--stone) 42%,var(--brass-hi) 49%,#fff 50%,var(--brass-hi) 51%,var(--stone) 58%,var(--stone) 100%);background-size:280% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sheen 5.5s cubic-bezier(.6,0,.3,1) infinite}
+@keyframes sheen{0%{background-position:100% 0}55%,100%{background-position:0% 0}}
+
+/* ---------- Habillage ---------- */
+.grain{position:fixed;inset:-50%;z-index:70;pointer-events:none;opacity:.06;animation:grain 1.2s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-4%,3%)}40%{transform:translate(3%,-5%)}60%{transform:translate(-6%,-2%)}80%{transform:translate(5%,4%)}100%{transform:translate(0,0)}}
+.cur{position:fixed;left:0;top:0;z-index:95;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#fff;mix-blend-mode:difference;pointer-events:none;transition:width .4s,height .4s,margin .4s;display:none}
+.cur.big{width:64px;height:64px;margin:-32px 0 0 -32px}
+@media (pointer:fine){.cur{display:block}}
+.nav{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);z-index:60;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding-block:20px;color:#fff;mix-blend-mode:difference}
+.nav .mark{font-family:var(--serif);font-size:1.15rem;white-space:nowrap}
+.nav .floor{display:flex;align-items:center;gap:10px}
+.nav .floor b{font-weight:500;display:inline-block;min-width:3.2ch;text-align:center;overflow:hidden;height:1.2em;line-height:1.2em}
+.nav .floor b span{display:block}
+.nav .by{justify-self:end;white-space:nowrap}
+@media (max-width:560px){.nav{grid-template-columns:1fr auto}.nav .by{display:none}}
+
+/* ---------- Ascenseur d'ouverture ---------- */
+#lift{position:fixed;inset:0;z-index:100;pointer-events:none;animation:liftOut .6s 9s forwards}
+#lift .door{position:absolute;top:0;bottom:0;width:50.2%;background:
+  repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 1px,transparent 1px 3px),
+  linear-gradient(90deg,#5b4627 0%,#a88a52 22%,#d9be86 48%,#a88a52 74%,#5b4627 100%);box-shadow:inset 0 0 120px rgba(0,0,0,.45)}
+#lift .door.l{left:0;border-right:1px solid rgba(0,0,0,.6)}
+#lift .door.r{right:0;border-left:1px solid rgba(255,240,200,.25)}
+#lift .door::before{content:"";position:absolute;inset:9% 12%;border:1px solid rgba(40,28,10,.35);box-shadow:inset 0 0 0 1px rgba(255,236,190,.18)}
+#lift .panel{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;display:grid;justify-items:center;gap:16px}
+#lift .disp{font-family:var(--serif);font-size:clamp(3rem,9vw,6rem);line-height:1;color:#ffb85c;text-shadow:0 0 22px rgba(255,170,70,.75);background:#120c06;border:1px solid #6e5732;padding:.12em .5em;min-width:3.4ch;text-align:center}
+#lift .lab{color:#2a1d0c}
+@keyframes liftOut{to{opacity:0;visibility:hidden}}
+.no-motion #lift{display:none}
+
+/* ---------- Lobby ---------- */
+.hero{position:relative;height:100svh;min-height:600px;overflow:hidden;background:radial-gradient(60% 55% at 50% 48%, #251f19 0%, var(--night) 72%)}
+.hero .title{position:absolute;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none}
+.hero h1{font-size:clamp(4rem,18vw,20rem);letter-spacing:-.02em;line-height:.86}
+.hero h1 .l{display:block;padding-top:.06em}
+.hero h1 .l2{font-style:italic}
+.hero h1 .ch{display:inline-block;will-change:transform}
+.hero .stage{position:absolute;inset:0}
+.hero .meta{position:absolute;left:var(--gl);right:var(--gr);bottom:max(26px, env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;align-items:end;gap:20px;color:var(--mute)}
+.hero .meta i{display:block;width:1px;height:48px;margin:0 auto 10px;background:linear-gradient(var(--brass),transparent);animation:drip 2.2s infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.hero .veil{position:absolute;inset:0;z-index:40;background:var(--night);opacity:0;pointer-events:none}
+
+/* ---------- Règlement ---------- */
+.rule{padding-block:clamp(120px,18vw,220px);text-align:center;display:grid;justify-items:center;gap:34px}
+.rule p{margin:0;max-width:20ch;font-family:var(--serif);font-size:clamp(2.2rem,5.6vw,5.4rem);line-height:1.06;letter-spacing:-.01em}
+.rule .w{display:inline-block}
+.rule .line{width:1px;height:90px;background:linear-gradient(transparent,var(--brass),transparent)}
+
+/* ---------- Chambres : photos liquides ---------- */
+.rooms{padding-block:40px clamp(120px,14vw,200px)}
+.rooms .grid{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(12px,2vw,28px);row-gap:clamp(70px,9vw,140px)}
+.room{display:grid;gap:16px;align-content:start;min-width:0}
+.ph{position:relative;overflow:hidden;background:#15120f}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.gl .ph[data-liquid] img{opacity:0}
+.room .cap{display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+.room .cap h3{font-size:clamp(1.4rem,2.2vw,2.1rem)}
+.plaque{display:inline-block;padding:5px 10px;border:1px solid rgba(201,168,106,.55);color:var(--brass);font-family:var(--serif);font-size:.95rem;white-space:nowrap}
+.r1{grid-column:1 / span 6}.r1 .ph{aspect-ratio:4/5}
+.r2{grid-column:8 / span 5;margin-top:24vh}.r2 .ph{aspect-ratio:2/3}
+.r3{grid-column:2 / span 4}.r3 .ph{aspect-ratio:3/4}
+.r4{grid-column:7 / span 6;margin-top:10vh}.r4 .ph{aspect-ratio:4/5}
+.r5{grid-column:1 / span 5;margin-top:4vh}.r5 .ph{aspect-ratio:2/3}
+.r6{grid-column:7 / span 5;margin-top:22vh}.r6 .ph{aspect-ratio:3/4}
+.rooms .head{max-width:1320px;margin:0 auto 90px;display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap}
+.rooms .head h2{font-size:clamp(3rem,9vw,8.5rem);letter-spacing:-.02em}
+.rooms .head p{max-width:32ch;margin:0;color:var(--mute)}
+@media (max-width:760px){.r1,.r2,.r3,.r4,.r5,.r6{grid-column:1 / -1;margin-top:0}.r2,.r4,.r6{width:82%;justify-self:end}.r3,.r5{width:82%}}
+
+/* ---------- Réception : casier à clés ---------- */
+.cabinet{position:relative;height:100svh;min-height:560px;overflow:hidden;background:radial-gradient(70% 60% at 50% 50%, #241a12, var(--night) 75%)}
+.cabinet .stage{position:absolute;inset:0}
+#cabUI{position:fixed;inset:0;z-index:35;pointer-events:none;opacity:0;visibility:hidden;transition:opacity .6s,visibility .6s}
+#cabUI.on{opacity:1;visibility:visible}
+#cabUI .tl{position:absolute;left:var(--gl);top:96px;display:grid;gap:12px}
+#cabUI .tl h2{font-size:clamp(2.4rem,5vw,4.6rem)}
+#cabUI .br{position:absolute;right:var(--gr);bottom:max(30px, env(safe-area-inset-bottom,0px));text-align:right;display:grid;gap:10px;justify-items:end}
+#cabUI .br h3{font-size:clamp(1.8rem,3.4vw,3rem)}
+#cabUI .br > *{opacity:0;transform:translateY(20px);transition:opacity .6s,transform .6s}
+#cabUI.end .br > *{opacity:1;transform:none}
+
+/* ---------- Le dressing : anneau ---------- */
+.dress{position:relative;height:220svh}
+.dress .sticky{position:sticky;top:0;height:100svh;overflow:hidden}
+.dress .stage{position:absolute;inset:0}
+.dress .hd{position:absolute;left:0;right:0;top:92px;text-align:center;display:grid;gap:10px;justify-items:center;pointer-events:none}
+.dress .hd h2{font-size:clamp(2.4rem,6vw,5.6rem)}
+.dress .ft{position:absolute;left:var(--gl);right:var(--gr);bottom:max(28px, env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;align-items:end;gap:16px}
+.dress .ft .nm{overflow:hidden}
+.dress .ft h3{font-size:clamp(1.6rem,3vw,2.6rem)}
+.dress .ft .count{font-variant-numeric:tabular-nums}
+.no-gl .dress{height:auto}.no-gl .dress .sticky{position:relative;height:auto;padding-block:120px}
+.no-gl .dress .fallback{display:flex}
+.dress .fallback{display:none;gap:14px;overflow-x:auto;padding-block:160px 100px}
+.dress .fallback img{width:220px;aspect-ratio:3/4;object-fit:cover;flex:none}
+
+/* ---------- Typo ---------- */
+.type{padding-block:10vh;display:grid;gap:2vh;overflow:hidden}
+.tline{white-space:nowrap;font-family:var(--serif);font-size:clamp(4rem,14vw,14rem);line-height:1}
+.tline .tr{display:inline-flex;will-change:transform}
+.tline .tr span{padding-right:.35em}
+.tline.o{font-style:italic;color:transparent;-webkit-text-stroke:1px rgba(201,168,106,.8)}
+
+/* ---------- Room service : traversée ---------- */
+.through{position:relative;height:100svh;min-height:560px;overflow:hidden;isolation:isolate}
+.through .img{position:absolute;inset:0}
+.through .mask{position:absolute;inset:0;background:#000;mix-blend-mode:multiply;display:grid;place-items:center;will-change:transform}
+.through .mask span{font-family:var(--serif);font-size:clamp(3.6rem,19vw,22rem);line-height:1;color:#fff;letter-spacing:-.02em;white-space:nowrap}
+.through .cap{position:absolute;left:var(--gl);right:var(--gr);bottom:max(34px, env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;align-items:end;gap:20px;opacity:0}
+.through .cap h2{font-size:clamp(2.6rem,7vw,7rem)}
+
+/* ---------- Sonnette ---------- */
+.bellend{position:relative;min-height:100svh;display:grid;grid-template-rows:1fr auto;background:radial-gradient(60% 50% at 50% 55%, #221b14, var(--night) 72%)}
+.bellend .mid{display:grid;justify-items:center;align-content:center;gap:10px;text-align:center;padding-top:90px}
+.bellend .bellbox{position:relative;width:min(460px,80vw);aspect-ratio:1;max-width:100%}
+.bellend .bellbox button{position:absolute;inset:18%;border-radius:50%;z-index:45}
+.bellend h2{font-size:clamp(2.6rem,7vw,6.5rem);letter-spacing:-.01em}
+.bellend .legal{padding-bottom:max(22px, env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:.72rem;color:var(--mute)}
+
+.toast{position:fixed;left:50%;bottom:calc(26px + env(safe-area-inset-bottom,0px));z-index:90;transform:translate(-50%,calc(100% + 80px));visibility:hidden;background:var(--stone);color:var(--night);padding:13px 22px;font-size:.84rem;transition:transform .55s cubic-bezier(.2,.8,.2,1),visibility .55s}
+.toast.show{transform:translate(-50%,0);visibility:visible}
+@media (prefers-reduced-motion: reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+
+<div id="lift" aria-hidden="true">
+  <div class="door l"></div><div class="door r"></div>
+  <div class="panel"><div class="disp" id="liftDisp">5</div><div class="lab">Hôtel Mahfouf · Concept ReviewMaker</div></div>
+</div>
+<div class="grain" id="grain" aria-hidden="true"></div>
+<div class="cur" id="cur" aria-hidden="true"></div>
+
+<header class="nav wrap">
+  <span class="mark">Hôtel Mahfouf</span>
+  <span class="lab floor">Étage <b id="floor"><span>RDC</span></b></span>
+  <span class="lab by">Concept · ReviewMaker</span>
+</header>
+
+<main>
+  <section class="hero" data-floor="RDC">
+    <div class="title" aria-label="Hôtel Mahfouf"><h1><span class="l" data-split aria-hidden="true">Hôtel</span><span class="l l2" data-split aria-hidden="true">Mahfouf</span></h1></div>
+    <div class="stage" data-model="key" data-hero data-zoom="1.12"></div>
+    <div class="meta lab"><span>Chambre 104</span><span style="text-align:center"><i></i>Défiler</span><span>Paris</span></div>
+    <div class="veil"></div>
+  </section>
+
+  <section class="rule wrap" data-floor="1">
+    <span class="lab mute">Règlement intérieur · Article 1</span>
+    <p id="rule">On entre pour une pièce, on reste pour <em>la nuit.</em></p>
+    <div class="line"></div>
+  </section>
+
+  <section class="rooms wrap" data-floor="2">
+    <div class="head"><h2 class="sheen">Les <em>chambres</em></h2><p>Robes rouges dans la bibliothèque, tailleurs dans les escaliers, room service à minuit.</p></div>
+    <div class="grid">
+      <article class="room r1"><div class="ph" data-liquid="ex-library"><img data-img="ex-library" alt="Robe rouge dans la bibliothèque"></div><div class="cap"><h3>La bibliothèque</h3><span class="plaque">101</span></div></article>
+      <article class="room r2"><div class="ph" data-liquid="ex-lift"><img data-img="ex-lift" alt="Pyjama devant l'ascenseur du lobby"></div><div class="cap"><h3>Le lobby</h3><span class="plaque">102</span></div></article>
+      <article class="room r3"><div class="ph" data-liquid="ex-stairs"><img data-img="ex-stairs" alt="Pantalon pied-de-poule dans l'escalier"></div><div class="cap"><h3>L'escalier</h3><span class="plaque">103</span></div></article>
+      <article class="room r4"><div class="ph" data-liquid="ex-green"><img data-img="ex-green" alt="Lecture dans le salon vert"></div><div class="cap"><h3>Le salon vert</h3><span class="plaque">105</span></div></article>
+      <article class="room r5"><div class="ph" data-liquid="ex-night"><img data-img="ex-night" alt="Robe rouge dans le jardin d'hiver"></div><div class="cap"><h3>Le jardin d'hiver</h3><span class="plaque">106</span></div></article>
+      <article class="room r6"><div class="ph" data-liquid="ex-door"><img data-img="ex-door" alt="Robe grise devant une porte bordeaux"></div><div class="cap"><h3>La porte rouge</h3><span class="plaque">107</span></div></article>
+    </div>
+  </section>
+
+  <section class="cabinet" data-floor="0">
+    <div class="stage" data-cabinet></div>
+  </section>
+
+  <section class="dress" data-floor="3">
+    <div class="sticky">
+      <div class="stage" data-gallery></div>
+      <div class="hd"><span class="lab mute">Le dressing</span><h2 class="sheen">Neuf <em>pièces</em></h2></div>
+      <div class="ft"><div class="nm"><h3 id="dName">Manteau Highland</h3></div><span class="lab mute count" id="dCount">01 / 09</span></div>
+      <div class="fallback wrap" id="fallback"></div>
+    </div>
+  </section>
+
+  <section class="type" data-floor="4" aria-label="Manteaux, robes, tailleurs. Late check-out.">
+    <div class="tline" aria-hidden="true"><div class="tr" data-dir="-1"></div></div>
+    <div class="tline o" aria-hidden="true"><div class="tr" data-dir="1"></div></div>
+  </section>
+
+  <section class="through" data-floor="5">
+    <img class="img cover" data-img="ex-cloche" alt="Room service : ensemble rouge et cloche argentée">
+    <div class="mask" id="mask"><span id="maskWord">Room <span id="maskT">s</span>ervice</span></div>
+    <div class="cap"><h2>Room <em>service</em></h2><span class="lab">À toute heure · Ensemble rouge</span></div>
+  </section>
+
+  <section class="bellend wrap" data-floor="RDC">
+    <div class="mid">
+      <span class="lab mute">Réception</span>
+      <div class="bellbox" data-model="bell" data-zoom="1.1"><button id="bell" aria-label="Sonner pour rejouer"></button></div>
+      <h2>Sonnez pour <em>rejouer</em></h2>
+    </div>
+    <div class="legal"><span>Concept de refonte non officiel réalisé par ReviewMaker. Non affilié à Hôtel Mahfouf. Photos et produits : hotelmahfouf.com.</span><span>© 2026 ReviewMaker</span></div>
+  </section>
+</main>
+
+<div id="cabUI" aria-live="polite">
+  <div class="tl"><span class="lab mute">La réception</span><h2 class="sheen">Vos <em>clés</em></h2></div>
+  <div class="br"><span class="lab mute">Votre chambre</span><h3>Chambre <em>104</em></h3></div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!--IMAGES-->
+<!--VENDOR-->
+<script>
+(function(){
+"use strict";
+var IMG = window.HM_IMG || {};
+var hasGsap = typeof window.gsap !== "undefined" && typeof window.ScrollTrigger !== "undefined";
+var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var motion = hasGsap && !reduce;
+var webgl = (function(){ try { var c=document.createElement("canvas"); return !!(window.WebGLRenderingContext && (c.getContext("webgl2")||c.getContext("webgl"))) && typeof window.THREE!=="undefined"; } catch(e){ return false; } })();
+if(!motion) document.documentElement.classList.add("no-motion");
+if(!webgl) document.documentElement.classList.add("no-gl");
+window.HM = window.HM || {};
+function src(k){ return IMG[k] || ""; }
+function pad(n){ return (n<10?"0":"")+n; }
+
+document.querySelectorAll("img[data-img]").forEach(function(im){ im.src = src(im.dataset.img); });
+
+var P = [["highland-noir","Manteau Highland"],["highland-marine","Manteau Highland"],["glen","Veste Glen"],["duncan","Robe Duncan"],["mead","Robe Mead"],["cajon","Pantalon Cajon"],["neola","Gilet Neola"],["terrabella","Robe Terrabella"],["hackberry","Écharpe Hackberry"]];
+HM.gallery = P.map(function(p){ return src(p[0]); }).filter(Boolean);
+document.getElementById("fallback").innerHTML = P.map(function(p){ return '<img alt="'+p[1]+'" src="'+src(p[0])+'">'; }).join("");
+
+var words = {0:["Manteaux","Robes","Tailleurs"],1:["Late check-out","Chambre 104","Paris"]};
+document.querySelectorAll(".type .tr").forEach(function(t,i){
+  var seg = words[i].map(function(w){ return '<span>'+w+' ·</span>'; }).join("");
+  t.innerHTML = '<div style="display:inline-flex">'+seg+'</div><div style="display:inline-flex">'+seg+'</div><div style="display:inline-flex">'+seg+'</div>';
+});
+
+(function(){ try{ var c=document.createElement("canvas"); c.width=c.height=160; var x=c.getContext("2d"), d=x.createImageData(160,160);
+  for(var i=0;i<d.data.length;i+=4){ var v=Math.random()*255|0; d.data[i]=d.data[i+1]=d.data[i+2]=v; d.data[i+3]=255; }
+  x.putImageData(d,0,0); document.getElementById("grain").style.backgroundImage="url("+c.toDataURL()+")"; }catch(e){} })();
+
+var toastEl = document.getElementById("toast"), toastT;
+function toast(h){ toastEl.innerHTML = h; toastEl.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(function(){ toastEl.classList.remove("show"); }, 2200); }
+
+var lenis = null;
+HM.getVel = function(){ return lenis ? lenis.velocity : 0; };
+HM.heroIn = !motion; HM.heroP = 0; HM.cabP = motion ? 0 : 1; HM.galleryPos = 0;
+document.querySelectorAll("[data-liquid]").forEach(function(el){ el.__rev = {v: motion ? 0 : 1}; });
+
+document.getElementById("bell").addEventListener("click", function(){
+  document.dispatchEvent(new CustomEvent("hm:bell")); toast("Ding. Retour à la réception.");
+  setTimeout(function(){ if(lenis) lenis.scrollTo(0,{duration:5.5, easing:function(t){ return t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }}); else window.scrollTo({top:0, behavior:"smooth"}); }, 650);
+});
+
+var liftEl = document.getElementById("lift");
+if(!motion){ if(liftEl) liftEl.remove(); return; }
+
+/* ================= Mise en scène ================= */
+gsap.registerPlugin(ScrollTrigger);
+lenis = new Lenis({duration:1.25, smoothWheel:true});
+lenis.on("scroll", ScrollTrigger.update);
+gsap.ticker.add(function(t){ lenis.raf(t*1000); });
+gsap.ticker.lagSmoothing(0);
+window.scrollTo(0,0);
+
+var cur = document.getElementById("cur"), cx = innerWidth/2, cy = innerHeight/2, tx = cx, ty = cy;
+window.addEventListener("pointermove", function(e){ tx = e.clientX; ty = e.clientY; }, {passive:true});
+document.addEventListener("pointerover", function(e){ cur.classList.toggle("big", !!e.target.closest(".ph, button, .bellbox")); });
+gsap.ticker.add(function(){ cx += (tx-cx)*.18; cy += (ty-cy)*.18; cur.style.transform = "translate3d("+cx+"px,"+cy+"px,0)"; });
+
+/* Indicateur d'étage dans la nav */
+var floorEl = document.getElementById("floor").firstElementChild, curFloor = "RDC";
+function setFloor(f){ if(f===curFloor) return; var up = f > curFloor || f==="RDC"; curFloor = f; gsap.killTweensOf(floorEl);
+  gsap.timeline().to(floorEl,{yPercent:-110, duration:.22, ease:"power2.in"}).add(function(){ floorEl.textContent = f==="0" ? "RDC" : f; }).fromTo(floorEl,{yPercent:110},{yPercent:0, duration:.4, ease:"power3.out"}); }
+
+/* --- Ascenseur d'ouverture --- */
+document.querySelectorAll("[data-split]").forEach(function(el){ el.innerHTML = el.textContent.split("").map(function(c){ return '<span class="ch">'+c+'</span>'; }).join(""); });
+lenis.stop();
+var chars = gsap.utils.toArray(".hero h1 .ch");
+gsap.set(chars,{yPercent:120, opacity:0});
+gsap.set(".hero .meta, .nav",{autoAlpha:0});
+var seq = ["5","4","3","2","1","RDC"], si = {v:0}, disp = document.getElementById("liftDisp");
+gsap.timeline({delay:.3})
+  .to(si,{v:seq.length-1, duration:1.5, ease:"power1.inOut", onUpdate:function(){ disp.textContent = seq[Math.round(si.v)]; }})
+  .to("#lift .panel",{autoAlpha:0, scale:.96, duration:.4},"+=.2")
+  .to("#lift .door.l",{xPercent:-100, duration:1.4, ease:"power3.inOut"},"<")
+  .to("#lift .door.r",{xPercent:100, duration:1.4, ease:"power3.inOut"},"<")
+  .add(function(){ HM.heroIn = true; },"-=1")
+  .to(chars,{yPercent:0, opacity:1, duration:1.4, ease:"expo.out", stagger:.045},"-=.9")
+  .to(".hero .meta, .nav",{autoAlpha:1, duration:.9},"-=1")
+  .add(function(){ if(liftEl) liftEl.remove(); lenis.start(); ScrollTrigger.refresh(); });
+
+/* --- Lobby : plongée dans la clé (épinglage court) --- */
+function rnd(i,k){ var x = Math.sin(i*12.9898 + k*78.233)*43758.5453; return x - Math.floor(x); }
+gsap.timeline({scrollTrigger:{trigger:".hero", start:"top top", end:"+=110%", pin:true, scrub:true, anticipatePin:1, onUpdate:function(s){ HM.heroP = s.progress; }}})
+  .fromTo(chars,{x:0, y:0, rotation:0, scale:1, opacity:1},{
+    x:function(i){ return (rnd(i,1)-.5)*innerWidth*1.4; }, y:function(i){ return (rnd(i,2)-.5)*innerHeight*1.3; },
+    rotation:function(i){ return (rnd(i,3)-.5)*160; }, scale:function(i){ return .6+rnd(i,4)*1.8; }, opacity:0,
+    ease:"power2.in", duration:.7, stagger:{each:.012, from:"center"}}, 0)
+  .fromTo(".hero .meta",{autoAlpha:1},{autoAlpha:0, duration:.2},0)
+  .to(".hero .veil",{opacity:1, duration:.16, ease:"none"},.84);
+
+/* --- Règlement : mots qui montent --- */
+var rule = document.getElementById("rule");
+(function split(node){ Array.prototype.slice.call(node.childNodes).forEach(function(n){
+  if(n.nodeType===3){ var f=document.createDocumentFragment(); n.textContent.split(/(\s+)/).forEach(function(p){ if(!p) return;
+    if(/^\s+$/.test(p)) f.appendChild(document.createTextNode(p)); else { var s=document.createElement("span"); s.className="w"; s.textContent=p; f.appendChild(s); } }); n.parentNode.replaceChild(f,n);
+  } else if(n.nodeType===1) split(n); }); })(rule);
+gsap.fromTo(rule.querySelectorAll(".w"),{yPercent:60, opacity:0, rotationX:-70},{yPercent:0, opacity:1, rotationX:0, stagger:.06, ease:"none", scrollTrigger:{trigger:rule, start:"top 85%", end:"top 40%", scrub:.6}});
+gsap.fromTo(".rule .line",{scaleY:0},{scaleY:1, transformOrigin:"top", ease:"none", scrollTrigger:{trigger:".rule .line", start:"top 90%", end:"bottom 60%", scrub:true}});
+
+/* --- Chambres : révélation liquide + dérive --- */
+gsap.utils.toArray(".room").forEach(function(r){
+  var ph = r.querySelector(".ph");
+  if(webgl) gsap.to(ph.__rev,{v:1, duration:1.8, ease:"power2.inOut", scrollTrigger:{trigger:r, start:"top 82%"}});
+  else gsap.fromTo(ph,{clipPath:"inset(100% 0 0 0)"},{clipPath:"inset(0% 0 0 0)", duration:1.4, ease:"expo.out", scrollTrigger:{trigger:r, start:"top 82%"}});
+  gsap.fromTo(r,{y:90},{y:-40, ease:"none", scrollTrigger:{trigger:r, start:"top bottom", end:"bottom top", scrub:true}});
+  gsap.from(r.querySelectorAll(".cap > *"),{yPercent:100, autoAlpha:0, duration:1.1, stagger:.1, ease:"expo.out", scrollTrigger:{trigger:r, start:"top 70%"}});
+});
+gsap.from(".rooms .head h2",{yPercent:40, autoAlpha:0, duration:1.4, ease:"expo.out", scrollTrigger:{trigger:".rooms", start:"top 80%"}});
+
+/* --- Réception : casier à clés (épinglage court) --- */
+var cabUI = document.getElementById("cabUI");
+if(webgl) ScrollTrigger.create({trigger:".cabinet", start:"top top", end:"+=160%", pin:true, anticipatePin:1,
+  onUpdate:function(s){ HM.cabP = s.progress; cabUI.classList.toggle("end", s.progress > .8); },
+  onToggle:function(s){ cabUI.classList.toggle("on", s.isActive); }});
+
+/* --- Le dressing : l'anneau tourne pendant la traversée de la section (sans épinglage GSAP) --- */
+var dName = document.getElementById("dName"), dCount = document.getElementById("dCount"), dIdx = -1;
+ScrollTrigger.create({trigger:".dress", start:"top top", end:"bottom bottom", onUpdate:function(s){
+  var pos = s.progress*(P.length-1); HM.galleryPos = pos; var i = Math.round(pos);
+  if(i!==dIdx){ dIdx = i; gsap.timeline().to(dName,{yPercent:-110, duration:.2, ease:"power2.in"}).add(function(){ dName.textContent = P[i][1]; dCount.textContent = pad(i+1)+" / "+pad(P.length); }).fromTo(dName,{yPercent:110},{yPercent:0, duration:.45, ease:"power3.out"}); }
+}});
+
+/* --- Typo : vitesse liée au scroll --- */
+var tracks = gsap.utils.toArray(".type .tr").map(function(t){ return {el:t, dir:+t.dataset.dir, x:0, w:0}; });
+function measure(){ tracks.forEach(function(t){ t.w = t.el.firstElementChild.getBoundingClientRect().width; }); }
+measure(); window.addEventListener("resize", measure);
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ measure(); ScrollTrigger.refresh(); });
+var vel = 0, skewSet = gsap.quickSetter(".type .tr","skewX","deg");
+gsap.ticker.add(function(){
+  vel += (lenis.velocity - vel) * .1;
+  var speed = 0.8 + Math.min(Math.abs(vel)*.5, 26), sign = vel < -0.2 ? -1 : 1;
+  tracks.forEach(function(t){ if(!t.w) return; t.x += t.dir*speed*sign; if(t.x <= -t.w) t.x += t.w; if(t.x > 0) t.x -= t.w; t.el.style.transform = "translate3d("+t.x+"px,0,0)"; });
+  skewSet(gsap.utils.clamp(-12,12,-vel*.45));
+});
+
+/* --- Room service : traversée de la lettre (épinglage court) --- */
+var mask = document.getElementById("mask"), letter = document.getElementById("maskT");
+function origin(){ var m = mask.getBoundingClientRect(), r = letter.getBoundingClientRect(), sc = gsap.getProperty(mask,"scale") || 1;
+  return ((r.left - m.left)/sc + (r.width/sc)*0.5) + "px " + ((r.top - m.top)/sc + (r.height/sc)*0.6) + "px"; }
+gsap.timeline({scrollTrigger:{trigger:".through", start:"top top", end:"+=130%", pin:true, scrub:1, anticipatePin:1, invalidateOnRefresh:true}})
+  .fromTo(mask,{scale:1, transformOrigin:origin},{scale:70, ease:"power3.in", duration:1, immediateRender:false},0)
+  .fromTo(".through .img",{scale:1.35},{scale:1, ease:"power2.out", duration:1.3},0)
+  .to(mask,{autoAlpha:0, ease:"none", duration:.3},.6)
+  .to(".through .cap",{opacity:1, duration:.25},1)
+  .fromTo(".through .cap > *",{yPercent:60},{yPercent:0, duration:.25, stagger:.05},1);
+
+/* --- Sonnette --- */
+gsap.from(".bellend .mid > *",{y:50, autoAlpha:0, duration:1.2, stagger:.12, ease:"expo.out", scrollTrigger:{trigger:".bellend", start:"top 60%"}});
+
+/* Étages (créés en dernier pour tenir compte des épinglages) */
+gsap.utils.toArray("[data-floor]").forEach(function(s){
+  ScrollTrigger.create({trigger:s, start:"top 50%", end:"bottom 50%", onToggle:function(st){ if(st.isActive) setFloor(s.dataset.floor); }});
+});
+window.addEventListener("load", function(){ ScrollTrigger.refresh(); });
+})();
+</script>
+</body>
+</html>

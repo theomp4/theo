@@ -6,17 +6,15 @@
 <title>Hôtel Mahfouf Concept</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Inter+Tight:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Inter+Tight:wght@400;500&display=swap">
 <style>
-/* Concept : un grand hôtel la nuit. Noir profond, pierre claire, laiton en filet.
-   Lobby (clé 3D) → manifeste → galerie circulaire 3D → chambres (éditorial) → boutique → minibar → réception (sonnette 3D) → enseigne. */
+/* Un film au scroll, pensé pour être filmé écran : chaque section est une scène.
+   01 Lobby (plongée dans la clé) · 02 La grille · 03 Typo cinétique · 04 Le tunnel · 05 La pellicule · 06 Les chambres · 07 La traversée · 08 Check-out */
 :root{
-  --night:#0D0C0B;   /* hall de nuit */
-  --smoke:#191715;   /* boiseries sombres */
-  --stone:#E9E5DE;   /* pierre de Paris */
-  --mute:#8B847A;    /* texte secondaire */
-  --brass:#B59866;   /* filets laiton */
-  --wine:#5C1422;    /* cuir du porte-clé, très rare */
+  --night:#0B0A09;
+  --stone:#ECE7DF;
+  --mute:#8A8378;
+  --brass:#C2A36B;
   --serif:"Bodoni Moda", Didot, "Bodoni 72", Georgia, serif;
   --sans:"Inter Tight", "Helvetica Neue", Arial, sans-serif;
   --gl:max(20px, env(safe-area-inset-left, 0px));
@@ -27,322 +25,189 @@
 html{-webkit-text-size-adjust:100%}
 html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto!important}
-body{margin:0;background:var(--night);color:var(--stone);font-family:var(--sans);font-weight:400;font-size:15px;line-height:1.6;overflow-x:clip;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--night);color:var(--stone);font-family:var(--sans);font-size:15px;line-height:1.55;overflow-x:clip;-webkit-font-smoothing:antialiased}
 img{max-width:100%;display:block}
 button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;padding:0}
-a{color:inherit}
-:focus-visible{outline:1px solid var(--brass);outline-offset:4px}
-h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;text-wrap:balance;line-height:1}
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;line-height:.95}
+.lab{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;font-weight:500}
 .wrap{padding-left:var(--gl);padding-right:var(--gr)}
-.lab{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;font-weight:500}
-.muted{color:var(--mute)}
-.rule{height:1px;background:currentColor;opacity:.18}
-.btn{display:inline-flex;align-items:center;gap:14px;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:500;padding:16px 26px;border:1px solid currentColor;transition:background .35s,color .35s}
-.btn:hover{background:var(--stone);color:var(--night);border-color:var(--stone)}
-.btn.dark:hover{background:var(--night);color:var(--stone);border-color:var(--night)}
-.price{font-variant-numeric:tabular-nums}
-.price s{color:var(--mute);margin-left:.6em;text-decoration-thickness:1px}
+.scene{position:relative;height:100svh;min-height:560px;overflow:hidden}
+.cover{width:100%;height:100%;object-fit:cover}
+
+/* ---------- Habillage : grain, curseur, progression, nav ---------- */
+.grain{position:fixed;inset:-50%;z-index:70;pointer-events:none;opacity:.07;animation:grain 1.2s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-4%,3%)}40%{transform:translate(3%,-5%)}60%{transform:translate(-6%,-2%)}80%{transform:translate(5%,4%)}100%{transform:translate(0,0)}}
+.cur{position:fixed;left:0;top:0;z-index:95;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:#fff;mix-blend-mode:difference;pointer-events:none;transition:width .35s,height .35s,margin .35s;display:none}
+.cur.big{width:70px;height:70px;margin:-35px 0 0 -35px}
+@media (pointer:fine){.cur{display:block}}
+.bar{position:fixed;left:0;right:0;top:0;height:2px;z-index:96;background:var(--brass);transform-origin:0 50%;transform:scaleX(0)}
+.nav{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);z-index:60;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding-block:20px;color:#fff;mix-blend-mode:difference}
+.nav .mark{font-family:var(--serif);font-size:1.2rem;white-space:nowrap}
+.nav .ch{display:flex;gap:12px;overflow:hidden;height:1.2em;line-height:1.2em}
+.nav .ch span{display:block}
+.nav .by{justify-self:end;white-space:nowrap}
+@media (max-width:560px){.nav{grid-template-columns:1fr auto}.nav .by{display:none}}
 
 /* ---------- Ouverture ---------- */
 #loader{position:fixed;inset:0;z-index:100;background:var(--night);display:grid;place-items:center;clip-path:inset(0% 0% 0% 0%);animation:loaderOut .6s 8s forwards}
-#loader .in{display:grid;justify-items:center;gap:22px}
-#loader .word{font-family:var(--serif);font-size:clamp(2.2rem,6vw,4.4rem);overflow:hidden;line-height:1.15;padding-top:.08em}
-#loader .word span{display:inline-block}
-#loader .bar{width:min(240px,60vw);height:1px;background:rgba(233,229,222,.15);position:relative;overflow:hidden}
-#loader .bar i{position:absolute;inset:0;background:var(--brass);transform-origin:0 50%;transform:scaleX(0)}
-#loader .num{font-variant-numeric:tabular-nums;color:var(--mute)}
+#loader .in{display:grid;justify-items:center;gap:20px;text-align:center}
+#loader .num{font-family:var(--serif);font-size:clamp(5rem,16vw,12rem);line-height:1;font-variant-numeric:tabular-nums}
+#loader .sub{color:var(--mute)}
 @keyframes loaderOut{to{opacity:0;visibility:hidden}}
 .no-motion #loader{display:none}
 
-/* ---------- Bandeau + nav ---------- */
-.concept{position:relative;z-index:60;text-align:center;padding-block:8px;font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--mute);border-bottom:1px solid rgba(233,229,222,.08)}
-.nav{position:fixed;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 32px);z-index:50;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;padding-block:18px;mix-blend-mode:difference;color:#fff;transition:top .5s cubic-bezier(.2,.7,.2,1)}
-.nav.scrolled{top:env(safe-area-inset-top,0px)}
-.nav .mark{font-family:var(--serif);font-size:1.2rem;text-decoration:none;white-space:nowrap}
-.nav nav{display:flex;gap:30px}
-.nav nav a{text-decoration:none;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;font-weight:500;opacity:.85}
-.nav nav a:hover{opacity:1}
-.nav .cart{justify-self:end;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;font-weight:500}
-@media (max-width:820px){.nav nav{display:none}.nav{grid-template-columns:1fr auto}}
-
-/* ---------- Lobby ---------- */
-.hero{position:relative;height:100svh;min-height:600px;overflow:hidden;background:radial-gradient(60% 55% at 50% 48%, #221e1a 0%, var(--night) 70%)}
-.hero .title{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;pointer-events:none}
-.hero h1{font-size:clamp(4rem,17.5vw,19rem);letter-spacing:-.02em;line-height:.86;color:var(--stone)}
-.hero h1 .l{display:block;overflow:hidden;padding-top:.06em}
+/* ---------- 01 Lobby ---------- */
+.hero{background:radial-gradient(60% 55% at 50% 48%, #221d18 0%, var(--night) 72%)}
+.hero .title{position:absolute;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none}
+.hero h1{font-size:clamp(4rem,18vw,20rem);letter-spacing:-.02em;line-height:.86}
+.hero h1 .l{display:block;padding-top:.06em}
 .hero h1 .l2{font-style:italic}
 .hero h1 .ch{display:inline-block;will-change:transform}
 .hero .stage{position:absolute;inset:0}
-.hero .meta{position:absolute;left:var(--gl);right:var(--gr);bottom:0;display:flex;justify-content:space-between;align-items:end;gap:20px;padding-bottom:max(28px, env(safe-area-inset-bottom,0px))}
-.hero .meta p{margin:0;max-width:30ch;color:var(--mute);font-size:.86rem}
-.hero .scroll{display:flex;align-items:center;gap:12px}
-.hero .scroll i{display:block;width:1px;height:46px;background:linear-gradient(var(--brass),transparent);animation:drip 2.2s infinite}
+.hero .meta{position:absolute;left:var(--gl);right:var(--gr);bottom:max(26px, env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;align-items:end;gap:20px;color:var(--mute)}
+.hero .meta i{display:block;width:1px;height:48px;margin:0 auto 10px;background:linear-gradient(var(--brass),transparent);animation:drip 2.2s infinite}
 @keyframes drip{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
-.hero .top{position:absolute;left:var(--gl);right:var(--gr);top:120px;display:flex;justify-content:space-between;gap:20px;color:var(--mute)}
-@media (max-width:640px){.hero .top{top:100px}.hero .top span:last-child{display:none}.hero .meta{flex-direction:column;align-items:start}}
+.hero .veil{position:absolute;inset:0;z-index:40;background:var(--night);opacity:0;pointer-events:none}
 
-/* ---------- Manifeste ---------- */
-.manifest{background:var(--stone);color:var(--night);padding-block:clamp(110px,16vw,220px)}
-.manifest .grid{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.4fr);gap:clamp(30px,6vw,90px);align-items:start}
-.manifest .side{display:grid;gap:20px}
-.manifest .side .ph{aspect-ratio:3/4;overflow:hidden;max-width:260px}
-.manifest .side .ph img{width:100%;height:100%;object-fit:cover}
-.manifest p.big{margin:0;font-family:var(--serif);font-size:clamp(1.8rem,4vw,3.6rem);line-height:1.12;letter-spacing:-.01em}
-.manifest p.big em{font-style:italic}
-.manifest .w{display:inline-block}
-.manifest .sig{display:flex;gap:40px;flex-wrap:wrap;margin-top:50px;color:#5d574f}
-@media (max-width:760px){.manifest .grid{grid-template-columns:1fr}.manifest .side{order:2}}
+/* ---------- 02 La grille ---------- */
+.gz{display:grid;place-items:center;background:var(--night)}
+.gz-grid{--ch:min(27svh, 40vw);display:grid;grid-template-columns:repeat(3, calc(var(--ch) * .75));grid-auto-rows:var(--ch);gap:clamp(8px,1.1vw,16px)}
+.gz-cell{position:relative;overflow:hidden;background:#1a1816}
+.gz-cell img{position:absolute;inset:0}
+.gz-cell.c{z-index:3}
+.gz .cap{position:absolute;left:0;right:0;bottom:max(30px, env(safe-area-inset-bottom,0px));text-align:center;z-index:5}
+.gz .cap h2{font-size:clamp(2rem,5vw,4.6rem)}
+.gz .cap h2 em{font-style:italic}
 
-/* ---------- Galerie 3D ---------- */
-.gallery{position:relative;height:100svh;min-height:560px;background:var(--night);overflow:hidden}
-.gallery .stage{position:absolute;inset:0}
-.gallery .ghost{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font-family:var(--serif);font-style:italic;font-size:clamp(5rem,22vw,24rem);line-height:1;color:transparent;-webkit-text-stroke:1px rgba(233,229,222,.12);white-space:nowrap;pointer-events:none}
-.no-gl .gallery{height:auto}
-#galUI{position:fixed;inset:0;z-index:35;pointer-events:none;opacity:0;visibility:hidden;transition:opacity .5s,visibility .5s}
-#galUI.on{opacity:1;visibility:visible}
-#galUI .hd{position:absolute;top:96px;left:var(--gl);right:var(--gr);display:flex;justify-content:space-between;color:var(--mute)}
-#galUI .ft{position:absolute;left:var(--gl);right:var(--gr);bottom:max(30px, env(safe-area-inset-bottom,0px));display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:24px}
-#galUI .name{overflow:hidden}
-#galUI .name h3{font-size:clamp(2rem,4.6vw,4.2rem)}
-#galUI .name .sub{margin-top:10px;display:flex;gap:18px;flex-wrap:wrap;color:var(--mute);font-size:.86rem}
-#galUI .act{display:grid;justify-items:end;gap:16px}
-#galUI .act .btn{pointer-events:auto;background:var(--night)}
-#galUI .act .btn:hover{background:var(--stone)}
-#galUI .count{font-variant-numeric:tabular-nums;color:var(--mute)}
-#galUI .prog{position:absolute;left:var(--gl);right:var(--gr);bottom:0;height:1px;background:rgba(233,229,222,.12)}
-#galUI .prog i{position:absolute;inset:0;background:var(--brass);transform-origin:0 50%;transform:scaleX(0)}
-@media (max-width:640px){#galUI .ft{grid-template-columns:1fr}#galUI .act{justify-items:start;grid-auto-flow:column;align-items:center}}
-.no-gl .fallback-row{display:flex!important}
-.fallback-row{display:none;gap:16px;overflow-x:auto;padding-block:120px 60px}
-.fallback-row img{width:240px;flex:none;aspect-ratio:3/4;object-fit:cover}
+/* ---------- 03 Typo cinétique ---------- */
+.type{padding-block:12vh;display:grid;gap:1vh;overflow:hidden;background:var(--night)}
+.line{white-space:nowrap;font-family:var(--serif);font-size:clamp(4rem,15vw,15rem);line-height:1}
+.line .tr{display:inline-flex;will-change:transform}
+.line .tr span{padding-right:.35em}
+.line.o{font-style:italic;color:transparent;-webkit-text-stroke:1.2px var(--stone)}
+.line.p .tr span{color:transparent;-webkit-background-clip:text;background-clip:text;background-size:cover;background-position:center 30%}
 
-/* ---------- Chambres ---------- */
-.rooms{background:var(--stone);color:var(--night);padding-block:clamp(100px,14vw,180px)}
-.rooms .head{max-width:1240px;margin:0 auto 70px;display:flex;justify-content:space-between;align-items:end;gap:30px;flex-wrap:wrap}
-.rooms .head h2{font-size:clamp(3rem,8vw,7.5rem);letter-spacing:-.02em}
-.rooms .head h2 em{font-style:italic}
-.rooms .head p{max-width:34ch;margin:0;color:#5d574f}
-.rooms .grid{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(14px,2vw,28px);row-gap:clamp(60px,8vw,120px)}
-.room{display:grid;gap:16px;align-content:start}
-.room .ph{overflow:hidden;position:relative;background:#d8d2c8}
-.room .ph img{width:100%;height:118%;object-fit:cover;position:absolute;left:0;top:-9%;will-change:transform}
-.room .cap{display:flex;justify-content:space-between;gap:16px;align-items:baseline}
-.room .cap h3{font-size:clamp(1.3rem,2vw,1.8rem)}
-.room .cap .lab{color:#6f685e;white-space:nowrap}
-.room.r1{grid-column:1 / span 7}.room.r1 .ph{aspect-ratio:4/5}
-.room.r2{grid-column:9 / span 4;margin-top:22vh}.room.r2 .ph{aspect-ratio:3/4}
-.room.r3{grid-column:2 / span 4}.room.r3 .ph{aspect-ratio:2/3}
-.room.r4{grid-column:7 / span 6;margin-top:12vh}.room.r4 .ph{aspect-ratio:4/5}
-@media (max-width:760px){.room.r1,.room.r2,.room.r3,.room.r4{grid-column:1 / -1;margin-top:0}}
+/* ---------- 04 Le tunnel ---------- */
+.tunnel{background:radial-gradient(50% 50% at 50% 50%, #1d1915, var(--night) 75%)}
+.tunnel .stage{position:absolute;inset:0}
+.tunnel .mid{position:absolute;inset:0;display:grid;place-content:center;text-align:center;gap:16px;pointer-events:none}
+.tunnel .mid h2{font-size:clamp(3rem,10vw,9rem);font-style:italic}
+.tunnel .mid .lab{color:var(--mute)}
 
-/* ---------- Boutique ---------- */
-.shop{background:var(--stone);color:var(--night);padding-block:0 clamp(100px,12vw,160px)}
-.shop .head{max-width:1240px;margin:0 auto 40px;display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;padding-top:40px;border-top:1px solid rgba(13,12,11,.15)}
-.shop .head h2{font-size:clamp(2.4rem,5vw,4.4rem)}
-.shop .grid{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,28px);row-gap:56px}
-@media (max-width:900px){.shop .grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:520px){.shop .grid{grid-template-columns:1fr}}
-.card{display:grid;gap:14px;align-content:start;min-width:0}
-.card .ph{position:relative;aspect-ratio:3/4;overflow:hidden;background:#e2ddd5}
-.card .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .6s,transform 1.2s cubic-bezier(.2,.7,.2,1)}
-.card .ph img.b{opacity:0}
-.card:hover .ph img.b{opacity:1}
-.card:hover .ph img{transform:scale(1.035)}
-.card .tag{position:absolute;left:12px;top:12px;z-index:2;background:var(--stone);padding:5px 9px;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;font-weight:500}
-.card .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
-.card h3{font-size:1.35rem}
-.card .var{color:#6f685e;font-size:.8rem;margin-top:4px}
-.card .price{font-size:.9rem;white-space:nowrap}
-.sizes{display:flex;flex-wrap:wrap;gap:6px}
-.sizes button{min-width:40px;padding:8px 6px;border:1px solid rgba(13,12,11,.2);font-size:.7rem;letter-spacing:.08em;transition:background .25s,color .25s,border-color .25s}
-.sizes button:hover{border-color:var(--night)}
-.sizes button.picked{background:var(--night);color:var(--stone);border-color:var(--night)}
+/* ---------- 05 La pellicule ---------- */
+.film{display:flex;flex-direction:column;justify-content:center;background:var(--stone);color:var(--night)}
+.film .hd{display:flex;justify-content:space-between;align-items:end;gap:20px;padding-bottom:4vh}
+.film .hd h2{font-size:clamp(2.6rem,7vw,6.5rem)}
+.film .hd h2 em{font-style:italic}
+.ftrack{display:flex;gap:clamp(16px,2.4vw,36px);width:max-content;will-change:transform;padding-right:30vw}
+.fcard{width:clamp(220px,26vw,400px);flex:none;display:grid;gap:12px}
+.fcard .ph{position:relative;aspect-ratio:3/4;max-width:100%;overflow:hidden;background:#dcd6cc}
+.fcard .ph img{position:absolute;top:0;left:-10%;width:120%;height:100%;object-fit:cover}
+.fcard .n{position:absolute;left:12px;top:8px;z-index:2;font-family:var(--serif);font-size:3.2rem;line-height:1;color:var(--stone);mix-blend-mode:difference}
+.fcard .row{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.fcard h3{font-size:1.35rem}
+.fcard .pr{font-variant-numeric:tabular-nums;font-size:.86rem;color:#6b645a;white-space:nowrap}
+@media (max-width:640px){.fcard{width:64vw}}
 
-/* ---------- Minibar ---------- */
-.minibar{background:var(--smoke);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-height:80svh}
-.minibar .ph{overflow:hidden;position:relative;min-height:420px}
-.minibar .ph img{position:absolute;inset:-8% 0;width:100%;height:116%;object-fit:cover}
-.minibar .tx{display:grid;align-content:center;gap:24px;padding-block:80px;max-width:520px}
-.minibar h2{font-size:clamp(2.4rem,4.6vw,4.2rem)}
-.minibar h2 em{font-style:italic}
-.minibar p{margin:0;color:#b9b1a6}
-@media (max-width:760px){.minibar{grid-template-columns:1fr}.minibar .ph{min-height:70vw}}
+/* ---------- 06 Les chambres (cartes empilées) ---------- */
+.stack{position:relative;background:var(--night)}
+.sc{position:sticky;top:0;height:100svh;overflow:hidden}
+.sc .in{position:absolute;inset:0;overflow:hidden;will-change:transform;background:#111}
+.sc img{position:absolute;inset:0}
+.sc .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,10,9,.15),rgba(11,10,9,.05) 40%,rgba(11,10,9,.75));}
+.sc .dim{position:absolute;inset:0;background:var(--night);opacity:0}
+.sc .txt{position:absolute;left:var(--gl);right:var(--gr);bottom:max(34px, env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap}
+.sc h2{font-size:clamp(2.6rem,8vw,8rem)}
+.sc h2 em{font-style:italic}
+.sc .lab{color:#d9d2c7}
 
-/* ---------- Réception ---------- */
-.reception{background:var(--night);padding-block:clamp(90px,12vw,160px)}
-.reception .grid{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,6vw,90px);align-items:center}
-.reception .bellbox{aspect-ratio:1;max-width:520px;width:100%;justify-self:center;position:relative}
-.reception .bellbox button{position:absolute;inset:12%;border-radius:50%;z-index:40}
-.reception h2{font-size:clamp(2.4rem,5vw,4.6rem)}
-.reception p{color:#b9b1a6;max-width:44ch}
-.news{display:flex;gap:0;margin-top:30px;border-bottom:1px solid rgba(233,229,222,.4);max-width:480px}
-.news input{flex:1;min-width:0;background:transparent;border:0;color:var(--stone);font:inherit;padding:14px 0;outline:none}
-.news input::placeholder{color:#6d665d}
-.news button{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;font-weight:500;padding:14px 0 14px 18px}
-@media (max-width:760px){.reception .grid{grid-template-columns:1fr}}
+/* ---------- 07 La traversée ---------- */
+.through{isolation:isolate;background:var(--night)}
+.through .img{position:absolute;inset:0}
+.through .mask{position:absolute;inset:0;background:#000;mix-blend-mode:multiply;display:grid;place-items:center;will-change:transform}
+.through .mask span{font-family:var(--serif);font-size:clamp(4rem,24vw,30rem);line-height:1;color:#fff;letter-spacing:-.02em}
+.through .cap{position:absolute;left:var(--gl);right:var(--gr);bottom:max(34px, env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;align-items:end;gap:20px;opacity:0}
+.through .cap h2{font-size:clamp(2.4rem,6vw,6rem)}
+.through .cap h2 em{font-style:italic}
 
-/* ---------- Enseigne ---------- */
-.foot{background:var(--night);padding-block:40px max(30px, env(safe-area-inset-bottom,0px));border-top:1px solid rgba(233,229,222,.08)}
-.foot .sign{font-family:var(--serif);font-size:clamp(3rem,13.4vw,15rem);line-height:.9;letter-spacing:-.02em;text-align:center;white-space:nowrap;overflow:hidden;padding-block:40px 30px}
-.foot .sign em{font-style:italic}
-.foot .cols{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;font-size:.84rem}
-.foot .cols a{display:block;text-decoration:none;color:#b9b1a6;padding-block:3px}
-.foot .cols a:hover{color:var(--stone)}
-.foot .cols .lab{color:var(--mute);margin-bottom:12px;display:block}
-.foot .legal{max-width:1240px;margin:50px auto 0;padding-top:20px;border-top:1px solid rgba(233,229,222,.08);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:.74rem;color:var(--mute)}
-@media (max-width:760px){.foot .cols{grid-template-columns:1fr 1fr}}
+/* ---------- 08 Check-out ---------- */
+.end{display:grid;grid-template-rows:1fr auto;background:var(--night)}
+.end .stage{position:absolute;inset:0}
+.end .mid{position:relative;display:grid;place-content:center;text-align:center;gap:22px;pointer-events:none}
+.end h2{font-size:clamp(3.4rem,12vw,12rem);letter-spacing:-.02em}
+.end h2 em{font-style:italic}
+.end .again{pointer-events:auto;justify-self:center;display:inline-flex;align-items:center;gap:12px;border:1px solid rgba(236,231,223,.5);padding:15px 26px;font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;font-weight:500;transition:background .3s,color .3s;position:relative;z-index:45}
+.end .again:hover{background:var(--stone);color:var(--night)}
+.end .legal{position:relative;padding-bottom:max(22px, env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:.72rem;color:var(--mute)}
 
-/* ---------- Valise ---------- */
-.scrim{position:fixed;inset:0;z-index:80;background:rgba(13,12,11,.55);opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
-.scrim.open{opacity:1;visibility:visible}
-.drawer{position:fixed;top:0;right:0;bottom:0;z-index:81;width:min(440px,100%);background:var(--stone);color:var(--night);display:grid;grid-template-rows:auto 1fr auto;transform:translateX(102%);transition:transform .7s cubic-bezier(.2,.8,.2,1);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-right:env(safe-area-inset-right,0px)}
-.drawer.open{transform:none}
-.drawer header{display:flex;justify-content:space-between;align-items:center;padding:26px;border-bottom:1px solid rgba(13,12,11,.12)}
-.drawer header h3{font-size:1.9rem}
-.drawer .items{overflow:auto;padding:10px 26px;display:grid;align-content:start}
-.drawer .empty{color:#6f685e;padding:40px 0}
-.it{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:16px;align-items:center;padding-block:16px;border-bottom:1px solid rgba(13,12,11,.1)}
-.it img{width:72px;height:96px;object-fit:cover;background:#ddd7ce}
-.it .n{font-family:var(--serif);font-size:1.1rem}
-.it .s{font-size:.78rem;color:#6f685e}
-.qty{display:flex;align-items:center;gap:10px}
-.qty button{width:26px;height:26px;border:1px solid rgba(13,12,11,.3);line-height:1}
-.qty span{min-width:2ch;text-align:center;font-variant-numeric:tabular-nums}
-.drawer footer{padding:26px;border-top:1px solid rgba(13,12,11,.12);display:grid;gap:14px}
-.drawer .tot{display:flex;justify-content:space-between;font-variant-numeric:tabular-nums}
-.drawer .checkout{background:var(--night);color:var(--stone);padding:18px;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;font-weight:500}
-.drawer .note{font-size:.72rem;color:#6f685e;text-align:center}
-.toast{position:fixed;left:50%;bottom:calc(26px + env(safe-area-inset-bottom,0px));z-index:90;transform:translate(-50%,calc(100% + 80px));visibility:hidden;background:var(--stone);color:var(--night);padding:14px 22px;font-size:.84rem;transition:transform .55s cubic-bezier(.2,.8,.2,1);max-width:calc(100% - 40px);text-align:center}
-.toast.show{transform:translate(-50%,0);visibility:visible}
-.toast{transition:transform .55s cubic-bezier(.2,.8,.2,1),visibility .55s}
-.toast b{font-weight:600}
-
+.no-motion .scene{height:auto;min-height:100svh}
 @media (prefers-reduced-motion: reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
 </style>
 </head>
 <body>
 
 <div id="loader" aria-hidden="true"><div class="in">
-  <div class="word" id="ldWord">Hôtel Mahfouf</div>
-  <div class="bar"><i id="ldBar"></i></div>
-  <div class="lab num" id="ldNum">Check-in 000</div>
+  <div class="num" id="ldNum">000</div>
+  <div class="lab sub">Hôtel Mahfouf · Check-in</div>
+  <div class="lab sub" style="opacity:.6">Concept non officiel · Réalisé par ReviewMaker</div>
 </div></div>
+<div class="grain" id="grain" aria-hidden="true"></div>
+<div class="cur" id="cur" aria-hidden="true"></div>
+<div class="bar" id="bar" aria-hidden="true"></div>
 
-<div class="concept">Concept de refonte non officiel · Réalisé par ReviewMaker</div>
-
-<header class="nav wrap" id="nav">
-  <a class="mark" href="#lobby">Hôtel Mahfouf</a>
-  <nav aria-label="Navigation"><a href="#collection">Collection</a><a href="#chambres">Chambres</a><a href="#boutique">Boutique</a><a href="#reception">Réception</a></nav>
-  <button class="cart" id="cartBtn">Valise (<span id="cartCount">0</span>)</button>
+<header class="nav wrap">
+  <span class="mark">Hôtel Mahfouf</span>
+  <span class="lab ch" id="chap"><span>01 — Lobby</span></span>
+  <span class="lab by">Concept · ReviewMaker</span>
 </header>
 
 <main>
-  <section class="hero wrap" id="lobby">
-    <div class="top lab"><span>Maison de vêtements · Paris</span><span>Collection automne-hiver</span></div>
+  <section class="scene hero" data-ch="01 — Lobby">
     <div class="title" aria-label="Hôtel Mahfouf"><h1><span class="l" data-split aria-hidden="true">Hôtel</span><span class="l l2" data-split aria-hidden="true">Mahfouf</span></h1></div>
-    <div class="stage" data-model="key" data-hero data-zoom="1.05"></div>
-    <div class="meta">
-      <p>La chambre 104 vous attend. Manteaux, tailleurs et robes pensés dans nos ateliers pour durer bien après le check-out.</p>
-      <div class="scroll lab muted"><i></i>Entrer</div>
-    </div>
+    <div class="stage" data-model="key" data-hero data-zoom="1.12"></div>
+    <div class="meta lab"><span>Chambre 104</span><span style="text-align:center"><i></i>Défiler</span><span>Paris</span></div>
+    <div class="veil"></div>
   </section>
 
-  <section class="manifest wrap">
-    <div class="grid">
-      <div class="side">
-        <span class="lab">Règlement intérieur · Article 1</span>
-        <div class="ph"><img data-img="highland-noir-b" alt="Détail du manteau Highland noir chiné"></div>
-      </div>
-      <div>
-        <p class="big" id="manifest">Ici, chaque pièce a son <em>numéro de chambre</em>. On entre pour un manteau, on reste pour la coupe. Plus d'un an de développement en atelier pour certaines d'entre elles, parce qu'un vêtement devrait vivre dans un dressing <em>pendant des années.</em></p>
-        <div class="sig lab"><span>Fabriqué en partie en France</span><span>Tailles XXS à XL</span><span>Réception ouverte 24/7</span></div>
-      </div>
-    </div>
+  <section class="scene gz" data-ch="02 — La grille">
+    <div class="gz-grid" id="gzGrid"></div>
+    <div class="cap"><h2>Neuf pièces, <em>une adresse</em></h2></div>
   </section>
 
-  <section class="gallery" id="collection">
-    <div class="ghost" aria-hidden="true">Collection</div>
-    <div class="stage" data-gallery></div>
-    <div class="fallback-row wrap" id="fallbackRow"></div>
+  <section class="type" data-ch="03 — Le registre" aria-label="Manteaux, robes, tailleurs. Hôtel Mahfouf. Paris, automne, hiver.">
+    <div class="line" aria-hidden="true"><div class="tr" data-dir="-1"></div></div>
+    <div class="line o" aria-hidden="true"><div class="tr" data-dir="1"></div></div>
+    <div class="line p" aria-hidden="true"><div class="tr" data-dir="-1"></div></div>
   </section>
 
-  <section class="rooms wrap" id="chambres">
-    <div class="head"><h2>Les <em>chambres</em></h2><p>Quatre portes, quatre silhouettes, photographiées dans les couloirs de l'hôtel et dans les rues de Paris.</p></div>
-    <div class="grid">
-      <article class="room r1"><div class="ph"><img data-img="ed-street" alt="Manteau Highland marine rayé porté dans la rue"></div><div class="cap"><h3>Le manteau Highland</h3><span class="lab">Chambre 101</span></div></article>
-      <article class="room r2"><div class="ph"><img data-img="ed-airway" alt="Pull Airway porté en terrasse"></div><div class="cap"><h3>Le pull Airway</h3><span class="lab">Chambre 102</span></div></article>
-      <article class="room r3"><div class="ph"><img data-img="ed-room" alt="Robe Terrabella portée dans une chambre"></div><div class="cap"><h3>La robe Terrabella</h3><span class="lab">Chambre 103</span></div></article>
-      <article class="room r4"><div class="ph"><img data-img="ed-checker" alt="Robe Duncan pied-de-poule sur cintre"></div><div class="cap"><h3>La robe Duncan</h3><span class="lab">Chambre 104</span></div></article>
-    </div>
+  <section class="scene tunnel" data-ch="04 — Le couloir">
+    <div class="mid"><span class="lab">Entrez</span><h2>la collection</h2><span class="lab">Automne · Hiver</span></div>
+    <div class="stage" data-helix></div>
   </section>
 
-  <section class="shop wrap" id="boutique">
-    <div class="head"><h2>La boutique</h2><span class="lab muted" style="color:#6f685e">Choisissez une taille pour l'ajouter à la valise</span></div>
-    <div class="grid" id="shopGrid"></div>
+  <section class="scene film" data-ch="05 — La pellicule">
+    <div class="hd wrap"><h2>Pièce par <em>pièce</em></h2><span class="lab" style="color:#6b645a">Manteaux · Tailleurs · Robes</span></div>
+    <div class="ftrack wrap" id="ftrack"></div>
   </section>
 
-  <section class="minibar">
-    <div class="ph"><img data-img="ed-fig" alt="Bougie It smells like fig posée sur des livres"></div>
-    <div class="tx wrap">
-      <span class="lab muted">Le minibar</span>
-      <h2>Bougie <em>« It smells like fig »</em></h2>
-      <p>Pensée avec des nez experts et parfumée dans un atelier à Grasse. Une fois terminée, le pot devient un pot à pinceaux ou à stylos. Poids net 200 g.</p>
-      <div class="price" style="font-size:1.1rem">30,00 €</div>
-      <div><button class="btn" data-add="fig" data-size="Unique">Ajouter à la valise</button></div>
-    </div>
+  <section class="stack" data-ch="06 — Les chambres" id="stack"></section>
+
+  <section class="scene through" data-ch="07 — La traversée">
+    <img class="img cover" data-img="ed-room" alt="Robe Terrabella portée dans une chambre d'hôtel">
+    <div class="mask" id="mask"><span id="maskWord">Hô<span id="maskH">t</span>el</span></div>
+    <div class="cap"><h2>Ne pas <em>déranger</em></h2><span class="lab">Chambre 103 · Robe Terrabella</span></div>
   </section>
 
-  <section class="reception wrap" id="reception">
-    <div class="grid">
-      <div class="bellbox" data-model="bell" data-zoom="1.12"><button id="bell" aria-label="Sonner à la réception"></button></div>
-      <div>
-        <span class="lab muted">Réception</span>
-        <h2 style="margin-top:18px">Laissez votre nom à la réception</h2>
-        <p>Les nouvelles collections arrivent d'abord chez les clients de l'hôtel. Une lettre par mois, glissée sous la porte. Sonnez si vous avez besoin de nous.</p>
-        <form class="news" id="newsForm" novalidate>
-          <label for="email" style="position:absolute;left:-9999px">Adresse e-mail</label>
-          <input id="email" type="email" placeholder="Adresse e-mail" autocomplete="email">
-          <button type="submit">S'inscrire</button>
-        </form>
-      </div>
+  <section class="scene end wrap" data-ch="08 — Check-out">
+    <div class="stage" data-model="key" data-zoom=".72"></div>
+    <div class="mid">
+      <span class="lab" style="color:var(--mute)">Merci de votre visite</span>
+      <h2>Hôtel <em>Mahfouf</em></h2>
+      <button class="again" id="again">Rejouer le séjour ↑</button>
     </div>
+    <div class="legal"><span>Concept de refonte non officiel réalisé par ReviewMaker. Non affilié à Hôtel Mahfouf. Produits et photos : hotelmahfouf.com.</span><span>© 2026 ReviewMaker</span></div>
   </section>
-
-  <footer class="foot wrap">
-    <div class="sign">Hôtel <em>Mahfouf</em></div>
-    <div class="cols">
-      <div><span class="lab">Étages</span><a href="#collection">La collection</a><a href="#chambres">Les chambres</a><a href="#boutique">La boutique</a></div>
-      <div><span class="lab">Réception</span><a href="#reception">La lettre de l'hôtel</a><a href="#lobby">Retour au lobby</a></div>
-      <div><span class="lab">Boutique officielle</span><a href="https://hotelmahfouf.com" target="_blank" rel="noopener">hotelmahfouf.com</a></div>
-      <div><span class="lab">Ce site</span><span style="color:#b9b1a6">Concept réalisé par ReviewMaker</span></div>
-    </div>
-    <div class="legal">
-      <span>Concept de refonte non officiel, réalisé par ReviewMaker. Non affilié à Hôtel Mahfouf. Produits, photos et prix issus de hotelmahfouf.com, relevés le 18 novembre 2026. Aucune commande possible ici.</span>
-      <span>© 2026 ReviewMaker</span>
-    </div>
-  </footer>
 </main>
-
-<div id="galUI" aria-live="polite">
-  <div class="hd lab"><span>La collection</span><span class="count" id="galCount">01 / 09</span></div>
-  <div class="ft">
-    <div class="name"><h3 id="galName">Manteau Highland</h3><div class="sub"><span id="galVar">Noir chiné</span><span class="price" id="galPrice"></span></div></div>
-    <div class="act"><button class="btn" id="galAdd">Ajouter · Taille M</button></div>
-  </div>
-  <div class="prog"><i id="galProg"></i></div>
-</div>
-
-<div class="scrim" id="scrim"></div>
-<aside class="drawer" id="drawer" aria-label="Votre valise" aria-hidden="true">
-  <header><h3>Votre valise</h3><button class="lab" id="closeCart">Fermer</button></header>
-  <div class="items" id="items"></div>
-  <footer>
-    <div class="tot"><span class="lab">Total</span><span id="total">0,00 €</span></div>
-    <button class="checkout" id="checkout">Check-out</button>
-    <div class="note">Concept de démonstration : aucun paiement n'est possible. Boutique officielle : hotelmahfouf.com</div>
-  </footer>
-</aside>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <!--IMAGES-->
 <!--VENDOR-->
@@ -353,200 +218,197 @@ var IMG = window.HM_IMG || {};
 var hasGsap = typeof window.gsap !== "undefined" && typeof window.ScrollTrigger !== "undefined";
 var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 var motion = hasGsap && !reduce;
-var webgl = (function(){ try { var c=document.createElement("canvas"); return !!(window.WebGLRenderingContext && (c.getContext("webgl2")||c.getContext("webgl"))) && typeof window.THREE!=="undefined"; } catch(e){ return false; } })();
 if(!motion) document.documentElement.classList.add("no-motion");
-if(!webgl) document.documentElement.classList.add("no-gl");
-
-/* Produits réels (hotelmahfouf.com, prix relevés le 18/11/2026) */
-var SZ = ["XXS","XS","S","M","L","XL"];
-var P = [
-  {id:"highland-noir", name:"Manteau Highland", v:"Noir chiné", price:66.15, was:189, img:"highland-noir", img2:"highland-noir-b"},
-  {id:"highland-marine", name:"Manteau Highland", v:"Marine rayé", price:66.15, was:189, img:"highland-marine", img2:"highland-marine-b"},
-  {id:"glen", name:"Veste Glen", v:"Prince de Galles", price:47.70, was:159, img:"glen", img2:"glen-b"},
-  {id:"duncan", name:"Robe Duncan", v:"Noir · trois portés", price:45.15, was:129, img:"duncan", img2:"duncan-b"},
-  {id:"mead", name:"Robe Mead", v:"Satin duchesse noir", price:53.70, was:179, img:"mead", img2:"mead-b"},
-  {id:"cajon", name:"Pantalon Cajon Tall", v:"Noir · plis marqués", price:41.70, was:139, img:"cajon", img2:"cajon-b"},
-  {id:"neola", name:"Gilet Neola", v:"Col V · poches passepoilées", price:24.15, was:69, img:"neola", img2:"neola-b"},
-  {id:"terrabella", name:"Robe Terrabella", v:"Plumes d'autruche amovibles", price:56.70, was:189, img:"terrabella", img2:"terrabella-b"},
-  {id:"hackberry", name:"Écharpe Hackberry", v:"Noir · franges", price:35.00, was:null, img:"hackberry", img2:"hackberry-b", sizes:["Unique"]}
-];
-var EXTRA = {fig:{id:"fig", name:"Bougie « It smells like fig »", v:"200 g", price:30.00, img:"ed-fig"}};
-var byId = {}; P.forEach(function(p){ byId[p.id]=p; }); byId.fig = EXTRA.fig;
-function euro(n){ return n.toFixed(2).replace(".",",")+" €"; }
-function priceHTML(p){ return euro(p.price) + (p.was ? '<s>'+euro(p.was)+'</s>' : ''); }
-
-/* Images */
-document.querySelectorAll("img[data-img]").forEach(function(im){ if(IMG[im.dataset.img]) im.src = IMG[im.dataset.img]; });
-
-/* Boutique */
-var grid = document.getElementById("shopGrid");
-grid.innerHTML = P.map(function(p, i){
-  var sizes = (p.sizes || SZ).map(function(s){ return '<button data-add="'+p.id+'" data-size="'+s+'">'+s+'</button>'; }).join("");
-  return '<article class="card"><div class="ph">'+(p.was?'<span class="tag">−'+Math.round((1-p.price/p.was)*100)+' %</span>':'')+
-    '<img alt="'+p.name+' '+p.v+'" src="'+(IMG[p.img]||"")+'"><img class="b" alt="" src="'+(IMG[p.img2]||"")+'"></div>'+
-    '<div class="row"><div><h3>'+p.name+'</h3><div class="var">'+p.v+'</div></div><div class="price">'+priceHTML(p)+'</div></div>'+
-    '<div class="sizes" role="group" aria-label="Tailles">'+sizes+'</div></article>';
-}).join("");
-
-/* Galerie : sources pour la 3D + secours */
 window.HM = window.HM || {};
-HM.gallery = P.map(function(p){ return IMG[p.img]; }).filter(Boolean);
-document.getElementById("fallbackRow").innerHTML = P.map(function(p){ return '<img alt="'+p.name+'" src="'+(IMG[p.img]||"")+'">'; }).join("");
 
-/* ---------- Valise ---------- */
-var cart = [];
-var countEl = document.getElementById("cartCount"), itemsEl = document.getElementById("items"), totalEl = document.getElementById("total");
-var drawer = document.getElementById("drawer"), scrim = document.getElementById("scrim");
-var lenis = null;
-function renderCart(){
-  var n=0, tot=0; cart.forEach(function(l){ n+=l.q; tot+=l.q*byId[l.id].price; });
-  countEl.textContent = n; totalEl.textContent = euro(tot);
-  if(!cart.length){ itemsEl.innerHTML = '<div class="empty">Votre valise est vide.</div>'; return; }
-  itemsEl.innerHTML = cart.map(function(l, i){ var p = byId[l.id];
-    return '<div class="it"><img alt="" src="'+(IMG[p.img]||"")+'"><div><div class="n">'+p.name+'</div><div class="s">'+(p.v||"")+' · Taille '+l.s+'</div><div class="s price">'+euro(p.price)+'</div></div>'+
-      '<div class="qty"><button data-dec="'+i+'" aria-label="Retirer un">−</button><span>'+l.q+'</span><button data-inc="'+i+'" aria-label="Ajouter un">+</button></div></div>'; }).join("");
-}
-function add(id, s){
-  var l = cart.filter(function(x){ return x.id===id && x.s===s; })[0];
-  if(l) l.q++; else cart.push({id:id, s:s, q:1});
-  renderCart(); toast('Ajouté à la valise : <b>'+byId[id].name+'</b> · '+s);
-}
-function openCart(){ drawer.classList.add("open"); scrim.classList.add("open"); drawer.setAttribute("aria-hidden","false"); if(lenis) lenis.stop(); }
-function closeCart(){ drawer.classList.remove("open"); scrim.classList.remove("open"); drawer.setAttribute("aria-hidden","true"); if(lenis) lenis.start(); }
-var toastEl = document.getElementById("toast"), toastT;
-function toast(h){ toastEl.innerHTML = h; toastEl.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(function(){ toastEl.classList.remove("show"); }, 2400); }
-document.addEventListener("click", function(e){
-  var a = e.target.closest("[data-add]");
-  if(a){ add(a.dataset.add, a.dataset.size||"M");
-    if(a.parentNode.classList.contains("sizes")){ a.parentNode.querySelectorAll("button").forEach(function(b){ b.classList.toggle("picked", b===a); }); }
-    return; }
-  var inc = e.target.closest("[data-inc]"); if(inc){ cart[+inc.dataset.inc].q++; renderCart(); return; }
-  var dec = e.target.closest("[data-dec]"); if(dec){ var i=+dec.dataset.dec; cart[i].q--; if(cart[i].q<=0) cart.splice(i,1); renderCart(); return; }
-});
-document.getElementById("cartBtn").addEventListener("click", openCart);
-document.getElementById("closeCart").addEventListener("click", closeCart);
-scrim.addEventListener("click", closeCart);
-document.addEventListener("keydown", function(e){ if(e.key==="Escape") closeCart(); });
-document.getElementById("checkout").addEventListener("click", function(){ toast(cart.length ? "Concept de démonstration : le <b>check-out</b> est fermé." : "Votre valise est vide."); });
-document.getElementById("newsForm").addEventListener("submit", function(e){
-  e.preventDefault(); var i = document.getElementById("email");
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(i.value)){ toast("Entrez une adresse e-mail valide, par exemple <b>nom@mail.fr</b>"); i.focus(); return; }
-  i.value=""; toast("Votre nom est à la réception. <b>Bienvenue.</b>");
-});
-document.getElementById("bell").addEventListener("click", function(){ document.dispatchEvent(new CustomEvent("hm:bell")); toast("Ding. <b>La réception arrive.</b>"); });
-renderCart();
-
-/* ---------- Galerie : interface ---------- */
-var galIdx = -1, galUI = document.getElementById("galUI");
-var gName = document.getElementById("galName"), gVar = document.getElementById("galVar"), gPrice = document.getElementById("galPrice"), gCount = document.getElementById("galCount"), gAdd = document.getElementById("galAdd"), gProg = document.getElementById("galProg");
+var P = [
+  {img:"highland-noir", name:"Manteau Highland", pr:"66,15 €"},
+  {img:"highland-marine", name:"Manteau Highland", pr:"66,15 €"},
+  {img:"glen", name:"Veste Glen", pr:"47,70 €"},
+  {img:"duncan", name:"Robe Duncan", pr:"45,15 €"},
+  {img:"mead", name:"Robe Mead", pr:"53,70 €"},
+  {img:"cajon", name:"Pantalon Cajon", pr:"41,70 €"},
+  {img:"neola", name:"Gilet Neola", pr:"24,15 €"},
+  {img:"terrabella", name:"Robe Terrabella", pr:"56,70 €"},
+  {img:"hackberry", name:"Écharpe Hackberry", pr:"35,00 €"}
+];
+var ED = ["ed-street","ed-airway","ed-room","ed-checker","ed-fig"];
+function src(k){ return IMG[k] || ""; }
 function pad(n){ return (n<10?"0":"")+n; }
-function setGal(i, animate){
-  if(i===galIdx) return; galIdx = i; var p = P[i];
-  var apply = function(){ gName.textContent = p.name; gVar.textContent = p.v; gPrice.innerHTML = priceHTML(p); gCount.textContent = pad(i+1)+" / "+pad(P.length);
-    gAdd.dataset.add = p.id; gAdd.dataset.size = p.sizes ? p.sizes[0] : "M"; gAdd.textContent = "Ajouter · Taille "+gAdd.dataset.size; };
-  if(animate && motion){ gsap.timeline().to([gName,".name .sub"],{yPercent:-110, opacity:0, duration:.22, ease:"power2.in"}).add(apply).fromTo([gName,".name .sub"],{yPercent:110, opacity:0},{yPercent:0, opacity:1, duration:.5, ease:"power3.out"}); }
-  else apply();
-}
-setGal(0,false);
-gAdd.addEventListener("click", function(){ add(gAdd.dataset.add, gAdd.dataset.size); });
 
-window.HM.getVel = function(){ return lenis ? lenis.velocity : 0; };
-window.HM.heroIn = !motion;
+/* Images statiques */
+document.querySelectorAll("img[data-img]").forEach(function(im){ im.src = src(im.dataset.img); });
 
+/* 02 Grille : la photo du centre est éditoriale */
+var gridOrder = ["highland-noir","glen","mead","duncan","ed-street","cajon","terrabella","highland-marine","hackberry"];
+document.getElementById("gzGrid").innerHTML = gridOrder.map(function(k,i){
+  return '<div class="gz-cell'+(i===4?' c':'')+'"><img class="cover" alt="" src="'+src(k)+'"></div>'; }).join("");
+
+/* 03 Typo */
+var lines = {0:["Manteaux","Robes","Tailleurs","Maille"],1:["Hôtel Mahfouf","Chambre 104","Paris"],2:["Automne","Hiver","Late check-out"]};
+document.querySelectorAll(".type .tr").forEach(function(t,i){
+  var seg = lines[i].map(function(w){ return '<span>'+w+' ·</span>'; }).join("");
+  t.innerHTML = '<div style="display:inline-flex">'+seg+'</div><div style="display:inline-flex">'+seg+'</div><div style="display:inline-flex">'+seg+'</div>';
+});
+document.querySelectorAll(".line.p .tr span").forEach(function(s,i){ s.style.backgroundImage = "url("+src(ED[i % 4])+")"; });
+
+/* 04 Tunnel : photos produits + éditoriales, deux tours */
+HM.helix = [].concat(P.map(function(p){return src(p.img);}), ED.map(src), P.map(function(p){return src(p.img+"-b");})).filter(Boolean);
+
+/* 05 Pellicule */
+document.getElementById("ftrack").innerHTML = P.map(function(p,i){
+  return '<article class="fcard"><div class="ph"><span class="n">'+pad(i+1)+'</span><img alt="'+p.name+'" src="'+src(p.img)+'"></div><div class="row"><h3>'+p.name+'</h3><span class="pr">'+p.pr+'</span></div></article>'; }).join("");
+
+/* 06 Chambres */
+var rooms = [["ed-street","Le manteau <em>Highland</em>","Chambre 101"],["ed-airway","Le pull <em>Airway</em>","Chambre 102"],["ed-checker","La robe <em>Duncan</em>","Chambre 104"],["ed-fig","It smells <em>like fig</em>","Le minibar"]];
+document.getElementById("stack").innerHTML = rooms.map(function(r){
+  return '<div class="sc"><div class="in"><img class="cover" alt="" src="'+src(r[0])+'"><div class="shade"></div><div class="txt"><h2>'+r[1]+'</h2><span class="lab">'+r[2]+'</span></div><div class="dim"></div></div></div>'; }).join("");
+
+/* Grain (bruit généré une fois) */
+(function(){ try{ var c=document.createElement("canvas"); c.width=c.height=160; var x=c.getContext("2d"), d=x.createImageData(160,160);
+  for(var i=0;i<d.data.length;i+=4){ var v=Math.random()*255|0; d.data[i]=d.data[i+1]=d.data[i+2]=v; d.data[i+3]=255; }
+  x.putImageData(d,0,0); document.getElementById("grain").style.backgroundImage="url("+c.toDataURL()+")"; }catch(e){} })();
+
+var lenis = null;
+HM.getVel = function(){ return lenis ? lenis.velocity : 0; };
+HM.heroIn = !motion; HM.heroP = 0; HM.helixP = 0;
 var loaderEl = document.getElementById("loader");
-if(!motion){ if(loaderEl) loaderEl.remove(); galUI.classList.add("on"); galUI.style.position="absolute"; return; }
+document.getElementById("again").addEventListener("click", function(){ if(lenis) lenis.scrollTo(0,{duration:5, easing:function(t){ return t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }}); else window.scrollTo({top:0, behavior:"smooth"}); });
+if(!motion){ if(loaderEl) loaderEl.remove(); HM.helixP = .3; return; }
 
-/* ================= Animations ================= */
+/* ================= Mise en scène ================= */
 gsap.registerPlugin(ScrollTrigger);
-if(typeof window.Lenis !== "undefined"){
-  lenis = new Lenis({duration:1.2, smoothWheel:true});
-  lenis.on("scroll", ScrollTrigger.update);
-  gsap.ticker.add(function(t){ lenis.raf(t*1000); });
-  gsap.ticker.lagSmoothing(0);
-  document.querySelectorAll('a[href^="#"]').forEach(function(a){
-    a.addEventListener("click", function(e){ var t=document.querySelector(a.getAttribute("href")); if(t){ e.preventDefault(); lenis.scrollTo(t,{duration:1.8}); } });
-  });
-}
+lenis = new Lenis({duration:1.25, smoothWheel:true});
+lenis.on("scroll", ScrollTrigger.update);
+gsap.ticker.add(function(t){ lenis.raf(t*1000); });
+gsap.ticker.lagSmoothing(0);
 window.scrollTo(0,0);
 
-document.querySelectorAll("[data-split]").forEach(function(el){
-  el.innerHTML = el.textContent.split("").map(function(c){ return '<span class="ch">'+c+'</span>'; }).join("");
-});
-var ldWord = document.getElementById("ldWord");
-ldWord.innerHTML = ldWord.textContent.split("").map(function(c){ return '<span>'+(c===" "?"&nbsp;":c)+'</span>'; }).join("");
+/* Curseur */
+var cur = document.getElementById("cur"), cx = innerWidth/2, cy = innerHeight/2, tx = cx, ty = cy;
+window.addEventListener("pointermove", function(e){ tx = e.clientX; ty = e.clientY; }, {passive:true});
+document.addEventListener("pointerover", function(e){ cur.classList.toggle("big", !!e.target.closest("img, .gz-cell, .fcard, button")); });
+gsap.ticker.add(function(){ cx += (tx-cx)*.18; cy += (ty-cy)*.18; cur.style.transform = "translate3d("+cx+"px,"+cy+"px,0)"; });
+
+/* Barre de progression + chapitres */
+var bar = document.getElementById("bar"), chap = document.getElementById("chap"), curCh = "";
+ScrollTrigger.create({start:0, end:"max", onUpdate:function(s){ bar.style.transform = "scaleX("+s.progress+")"; }});
+function setChap(t){
+  if(t===curCh) return; curCh = t; var sp = chap.firstElementChild; gsap.killTweensOf(sp);
+  gsap.timeline().to(sp,{yPercent:-110, duration:.25, ease:"power2.in"}).add(function(){ sp.textContent = t; }).fromTo(sp,{yPercent:110},{yPercent:0, duration:.45, ease:"power3.out"});
+}
 
 /* --- Ouverture --- */
-if(lenis) lenis.stop();
-var heroChars = gsap.utils.toArray(".hero h1 .ch");
-gsap.set(heroChars,{yPercent:110});
-gsap.set(".hero .top, .hero .meta",{autoAlpha:0, y:16});
-gsap.set(".nav",{autoAlpha:0});
+document.querySelectorAll("[data-split]").forEach(function(el){ el.innerHTML = el.textContent.split("").map(function(c){ return '<span class="ch">'+c+'</span>'; }).join(""); });
+lenis.stop();
+var chars = gsap.utils.toArray(".hero h1 .ch");
+gsap.set(chars,{yPercent:120, opacity:0});
+gsap.set(".hero .meta, .nav",{autoAlpha:0});
 var cnt = {v:0}, ldNum = document.getElementById("ldNum");
 gsap.timeline({delay:.2})
-  .from("#ldWord span",{yPercent:110, duration:1, ease:"power4.out", stagger:.035})
-  .to("#ldBar",{scaleX:1, duration:1.5, ease:"power2.inOut"},.2)
-  .to(cnt,{v:104, duration:1.5, ease:"power2.inOut", onUpdate:function(){ ldNum.textContent = "Check-in "+("00"+Math.round(cnt.v)).slice(-3); }},.2)
-  .to("#ldWord span",{yPercent:-110, duration:.6, ease:"power3.in", stagger:.02},"+=.15")
-  .to("#loader",{clipPath:"inset(0% 0% 100% 0%)", duration:1.1, ease:"expo.inOut"},"-=.2")
-  .add(function(){ window.HM.heroIn = true; },"-=.6")
-  .to(heroChars,{yPercent:0, duration:1.3, ease:"expo.out", stagger:.04},"-=.55")
-  .to(".hero .top, .hero .meta",{autoAlpha:1, y:0, duration:.9, stagger:.1},"-=1")
-  .to(".nav",{autoAlpha:1, duration:.8},"-=.9")
-  .add(function(){ if(loaderEl) loaderEl.remove(); if(lenis) lenis.start(); ScrollTrigger.refresh(); });
+  .to(cnt,{v:104, duration:1.6, ease:"power3.inOut", onUpdate:function(){ ldNum.textContent = ("00"+Math.round(cnt.v)).slice(-3); }})
+  .to("#loader .in",{yPercent:-30, autoAlpha:0, duration:.6, ease:"power3.in"},"+=.15")
+  .to("#loader",{clipPath:"inset(0% 0% 100% 0%)", duration:1.1, ease:"expo.inOut"},"-=.25")
+  .add(function(){ HM.heroIn = true; },"-=.7")
+  .to(chars,{yPercent:0, opacity:1, duration:1.4, ease:"expo.out", stagger:.045},"-=.6")
+  .to(".hero .meta, .nav",{autoAlpha:1, duration:.9},"-=1")
+  .add(function(){ if(loaderEl) loaderEl.remove(); lenis.start(); ScrollTrigger.refresh(); });
 
-ScrollTrigger.create({start:60, end:"max", onToggle:function(s){ document.getElementById("nav").classList.toggle("scrolled", s.isActive); }});
+/* --- 01 Lobby : plongée dans la clé, les lettres s'envolent --- */
+function rnd(i, k){ var x = Math.sin(i*12.9898 + k*78.233)*43758.5453; return x - Math.floor(x); }
+var heroTl = gsap.timeline({scrollTrigger:{trigger:".hero", start:"top top", end:"+=150%", pin:true, scrub:true, anticipatePin:1,
+  onUpdate:function(s){ HM.heroP = s.progress; }}});
+heroTl.fromTo(chars,{x:0, y:0, rotation:0, scale:1, opacity:1},{
+    x:function(i){ return (rnd(i,1)-.5)*innerWidth*1.4; }, y:function(i){ return (rnd(i,2)-.5)*innerHeight*1.3; },
+    rotation:function(i){ return (rnd(i,3)-.5)*160; }, scale:function(i){ return .6+rnd(i,4)*1.8; }, opacity:0,
+    ease:"power2.in", duration:.7, stagger:{each:.012, from:"center"}}, 0)
+  .fromTo(".hero .meta",{autoAlpha:1},{autoAlpha:0, duration:.2},0)
+  .to(".hero .veil",{opacity:1, duration:.18, ease:"none"},.82)
+  .to({}, {duration:.02});
 
-/* --- Lobby au scroll --- */
-gsap.timeline({scrollTrigger:{trigger:".hero", start:"top top", end:"bottom top", scrub:true}})
-  .to(".hero h1 .l:first-child",{xPercent:-18, ease:"none"},0)
-  .to(".hero h1 .l2",{xPercent:18, ease:"none"},0)
-  .to(".hero .title",{autoAlpha:.15, ease:"none"},0)
-  .to(".hero .meta, .hero .top",{autoAlpha:0, ease:"none"},0);
-
-/* --- Manifeste --- */
-var man = document.getElementById("manifest");
-(function split(node){
-  Array.prototype.slice.call(node.childNodes).forEach(function(n){
-    if(n.nodeType===3){ var f=document.createDocumentFragment();
-      n.textContent.split(/(\s+)/).forEach(function(part){ if(!part) return;
-        if(/^\s+$/.test(part)) f.appendChild(document.createTextNode(part)); else { var s=document.createElement("span"); s.className="w"; s.textContent=part; f.appendChild(s); } });
-      n.parentNode.replaceChild(f,n);
-    } else if(n.nodeType===1) split(n);
-  });
-})(man);
-gsap.fromTo(man.querySelectorAll(".w"),{opacity:.14},{opacity:1, stagger:.05, ease:"none", scrollTrigger:{trigger:man, start:"top 78%", end:"bottom 50%", scrub:.5}});
-gsap.fromTo(".manifest .side .ph",{clipPath:"inset(100% 0 0 0)"},{clipPath:"inset(0% 0 0 0)", duration:1.4, ease:"expo.out", scrollTrigger:{trigger:".manifest", start:"top 60%"}});
-gsap.fromTo(".manifest .side .ph img",{scale:1.25},{scale:1, ease:"none", scrollTrigger:{trigger:".manifest", start:"top bottom", end:"bottom top", scrub:true}});
-
-/* --- Galerie 3D épinglée --- */
-var N = P.length;
-if(webgl) ScrollTrigger.create({trigger:".gallery", start:"top top", end:function(){ return "+="+(window.innerHeight*0.6*(N-1)); }, pin:true, anticipatePin:1,
-  onUpdate:function(s){ var pos = s.progress*(N-1); window.HM.galleryPos = pos; setGal(Math.round(pos), true); gProg.style.transform = "scaleX("+s.progress+")"; },
-  onToggle:function(s){ galUI.classList.toggle("on", s.isActive); }});
-if(webgl) gsap.fromTo(".gallery .ghost",{xPercent:12},{xPercent:-12, ease:"none", scrollTrigger:{trigger:".gallery", start:"top bottom", end:function(){ return "+="+(window.innerHeight*(0.6*(N-1)+2)); }, scrub:true}});
-
-/* --- Chambres : rideau + parallaxe --- */
-gsap.utils.toArray(".room").forEach(function(r){
-  var ph = r.querySelector(".ph"), im = ph.querySelector("img");
-  gsap.fromTo(ph,{clipPath:"inset(12% 8% 12% 8%)"},{clipPath:"inset(0% 0% 0% 0%)", ease:"none", scrollTrigger:{trigger:r, start:"top 95%", end:"top 35%", scrub:true}});
-  gsap.fromTo(im,{yPercent:-7},{yPercent:7, ease:"none", scrollTrigger:{trigger:r, start:"top bottom", end:"bottom top", scrub:true}});
-  gsap.from(r.querySelector(".cap"),{y:24, autoAlpha:0, duration:1, ease:"power3.out", scrollTrigger:{trigger:r, start:"top 70%"}});
+/* --- 02 La grille : plein écran → grille --- */
+var cells = gsap.utils.toArray(".gz-cell"), center = cells[4];
+function coverScale(){ var r = center.getBoundingClientRect(); var w = r.width/(gsap.getProperty(center,"scale")||1), h = r.height/(gsap.getProperty(center,"scale")||1); return Math.max(innerWidth/w, innerHeight/h)*1.02; }
+var gzTl = gsap.timeline({scrollTrigger:{trigger:".gz", start:"top top", end:"+=230%", pin:true, scrub:1, anticipatePin:1, invalidateOnRefresh:true}});
+gzTl.fromTo(center,{scale:coverScale},{scale:1, ease:"power2.inOut", duration:1},0)
+  .fromTo(center.querySelector("img"),{scale:1},{scale:1.15, ease:"none", duration:1},0);
+cells.forEach(function(c,i){
+  if(i===4) return;
+  var col = i%3 - 1, row = Math.floor(i/3) - 1;
+  gzTl.fromTo(c,{x:function(){ return col*innerWidth*.7; }, y:function(){ return row*innerHeight*.8; }, rotation:col*10+row*4, autoAlpha:0},
+    {x:0, y:0, rotation:0, autoAlpha:1, ease:"power3.out", duration:.75}, .35 + (Math.abs(col)+Math.abs(row))*.07);
+  gzTl.fromTo(c.querySelector("img"),{scale:1.5},{scale:1, ease:"power2.out", duration:.9}, .35);
 });
-gsap.from(".rooms .head h2",{yPercent:30, autoAlpha:0, duration:1.2, ease:"expo.out", scrollTrigger:{trigger:".rooms", start:"top 75%"}});
+gzTl.to(".gz-grid",{scale:.82, rotation:-5, ease:"power2.inOut", duration:.6},1.15)
+  .fromTo(".gz .cap",{yPercent:60, autoAlpha:0},{yPercent:0, autoAlpha:1, duration:.4},1.3)
+  .to({}, {duration:.15});
 
-/* --- Boutique --- */
-ScrollTrigger.batch(".card",{start:"top 88%", once:true, onEnter:function(b){ gsap.from(b,{y:50, autoAlpha:0, duration:1.1, ease:"expo.out", stagger:.08}); }});
+/* --- 03 Typo cinétique : vitesse liée au scroll --- */
+var tracks = gsap.utils.toArray(".type .tr").map(function(t){ return {el:t, dir:+t.dataset.dir, x:0, w:0}; });
+function measure(){ tracks.forEach(function(t){ t.w = t.el.firstElementChild.getBoundingClientRect().width; }); }
+measure(); window.addEventListener("resize", measure);
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ measure(); ScrollTrigger.refresh(); });
+var vel = 0, skewSet = gsap.quickSetter(".type .tr","skewX","deg");
+gsap.ticker.add(function(){
+  vel += (lenis.velocity - vel) * .1;
+  var speed = 1 + Math.min(Math.abs(vel)*.6, 30), sign = vel < -0.2 ? -1 : 1;
+  tracks.forEach(function(t){ if(!t.w) return; t.x += t.dir*speed*sign; if(t.x <= -t.w) t.x += t.w; if(t.x > 0) t.x -= t.w; t.el.style.transform = "translate3d("+t.x+"px,0,0)"; });
+  skewSet(gsap.utils.clamp(-14,14,-vel*.5));
+});
 
-/* --- Minibar --- */
-gsap.fromTo(".minibar .ph img",{yPercent:-6},{yPercent:6, ease:"none", scrollTrigger:{trigger:".minibar", start:"top bottom", end:"bottom top", scrub:true}});
-gsap.from(".minibar .tx > *",{y:30, autoAlpha:0, duration:1, stagger:.08, ease:"power3.out", scrollTrigger:{trigger:".minibar", start:"top 65%"}});
+/* --- 04 Le tunnel --- */
+ScrollTrigger.create({trigger:".tunnel", start:"top top", end:"+=420%", pin:true, anticipatePin:1, onUpdate:function(s){ HM.helixP = s.progress; }});
+gsap.timeline({scrollTrigger:{trigger:".tunnel", start:"top top", end:"+=420%", scrub:true}})
+  .fromTo(".tunnel .mid",{scale:.7, autoAlpha:0},{scale:1, autoAlpha:1, duration:.12})
+  .to(".tunnel .mid",{scale:1.6, autoAlpha:0, duration:.2},.7);
 
-/* --- Réception + enseigne --- */
-gsap.from(".reception .grid > div:last-child > *",{y:30, autoAlpha:0, duration:1, stagger:.08, ease:"power3.out", scrollTrigger:{trigger:".reception", start:"top 65%"}});
-gsap.fromTo(".foot .sign",{yPercent:40, autoAlpha:0},{yPercent:0, autoAlpha:1, duration:1.4, ease:"expo.out", scrollTrigger:{trigger:".foot", start:"top 85%"}});
+/* --- 05 La pellicule --- */
+var ftrack = document.getElementById("ftrack");
+function fDist(){ return Math.max(0, ftrack.scrollWidth - innerWidth); }
+var fTween = gsap.to(ftrack,{x:function(){ return -fDist(); }, ease:"none",
+  scrollTrigger:{trigger:".film", start:"top top", end:function(){ return "+="+fDist(); }, pin:true, scrub:.8, invalidateOnRefresh:true, anticipatePin:1}});
+gsap.utils.toArray(".fcard").forEach(function(c){
+  gsap.fromTo(c.querySelector("img"),{xPercent:-8},{xPercent:8, ease:"none", scrollTrigger:{trigger:c, containerAnimation:fTween, start:"left right", end:"right left", scrub:true}});
+  gsap.fromTo(c,{y:80, rotation:4},{y:0, rotation:0, ease:"none", scrollTrigger:{trigger:c, containerAnimation:fTween, start:"left 110%", end:"left 60%", scrub:true}});
+});
+var fSkew = gsap.quickSetter(".fcard .ph","skewX","deg");
+gsap.ticker.add(function(){ fSkew(gsap.utils.clamp(-8,8, -vel*.35)); });
+gsap.from(".film .hd h2",{yPercent:60, autoAlpha:0, duration:1.2, ease:"expo.out", scrollTrigger:{trigger:".film", start:"top 70%"}});
 
+/* --- 06 Les chambres : cartes empilées --- */
+var scs = gsap.utils.toArray(".sc");
+scs.forEach(function(s,i){
+  var inr = s.querySelector(".in");
+  gsap.fromTo(s.querySelector("img"),{scale:1.3},{scale:1, ease:"none", scrollTrigger:{trigger:s, start:"top bottom", end:"top top", scrub:true}});
+  gsap.from(s.querySelectorAll(".txt > *"),{yPercent:80, autoAlpha:0, duration:1.1, stagger:.08, ease:"expo.out", scrollTrigger:{trigger:s, start:"top 40%"}});
+  if(i < scs.length-1){
+    gsap.to(inr,{scale:.84, rotation:i%2?2:-2, borderRadius:24, ease:"none", scrollTrigger:{trigger:scs[i+1], start:"top bottom", end:"top top", scrub:true}});
+    gsap.to(s.querySelector(".dim"),{opacity:.7, ease:"none", scrollTrigger:{trigger:scs[i+1], start:"top bottom", end:"top top", scrub:true}});
+  }
+});
+
+/* --- 07 La traversée : zoom à travers le H --- */
+var mask = document.getElementById("mask"), word = document.getElementById("maskWord");
+var letterH = document.getElementById("maskH");
+function originOnStem(){ var m = mask.getBoundingClientRect(), hr = letterH.getBoundingClientRect(), sc = gsap.getProperty(mask,"scale") || 1;
+  // fût épais du t, posé sur la robe blanche de la photo (mesures ramenées à l'échelle 1)
+  return ((hr.left - m.left)/sc + (hr.width/sc)*0.42) + "px " + ((hr.top - m.top)/sc + (hr.height/sc)*0.62) + "px"; }
+var thTl = gsap.timeline({scrollTrigger:{trigger:".through", start:"top top", end:"+=220%", pin:true, scrub:1, anticipatePin:1, invalidateOnRefresh:true}});
+thTl.fromTo(mask,{scale:1, transformOrigin:originOnStem},{scale:90, ease:"power3.in", duration:1, immediateRender:false},0)
+  .fromTo(".through .img",{scale:1.35},{scale:1, ease:"power2.out", duration:1.4},0)
+  .to(mask,{autoAlpha:0, ease:"none", duration:.3},.62)
+  .to(".through .cap",{opacity:1, duration:.3},1.05)
+  .fromTo(".through .cap > *",{yPercent:60},{yPercent:0, duration:.3, stagger:.05},1.05)
+  .to({}, {duration:.25});
+
+/* --- 08 Check-out --- */
+gsap.from(".end .mid > *",{y:50, autoAlpha:0, duration:1.2, stagger:.1, ease:"expo.out", scrollTrigger:{trigger:".end", start:"top 60%"}});
+
+/* Chapitres : créés après les épinglages pour tenir compte de leur durée */
+gsap.utils.toArray("[data-ch]").forEach(function(s){
+  ScrollTrigger.create({trigger:s, start:"top 50%", end:"bottom 50%", onToggle:function(st){ if(st.isActive) setChap(s.dataset.ch); }});
+});
 window.addEventListener("load", function(){ ScrollTrigger.refresh(); });
-if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ ScrollTrigger.refresh(); });
 })();
 </script>
 </body>

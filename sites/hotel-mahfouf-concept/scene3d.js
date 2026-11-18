@@ -230,63 +230,65 @@
     obj.position.sub(ctr);
     var holder = new T.Group(); holder.add(obj); holder.scale.setScalar(s);
     var pivot = new T.Group(); pivot.add(holder); sc.add(pivot);
-    var cam = new T.PerspectiveCamera(26, 1, 0.1, 60);
-    models[id] = { scene: sc, pivot: pivot, obj: obj, cam: cam };
+    var cam = new T.PerspectiveCamera(26, 1, 0.01, 60);
+    models[id] = { scene: sc, pivot: pivot, obj: obj, cam: cam, focus: ctr.clone().multiplyScalar(-s), s: s };
     return models[id];
   }
-  function frameCam(cam, aspect, zoom, ty) {
-    cam.aspect = aspect;
+  function camDist(cam, aspect) {
     var vf = T.MathUtils.degToRad(cam.fov), hf = 2 * Math.atan(Math.tan(vf / 2) * aspect);
-    var d = (1.38 / Math.sin(Math.min(vf, hf) / 2)) / (zoom || 1);
-    cam.position.set(0, d * 0.08 + (ty || 0), d); cam.lookAt(0, ty || 0, 0); cam.updateProjectionMatrix();
+    return 1.38 / Math.sin(Math.min(vf, hf) / 2);
+  }
+  function frameCam(cam, aspect, zoom) {
+    cam.aspect = aspect;
+    var d = camDist(cam, aspect) / (zoom || 1);
+    cam.position.set(0, d * 0.08, d); cam.lookAt(0, 0, 0); cam.updateProjectionMatrix();
   }
 
-  /* ---------- Galerie circulaire (photos réelles) ---------- */
-  var gal = null;
-  function buildGallery(el) {
-    var list = (HM.gallery || []);
+  /* ---------- Tunnel de photos (hélice) ---------- */
+  var hx = null;
+  function buildHelix(el) {
+    var list = HM.helix || [];
     if (!list.length) return null;
-    var N = list.length, PW = 3, PH = 4, GAP = 0.55;
-    var R = (N * (PW + GAP)) / (Math.PI * 2);
-    var sc = new T.Scene(), ring = new T.Group(); sc.add(ring);
-    var loader = new T.TextureLoader();
+    var sc = new T.Scene(), grp = new T.Group(); sc.add(grp);
+    var loader = new T.TextureLoader(), PW = 2.1, PH = 2.8, STEP = 1.75, R = 3.1;
     var items = list.map(function (src, i) {
-      var geo = new T.PlaneGeometry(PW, PH, 40, 1), pos = geo.attributes.position;
-      for (var v = 0; v < pos.count; v++) { var x = pos.getX(v), a = x / R; pos.setX(v, R * Math.sin(a)); pos.setZ(v, R * Math.cos(a) - R); }
-      geo.computeBoundingSphere();
-      var mat = new T.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, side: T.DoubleSide, toneMapped: false });
-      var m = new T.Mesh(geo, mat), th = (i / N) * Math.PI * 2;
-      m.position.set(R * Math.sin(th), 0, R * Math.cos(th)); m.rotation.y = th;
-      ring.add(m);
+      var a = i * 2.39996 + 0.4; // angle d'or : répartition régulière autour de l'axe
+      var mat = new T.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, side: T.DoubleSide, toneMapped: false, depthWrite: false });
+      var m = new T.Mesh(new T.PlaneGeometry(PW, PH), mat);
+      var x = Math.cos(a) * R, y = Math.sin(a) * R * 0.72, z = -i * STEP;
+      m.position.set(x, y, z);
+      m.rotation.set(y / R * 0.5, -x / R * 0.55, 0);
+      grp.add(m);
       loader.load(src, function (t) {
         t.colorSpace = T.SRGBColorSpace; t.anisotropy = ANI;
         var ia = t.image.width / t.image.height, pa = PW / PH;
         if (ia > pa) { t.repeat.set(pa / ia, 1); t.offset.set((1 - pa / ia) / 2, 0); } else { t.repeat.set(1, ia / pa); t.offset.set(0, (1 - ia / pa) / 2); }
         mat.map = t; mat.needsUpdate = true; mat.userData.ready = true;
       });
-      return { mesh: m, mat: mat, th: th };
+      return { m: m, mat: mat, z: z };
     });
-    var cam = new T.PerspectiveCamera(30, 1, 0.1, 100);
-    return { el: el, scene: sc, ring: ring, items: items, N: N, R: R, PW: PW, PH: PH, cam: cam, rot: 0 };
+    var cam = new T.PerspectiveCamera(58, 1, 0.05, 80);
+    return { el: el, scene: sc, grp: grp, items: items, cam: cam, len: (list.length - 1) * STEP, p: 0, twist: 0 };
   }
-  function renderGallery(rect, clip) {
-    var g = gal, w = rect.r - rect.l, h = rect.b - rect.t, aspect = w / h;
-    var target = (HM.galleryPos || 0) * (Math.PI * 2 / g.N);
-    g.rot += (target - g.rot) * 0.09;
-    g.ring.rotation.y = -g.rot + ptr.x * 0.035;
-    g.ring.rotation.x = ptr.y * 0.02;
-    g.ring.position.y = Math.sin(time * 0.6) * 0.04;
+  function renderHelix(rect, clip) {
+    var g = hx, w = rect.r - rect.l, h = rect.b - rect.t;
+    var target = HM.helixP || 0;
+    g.p += (target - g.p) * 0.08;
+    var camZ = 7 - g.p * (g.len + 9);
+    g.twist += (Math.max(-1, Math.min(1, (HM.getVel ? HM.getVel() : 0) * 0.02)) - g.twist) * 0.05;
+    g.grp.rotation.z = g.p * 2.2 + time * 0.03 + g.twist;
     g.items.forEach(function (it) {
-      var a = it.th - g.rot, c = Math.cos(a);
-      var on = it.mat.userData.ready ? 1 : 0;
-      it.mat.opacity += ((on ? (0.18 + 0.82 * Math.pow(Math.max(0, c), 3)) : 0) - it.mat.opacity) * 0.12;
-      it.mat.color.setScalar(0.35 + 0.65 * Math.max(0, c));
+      var d = camZ - it.z, o = 0;
+      if (it.mat.userData.ready) o = Math.max(0, Math.min(1, (30 - d) / 10)) * Math.max(0, Math.min(1, (d - 0.4) / 2.2));
+      it.mat.opacity = o;
+      it.m.visible = o > 0.003;
     });
-    var cam = g.cam; cam.aspect = aspect;
-    var vf = T.MathUtils.degToRad(cam.fov), hf = 2 * Math.atan(Math.tan(vf / 2) * aspect);
-    var dh = (g.PH / 0.62 / 2) / Math.tan(vf / 2), dw = (g.PW / (aspect < 0.8 ? 0.74 : 0.3) / 2) / Math.tan(hf / 2);
-    var d = Math.max(dh, dw);
-    cam.position.set(0, 0.15, g.R + d); cam.lookAt(0, 0, g.R - 2); cam.updateProjectionMatrix();
+    var cam = g.cam; cam.aspect = w / h;
+    cam.fov = w / h < 0.8 ? 72 : 58;
+    cam.position.set(ptr.x * 0.35, -ptr.y * 0.25, camZ);
+    cam.lookAt(ptr.x * 0.1, -ptr.y * 0.08, camZ - 10);
+    cam.rotation.z += g.p * 0.6;
+    cam.updateProjectionMatrix();
     renderer.setViewport(rect.l, H - rect.b, w, h);
     renderer.setScissor(clip.l, H - clip.b, clip.r - clip.l, clip.b - clip.t);
     renderer.render(g.scene, cam);
@@ -299,19 +301,20 @@
     document.querySelectorAll("[data-model]").forEach(function (el, i) {
       anchors.push({ el: el, id: el.dataset.model, phase: i * 2.1, k: 0, kv: 0, zoom: parseFloat(el.dataset.zoom || "1"), hero: el.hasAttribute("data-hero") });
     });
-    var ge = document.querySelector("[data-gallery]");
-    if (ge) gal = buildGallery(ge);
+    var he = document.querySelector("[data-helix]");
+    if (he) hx = buildHelix(he);
   }
 
   var ptr = { x: 0, y: 0, tx: 0, ty: 0 };
   window.addEventListener("pointermove", function (e) { if (!W) return; ptr.tx = (e.clientX / W) * 2 - 1; ptr.ty = (e.clientY / H) * 2 - 1; }, { passive: true });
-  var spinV = 0, spinA = 0, ring = 0;
-  document.addEventListener("hm:bell", function () { ring = 1; });
+  var spinV = 0, spinA = 0;
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   function inter(a, b) { return { l: Math.max(a.l, b.l), t: Math.max(a.t, b.t), r: Math.min(a.r, b.r), b: Math.min(a.b, b.b) }; }
   function R(el) { var r = el.getBoundingClientRect(); return { l: r.left, t: r.top, r: r.right, b: r.bottom }; }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  var tmpV = new T.Vector3(), tmpE = new T.Euler();
 
-  var last = performance.now(), time = 0;
+  var last = performance.now(), time = 0, heroE = 0;
   function render() {
     size();
     var now = performance.now(), dt = Math.min(0.05, (now - last) / 1000); last = now;
@@ -319,16 +322,15 @@
     ptr.x += (ptr.tx - ptr.x) * 0.05; ptr.y += (ptr.ty - ptr.y) * 0.05;
     var vel = HM.getVel ? HM.getVel() : 0;
     spinV += vel * 0.0006; spinV *= 0.9; spinA += spinV; spinA *= 0.96; spinA = Math.max(-0.7, Math.min(0.7, spinA));
-    ring *= 0.94;
 
     renderer.setScissorTest(false); renderer.clear(); renderer.setScissorTest(true);
     var vp = { l: 0, t: 0, r: W, b: H };
 
-    if (gal) {
-      var gr = R(gal.el);
+    if (hx) {
+      var gr = R(hx.el);
       if (gr.b > 0 && gr.t < H && gr.r - gr.l > 4) {
         var gc = inter(gr, vp);
-        if (gc.r - gc.l >= 1 && gc.b - gc.t >= 1) renderGallery(gr, gc);
+        if (gc.r - gc.l >= 1 && gc.b - gc.t >= 1) renderHelix(gr, gc);
       }
     }
 
@@ -341,21 +343,35 @@
       a.kv += (target - a.k) * 0.06; a.kv *= 0.8; a.k += a.kv; if (reduce) a.k = target;
       if (a.k < 0.002) continue;
       var m = getModel(a.id), t = time + a.phase;
-      // progression de sortie de la section (0 → 1 quand elle quitte l'écran par le haut)
-      var out = Math.max(0, Math.min(1, -rect.t / Math.max(1, h)));
       var ease = 1 - Math.pow(1 - Math.min(1, a.k), 3);
-      m.pivot.scale.setScalar(0.82 + 0.18 * ease);
-      m.pivot.position.y = Math.sin(t * 0.9) * 0.05 + (1 - ease) * -0.5 + out * 0.9;
-      if (a.id === "key") {
-        m.pivot.rotation.set(ptr.y * 0.18 + Math.sin(t * 0.5) * 0.05, Math.sin(t * 0.4) * 0.5 + ptr.x * 0.55 + spinA + out * 2.6 + (1 - ease) * -1.2, Math.sin(t * 0.7) * 0.03);
+      var cam = m.cam, aspect = w / h;
+      cam.aspect = aspect;
+      if (a.hero) {
+        // plongée dans le porte-clé : la clé se redresse, la caméra fonce sur le « 104 »
+        heroE += ((HM.heroP || 0) - heroE) * 0.12;
+        var e = heroE, e2 = e * e * (3 - 2 * e);
+        m.pivot.scale.setScalar(0.82 + 0.18 * ease);
+        m.pivot.position.y = lerp(Math.sin(t * 0.9) * 0.05 + (1 - ease) * -0.5, 0, e2);
+        m.pivot.rotation.set(
+          lerp(ptr.y * 0.18 + Math.sin(t * 0.5) * 0.05, 0, e2),
+          lerp(Math.sin(t * 0.4) * 0.5 + ptr.x * 0.55 + spinA + (1 - ease) * -1.2, 0, e2) + e2 * Math.PI * 2,
+          lerp(Math.sin(t * 0.7) * 0.03, 0.62, e2));
+        tmpV.copy(m.focus).multiplyScalar(m.pivot.scale.x).applyEuler(tmpE.copy(m.pivot.rotation)).add(m.pivot.position);
+        var zoom = (1 + 22 * Math.pow(e, 2.6)) * a.zoom;
+        var d = camDist(cam, aspect) / zoom;
+        var tx = tmpV.x * e2, ty = tmpV.y * e2;
+        cam.position.set(tx, ty + d * 0.08 * (1 - e2), d + tmpV.z * e2);
+        cam.lookAt(tx, ty, tmpV.z * e2);
+        cam.updateProjectionMatrix();
       } else {
-        m.pivot.rotation.set(0.2 + ptr.y * 0.08, t * 0.25 + ptr.x * 0.3, Math.sin(time * 42) * ring * 0.05);
-        if (m.obj.userData.plunger) m.obj.userData.plunger.position.y = 1.32 - ring * 0.14;
+        m.pivot.scale.setScalar(0.82 + 0.18 * ease);
+        m.pivot.position.y = Math.sin(t * 0.9) * 0.05 + (1 - ease) * -0.5;
+        m.pivot.rotation.set(ptr.y * 0.18 + Math.sin(t * 0.5) * 0.05, t * 0.5 + ptr.x * 0.4, Math.sin(t * 0.7) * 0.03);
+        frameCam(cam, aspect, a.zoom);
       }
-      frameCam(m.cam, w / h, a.zoom);
       renderer.setViewport(rect.l, H - rect.b, w, h);
       renderer.setScissor(clip.l, H - clip.b, clip.r - clip.l, clip.b - clip.t);
-      renderer.render(m.scene, m.cam);
+      renderer.render(m.scene, cam);
     }
   }
 

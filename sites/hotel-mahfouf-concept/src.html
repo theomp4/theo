@@ -97,12 +97,15 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance;l
 .btn.solid{background:var(--paper);color:var(--cherry)}
 .btn.ghost{background:transparent;color:var(--paper);box-shadow:inset 0 0 0 1.5px rgba(251,239,240,.6)}
 .btn.ghost:hover{background:rgba(251,239,240,.1)}
-.float{position:absolute;z-index:1;width:clamp(110px,16vw,230px);filter:drop-shadow(0 30px 40px rgba(60,0,10,.45));pointer-events:none}
-.float.f1{left:4%;top:18%;transform:rotate(-12deg)}
-.float.f2{right:5%;top:14%;width:clamp(90px,12vw,170px)}
-.float.f3{left:9%;bottom:8%;width:clamp(90px,12vw,170px)}
-.float.f4{right:8%;bottom:10%}
-@media (max-width:700px){.float.f1{left:-6%;top:10%}.float.f2{right:-4%;top:8%}.float.f3{left:-4%;bottom:4%}.float.f4{right:-6%;bottom:3%}.float{opacity:.85}}
+.float{position:absolute;z-index:1;width:clamp(150px,21vw,330px);aspect-ratio:1;max-width:100%;display:grid;place-items:center;filter:drop-shadow(0 30px 40px rgba(60,0,10,.45));pointer-events:none}
+.float svg{width:80%}
+.gl .float{filter:none}
+.float.f1{left:2%;top:14%}
+.float.f2{right:3%;top:12%;width:clamp(130px,17vw,260px)}
+.float.f3{left:7%;bottom:4%;width:clamp(130px,16vw,240px)}
+.float.f4{right:5%;bottom:5%;width:clamp(150px,19vw,290px)}
+.gl [data-model] > svg{visibility:hidden}
+@media (max-width:700px){.float,.float.f2,.float.f3,.float.f4{width:clamp(120px,36vw,170px)}.float.f1{left:-8%;top:9%}.float.f2{right:-6%;top:8%}.float.f3{left:-6%;bottom:2%}.float.f4{right:-8%;bottom:2%}}
 .bell{position:absolute;z-index:3;left:50%;bottom:22px;transform:translateX(-50%);background:none;border:0;padding:6px;display:grid;justify-items:center;gap:4px;color:var(--rose)}
 .bell svg{width:54px;height:40px;transform-origin:50% 90%}
 .bell .ring{position:absolute;left:50%;top:22px;width:50px;height:50px;margin-left:-25px;border-radius:50%;border:2px solid var(--brass);opacity:0;pointer-events:none}
@@ -176,7 +179,8 @@ html:not(.no-motion) .htrack{padding-left:62vw;padding-right:50vw}
 .cardroom{position:relative;width:min(340px,76vw,calc((100svh - 380px) * .62));min-width:200px;flex:none;perspective:1400px}
 .frame{position:relative;aspect-ratio:3/4.6;max-width:100%;border:10px solid var(--wine);border-bottom-width:0;border-radius:180px 180px 0 0;background:var(--paper);overflow:hidden;box-shadow:0 30px 60px rgba(78,12,25,.25)}
 .frame .inside{position:absolute;inset:0;display:grid;grid-template-rows:1fr auto;padding:28px 22px 22px;background:radial-gradient(70% 50% at 50% 38%, var(--halo,#fff) 0, var(--paper) 72%)}
-.frame .inside svg{width:88%;justify-self:center;align-self:center;filter:drop-shadow(0 18px 18px rgba(78,12,25,.25))}
+.frame .inside .pv{display:grid;place-items:center;min-height:0;margin:-10px -10px 0}
+.frame .inside svg{width:88%;max-height:100%;filter:drop-shadow(0 18px 18px rgba(78,12,25,.25))}
 .frame .meta{display:grid;gap:10px}
 .frame .meta .r{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
 .frame .meta h3{font-size:1.6rem;color:var(--wine)}
@@ -194,7 +198,8 @@ html:not(.no-motion) .htrack{padding-left:62vw;padding-right:50vw}
 /* ---------- Ne pas déranger ---------- */
 .dnd{position:relative;background:var(--paper);padding-block:clamp(90px,12vw,160px);overflow:hidden}
 .dnd .grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;gap:clamp(30px,7vw,110px);align-items:center}
-.hanger{width:clamp(180px,24vw,260px);transform-origin:50% 26px;justify-self:center}
+.hanger{width:clamp(200px,26vw,300px);aspect-ratio:220/470;max-width:100%;justify-self:center;display:grid}
+.hanger svg{width:100%;height:auto;transform-origin:50% 26px}
 .dnd h2{font-size:clamp(2.4rem,6vw,5rem);color:var(--wine)}
 .dnd p{max-width:44ch;color:#5a2b35}
 .news{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;max-width:520px}
@@ -227,7 +232,7 @@ html:not(.no-motion) .htrack{padding-left:62vw;padding-right:50vw}
 .drawer .empty{color:#8f5a66;padding:30px 0;text-align:center}
 .it{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;padding:10px;border-radius:14px;background:#fff}
 .it .th{width:64px;height:64px;border-radius:10px;background:var(--rose);display:grid;place-items:center}
-.it .th svg{width:52px;height:52px}
+.it .th svg,.it .th img{width:56px;height:56px;object-fit:contain}
 .it .n{font-weight:600;color:var(--wine);font-size:.95rem}
 .it .p{font-family:var(--mono);font-size:.8rem;color:var(--cherry)}
 .qty{display:flex;align-items:center;gap:6px}
@@ -283,10 +288,10 @@ html:not(.no-motion) .htrack{padding-left:62vw;padding-right:50vw}
 <main>
   <!-- LOBBY -->
   <section class="hero wrap" id="lobby" data-floor="RDC" data-label="Lobby">
-    <div class="float f1" data-speed="-0.35" id="fSweat"></div>
-    <div class="float f2" data-speed="-0.6" id="fCap"></div>
-    <div class="float f3" data-speed="-0.2" id="fKey"></div>
-    <div class="float f4" data-speed="-0.5" id="fTote"></div>
+    <div class="float f1" data-speed="-0.35" id="fSweat" data-model="suitcase"></div>
+    <div class="float f2" data-speed="-0.6" id="fCap" data-model="cap"></div>
+    <div class="float f3" data-speed="-0.2" id="fKey" data-model="key"></div>
+    <div class="float f4" data-speed="-0.5" id="fTote" data-model="bell"></div>
     <div class="inner">
       <div class="eyebrow mono"><span class="dot"></span>Chambres disponibles · Réception ouverte 24/7</div>
       <h1 class="sign" aria-label="Hôtel Mahfouf">
@@ -348,7 +353,7 @@ html:not(.no-motion) .htrack{padding-left:62vw;padding-right:50vw}
   <!-- NE PAS DÉRANGER -->
   <section class="dnd wrap" id="reception" data-floor="7" data-label="Réception">
     <div class="grid">
-      <svg class="hanger" id="hanger" viewBox="0 0 220 460" aria-hidden="true">
+      <div class="hanger" data-model="hanger" data-zoom="1.08"><svg id="hanger" viewBox="0 0 220 460" aria-hidden="true">
         <defs><linearGradient id="hg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C8102E"/><stop offset="1" stop-color="#8d0b20"/></linearGradient></defs>
         <path d="M20 20 Q20 0 40 0 H180 Q200 0 200 20 V440 Q200 460 180 460 H40 Q20 460 20 440 Z" fill="url(#hg)"/>
         <circle cx="110" cy="70" r="38" fill="#FBEFF0"/>
@@ -358,7 +363,7 @@ html:not(.no-motion) .htrack{padding-left:62vw;padding-right:50vw}
         <line x1="50" y1="275" x2="170" y2="275" stroke="#D4AA55" stroke-width="2"/>
         <text x="110" y="315" text-anchor="middle" font-family="DM Mono, monospace" font-size="14" letter-spacing="3" fill="#F5B9C6">DO NOT DISTURB</text>
         <text x="110" y="400" text-anchor="middle" font-family="Gloock, Georgia, serif" font-size="26" fill="#D4AA55">★★★★★</text>
-      </svg>
+      </svg></div>
       <div>
         <span class="mono" style="color:var(--cherry)">Réception · Liste des clients</span>
         <h2>Laissez votre clé à la réception</h2>
@@ -400,6 +405,7 @@ html:not(.no-motion) .htrack{padding-left:62vw;padding-right:50vw}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <!--VENDOR-->
+<!--SCENE3D-->
 <script>
 (function(){
 "use strict";
@@ -468,13 +474,13 @@ var C = {
 
 /* Produits (illustratifs) */
 var P = [
-  {id:"sweat", name:"Sweat Réception", price:79, art:"sweat", col:C.rose, halo:"#ffd9e1", room:"101", floor:"Le Lobby", desc:"Molleton épais, broderie de l'enseigne sur la poitrine. La pièce qu'on garde à la réception."},
-  {id:"tee", name:"T-shirt Room Service", price:39, art:"tee", col:C.white, halo:"#ffe1e7", room:"102", floor:"Room Service", desc:"Coton lourd, coupe ample, écusson Room Service. Livré à la porte, à toute heure."},
-  {id:"spa", name:"Sweat Le Spa", price:85, art:"sweat", col:C.cherry, halo:"#F5B9C6", room:"103", floor:"Le Spa", desc:"Le même sweat, en rouge enseigne. Pour les après-midi en peignoir, sans le peignoir."},
-  {id:"cap", name:"Casquette Groom", price:35, art:"cap", col:C.wine, halo:"#D4AA55", room:"104", floor:"Le Rooftop", desc:"Six pans, broderie laiton, réglable. Le groom la porte, vous aussi."},
-  {id:"key", name:"Porte-clés Chambre 104", price:12, art:"key", col:C.brass, halo:"#ffe1e7", room:"105", floor:"Suite Présidentielle", desc:"La vraie clé d'hôtel, version cuir et laiton. Ne la rendez pas au check-out."},
-  {id:"tote", name:"Tote Bagagerie", price:29, art:"tote", col:C.ecru, halo:"#ffe1e7", room:"106", floor:"", desc:"Toile épaisse, anses longues. Tout ce qu'on n'a pas pu mettre dans la valise."},
-  {id:"socks", name:"Chaussettes Ne pas déranger", price:15, art:"socks", col:C.stripe, halo:"#ffd9e1", room:"107", floor:"", desc:"La paire à garder aux pieds le dimanche matin."}
+  {id:"sweat", model:"sweat", name:"Sweat Réception", price:79, art:"sweat", col:C.rose, halo:"#ffd9e1", room:"101", floor:"Le Lobby", desc:"Molleton épais, broderie de l'enseigne sur la poitrine. La pièce qu'on garde à la réception."},
+  {id:"tee", model:"tee", name:"T-shirt Room Service", price:39, art:"tee", col:C.white, halo:"#ffe1e7", room:"102", floor:"Room Service", desc:"Coton lourd, coupe ample, écusson Room Service. Livré à la porte, à toute heure."},
+  {id:"spa", model:"spa", name:"Sweat Le Spa", price:85, art:"sweat", col:C.cherry, halo:"#F5B9C6", room:"103", floor:"Le Spa", desc:"Le même sweat, en rouge enseigne. Pour les après-midi en peignoir, sans le peignoir."},
+  {id:"cap", model:"cap", name:"Casquette Groom", price:35, art:"cap", col:C.wine, halo:"#D4AA55", room:"104", floor:"Le Rooftop", desc:"Six pans, broderie laiton, réglable. Le groom la porte, vous aussi."},
+  {id:"key", model:"key", name:"Porte-clés Chambre 104", price:12, art:"key", col:C.brass, halo:"#ffe1e7", room:"105", floor:"Suite Présidentielle", desc:"La vraie clé d'hôtel, version cuir et laiton. Ne la rendez pas au check-out."},
+  {id:"tote", model:"tote", name:"Tote Bagagerie", price:29, art:"tote", col:C.ecru, halo:"#ffe1e7", room:"106", floor:"", desc:"Toile épaisse, anses longues. Tout ce qu'on n'a pas pu mettre dans la valise."},
+  {id:"socks", model:"socks", name:"Chaussettes Ne pas déranger", price:15, art:"socks", col:C.stripe, halo:"#ffd9e1", room:"107", floor:"", desc:"La paire à garder aux pieds le dimanche matin."}
 ];
 var byId = {}; P.forEach(function(p){ byId[p.id]=p; });
 function art(p){ return ART[p.art](p.col); }
@@ -495,7 +501,7 @@ floors.forEach(function(p,i){
   var r = document.createElement("div");
   r.className = "room"+(i===0?" first":"");
   r.style.setProperty("--halo", p.halo);
-  r.innerHTML = '<div class="art">'+art(p)+'</div><div class="txt"><span class="fl mono">Étage '+(i+1)+' · '+p.floor+'</span><h3>'+p.name+'</h3><p>'+p.desc+'</p><div class="row"><span class="price">'+euro(p.price)+'</span><button class="add" data-add="'+p.id+'">'+plusIcon+'Ajouter à la valise</button></div></div>';
+  r.innerHTML = '<div class="art" data-zoom="1.15" data-model="'+p.model+'">'+art(p)+'</div><div class="txt"><span class="fl mono">Étage '+(i+1)+' · '+p.floor+'</span><h3>'+p.name+'</h3><p>'+p.desc+'</p><div class="row"><span class="price">'+euro(p.price)+'</span><button class="add" data-add="'+p.id+'">'+plusIcon+'Ajouter à la valise</button></div></div>';
   cab.insertBefore(r, cab.querySelector(".ldoor"));
 });
 for(var b=5;b>=1;b--){ var s=document.createElement("span"); s.textContent=b; s.dataset.f=b; if(b===1) s.className="on"; btns.appendChild(s); }
@@ -505,7 +511,7 @@ var track = document.getElementById("htrack");
 P.slice(0,7).forEach(function(p){
   var d = document.createElement("article");
   d.className = "cardroom";
-  d.innerHTML = '<div class="frame"><div class="inside" style="--halo:'+p.halo+'">'+art(p)+'<div class="meta"><div class="r"><h3>'+p.name+'</h3><span class="price">'+euro(p.price)+'</span></div><button class="add" data-add="'+p.id+'">'+plusIcon+'Ajouter</button></div></div><div class="panel-door"><span class="plate">'+p.room+'</span><span class="knob"></span></div></div><div class="carpet"></div>';
+  d.innerHTML = '<div class="frame"><div class="inside" style="--halo:'+p.halo+'"><div class="pv" data-zoom="1.1" data-model="'+p.model+'">'+art(p)+'</div><div class="meta"><div class="r"><h3>'+p.name+'</h3><span class="price">'+euro(p.price)+'</span></div><button class="add" data-add="'+p.id+'">'+plusIcon+'Ajouter</button></div></div><div class="panel-door"><span class="plate">'+p.room+'</span><span class="knob"></span></div></div><div class="carpet"></div>';
   track.appendChild(d);
 });
 
@@ -530,7 +536,8 @@ function renderCart(){
   countEl.textContent = n; totalEl.textContent = euro(tot);
   if(!ids.length){ itemsEl.innerHTML = '<div class="empty">Votre valise est vide.<br>Les chambres vous attendent.</div>'; return; }
   itemsEl.innerHTML = ids.map(function(id){ var p=byId[id];
-    return '<div class="it"><div class="th">'+art(p)+'</div><div><div class="n">'+p.name+'</div><div class="p">'+euro(p.price)+'</div></div><div class="qty"><button data-dec="'+id+'" aria-label="Retirer un">−</button><span>'+cart[id]+'</span><button data-inc="'+id+'" aria-label="Ajouter un">+</button></div></div>'; }).join("");
+    var th = (window.HM && HM.thumbs && HM.thumbs[id]) ? '<img src="'+HM.thumbs[id]+'" alt="">' : art(p);
+    return '<div class="it"><div class="th">'+th+'</div><div><div class="n">'+p.name+'</div><div class="p">'+euro(p.price)+'</div></div><div class="qty"><button data-dec="'+id+'" aria-label="Retirer un">−</button><span>'+cart[id]+'</span><button data-inc="'+id+'" aria-label="Ajouter un">+</button></div></div>'; }).join("");
 }
 function openCart(){ drawer.classList.add("open"); scrim.classList.add("open"); drawer.setAttribute("aria-hidden","false"); if(lenis) lenis.stop(); }
 function closeCart(){ drawer.classList.remove("open"); scrim.classList.remove("open"); drawer.setAttribute("aria-hidden","true"); if(lenis) lenis.start(); }
@@ -566,11 +573,13 @@ document.getElementById("newsForm").addEventListener("submit", function(e){
   i.value = ""; toast("Clé déposée. <b>Bienvenue à l'hôtel.</b>");
 });
 renderCart();
+window.HM = {products:P, renderCart:renderCart, getVel:function(){ return lenis ? lenis.velocity : 0; }, getSwing:function(){ return typeof swing === "number" ? swing : 0; }};
 
 /* Sonnette */
 var bell = document.getElementById("bell");
 bell.addEventListener("click", function(){
   toast("Ding ! <b>La réception arrive.</b>");
+  document.dispatchEvent(new CustomEvent("hm:bell"));
   if(!motion) return;
   gsap.fromTo(bell.querySelector("svg"),{rotate:-14},{rotate:0,duration:.8,ease:"elastic.out(1.2,.3)"});
   gsap.fromTo(bell.querySelector(".ring"),{scale:.4,opacity:1},{scale:2.6,opacity:0,duration:.9,ease:"power2.out"});
@@ -710,7 +719,7 @@ gsap.utils.toArray(".cardroom").forEach(function(card){
   var door = card.querySelector(".panel-door");
   gsap.fromTo(door,{rotateY:0},{rotateY:-105, ease:"power1.inOut",
     scrollTrigger:{trigger:card, containerAnimation:hTween, start:"left 66%", end:"left 22%", scrub:true}});
-  gsap.fromTo(card.querySelector(".inside svg"),{scale:.75, y:30},{scale:1, y:0, ease:"none",
+  gsap.fromTo(card.querySelector(".inside .pv > svg"),{scale:.75, y:30},{scale:1, y:0, ease:"none",
     scrollTrigger:{trigger:card, containerAnimation:hTween, start:"left 70%", end:"left 25%", scrub:true}});
 });
 gsap.from(".corridor .head h2",{yPercent:40, autoAlpha:0, duration:1, ease:"power3.out", scrollTrigger:{trigger:".corridor", start:"top 75%"}});

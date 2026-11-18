@@ -3,8 +3,10 @@
 Site vitrine animé réalisé par ReviewMaker pour une vidéo Instagram / TikTok.
 Concept non officiel : non affilié à Hôtel Mahfouf ni à Léna Situations. Produits et prix illustratifs, aucun paiement.
 
-- `index.html` : le site complet, autonome (GSAP, ScrollTrigger et Lenis intégrés). Ouvrir dans Chrome.
-- `src.html` : source éditable. Après modification : `python3 build.py` pour régénérer `index.html`.
+- `index.html` : le site complet, autonome (Three.js, GSAP, ScrollTrigger et Lenis intégrés). Ouvrir dans Chrome.
+- `src.html` : page et animations. `scene3d.js` : objets 3D temps réel (vêtements, casquette, clé, sonnette, valise, tote, chaussettes, panneau).
+- Après modification : `python3 build.py` pour régénérer `index.html`.
+- Sans WebGL, le site affiche automatiquement les illustrations 2D de secours.
 
 ## Parcours au scroll
 1. Ouverture en portes d'ascenseur (compte à rebours 5 → RDC)

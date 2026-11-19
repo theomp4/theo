@@ -40,3 +40,15 @@ Je peux passer à l'atelier quand cela vous arrange pour vous les présenter en 
 
 Bien cordialement,
 Théo
+
+------------------------------------------------------------
+PIÈCES JOINTES
+------------------------------------------------------------
+1. Audit-Les-Carrosseries-Francaises.pdf
+2. photos/01-accueil.jpg, photos/02-voiture-reparee.jpg, photos/04-sinistre.jpg, photos/06-mobile.jpg
+   (ou la vidéo apercu-scroll.mp4)
+
+MISE EN LIGNE : app.netlify.com/drop → glisser UNIQUEMENT le dossier « A-GLISSER-SUR-NETLIFY ».
+Puis, dans Netlify : Forms → activer la détection des formulaires (sinon les demandes de devis ne sont pas reçues),
+et redéployer une fois (re-glisser le dossier) pour que le formulaire soit détecté.
+Adresse mail du client : introuvable en ligne, à demander au 01 39 65 06 68 ou via leur page Facebook.

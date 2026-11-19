@@ -1,0 +1,61 @@
+LES CARROSSERIES FRANÇAISES · message prêt à envoyer
+Contact : 01 39 65 06 68 · 24 rue des Vergers, 78580 Les Alluets-le-Roi · Facebook : Les Carrosseries Françaises
+Pièce jointe : Audit-Les-Carrosseries-Francaises.pdf (+ 2 ou 3 captures de la maquette)
+
+Objet : Les Carrosseries Françaises : votre audit en ligne + une maquette de site
+
+Bonjour Madame Gharzouli,
+
+Je m'appelle Théo, je crée des sites internet pour les entreprises des Yvelines.
+
+En préparant l'audit de votre présence en ligne (en pièce jointe), une chose m'a frappé : avec 4,9 sur 391 avis Google, Les Carrosseries Françaises ont l'une des meilleures réputations du secteur. Vos clients parlent de votre accueil, de votre équipe, de Brahim, et de voitures rendues « comme si l'accident n'avait jamais eu lieu ».
+
+Pourtant, cette réputation ne travaille pas autant qu'elle le pourrait. L'audit montre notamment que :
+- vous n'avez pas de site internet : la personne qui vient d'avoir un accrochage et cherche « carrosserie agréée assurance » près de chez elle ne trouve que des annuaires, qui affichent vos concurrents à côté de vous ;
+- vos informations ne sont pas les mêmes partout : votre adresse apparaît parfois au 27 rue des Vergers au lieu du 24, et certains sites vous affichent ouverts le samedi ;
+- on ne peut vous joindre que par téléphone, aux heures d'ouverture : un accident le soir ou le week-end, et le client contacte celui qui répond en premier.
+
+Alors je vous ai préparé une maquette de site, construite comme un petit film qu'on déroule : on traverse le « C » de votre logo pour entrer dans l'atelier, vos trois bandes bleu-blanc-rouge font le lien entre les scènes, et les 4 étapes d'un sinistre défilent sous les yeux du visiteur. Vos clients peuvent aussi envoyer une photo des dégâts pour obtenir un devis, à toute heure.
+
+👉 [LIEN CLOUDFLARE]
+
+Ouvrez-le plutôt sur ordinateur, ça vaut le coup d'œil. Les photos sont celles de votre atelier (la 911, la R8, la dépanneuse).
+
+Seriez-vous disponible 15 minutes cette semaine pour que je vous présente l'audit et la maquette, par téléphone ou directement à l'atelier ?
+
+Bien cordialement,
+
+Théo
+[TON TÉLÉPHONE]
+[TON ADRESSE MAIL]
+
+------------------------------------------------------------
+RELANCE (5 à 7 jours plus tard)
+------------------------------------------------------------
+Objet : Re : Les Carrosseries Françaises : votre audit en ligne + une maquette de site
+
+Bonjour Madame Gharzouli,
+
+Je me permets de revenir vers vous au sujet de l'audit et de la maquette de site que je vous ai envoyés pour Les Carrosseries Françaises : [LIEN CLOUDFLARE].
+
+Je peux passer à l'atelier quand cela vous arrange pour vous les présenter en 15 minutes.
+
+Bien cordialement,
+Théo
+
+------------------------------------------------------------
+PIÈCES JOINTES
+------------------------------------------------------------
+1. Audit-Les-Carrosseries-Francaises.pdf
+2. photos/02-on-traverse-le-c.jpg, photos/05-la-cabine.jpg, photos/04-le-sinistre.jpg, photos/08-mobile.jpg
+   (ou la vidéo apercu-scroll.mp4)
+
+MISE EN LIGNE (Cloudflare Pages)
+dash.cloudflare.com → Workers & Pages → Créer → Pages → « Importer des ressources » (drag and drop)
+→ nommer le projet (ex. carrosseries-francaises) → glisser UNIQUEMENT le dossier « A-GLISSER-SUR-CLOUDFLARE »
+→ Déployer. Le lien est du type https://carrosseries-francaises.pages.dev
+
+FORMULAIRE DE DEVIS : en l'état, c'est une maquette (le visiteur arrive sur la page « Demande envoyée »,
+rien n'est envoyé). Pour recevoir les demandes, mettre l'adresse d'un service de formulaires dans
+assets/main.js (ligne « const ENVOI = '' »), puis redéployer.
+Adresse mail du client : introuvable en ligne, à demander au 01 39 65 06 68 ou via leur page Facebook.

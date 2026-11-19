@@ -197,9 +197,8 @@
         </div>
       </div>
     </div>
-    <form class="form" name="devis" method="POST" action="merci.html" data-netlify="true" netlify-honeypot="bot-field" enctype="multipart/form-data" data-reveal>
-      <input type="hidden" name="form-name" value="devis">
-      <p hidden><label>Ne pas remplir <input name="bot-field"></label></p>
+    <form class="form" id="devis" name="devis" method="POST" action="merci.html" enctype="multipart/form-data" data-reveal>
+      <p hidden><label>Ne pas remplir <input name="_honey" tabindex="-1" autocomplete="off"></label></p>
       <h3>Demande de devis</h3>
       <label><span>Nom</span><input name="nom" autocomplete="name" required></label>
       <label><span>Téléphone</span><input name="telephone" type="tel" autocomplete="tel" required></label>

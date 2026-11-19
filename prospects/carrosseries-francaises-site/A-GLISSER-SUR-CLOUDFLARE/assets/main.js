@@ -16,6 +16,29 @@
   const slots = { lun: [[510, 720], [840, 1080]], mar: [[510, 750], [840, 1080]], mer: [[510, 750], [840, 1080]], jeu: [[510, 750], [840, 1080]], ven: [[510, 750], [810, 1050]] }[d] || [];
   const open = slots.some(([a, b]) => m >= a && m < b);
   const op = $('#open'); op.textContent = open ? "L'atelier est ouvert" : "L'atelier est fermé en ce moment"; op.classList.toggle('is-on', open);
+  /* Formulaire de devis (Cloudflare Pages ne reçoit pas les formulaires lui-même).
+     Pour recevoir les demandes : coller ici l'adresse d'envoi d'un service de formulaires
+     (ex. https://formsubmit.co/adresse@mail.fr ou un point d'accès Formspree). Vide = maquette :
+     le visiteur arrive directement sur la page de remerciement. */
+  const ENVOI = '';
+  const form = document.getElementById('devis');
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = form.querySelector('button[type=submit]');
+    if (form._honey && form._honey.value) return;
+    btn.disabled = true; btn.textContent = 'Envoi…';
+    if (ENVOI) {
+      try {
+        const r = await fetch(ENVOI, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+        if (!r.ok) throw new Error(r.status);
+      } catch (err) {
+        btn.disabled = false; btn.textContent = 'Envoyer';
+        alert("L'envoi n'a pas fonctionné. Appelez-nous au 01 39 65 06 68.");
+        return;
+      }
+    }
+    location.href = 'merci.html';
+  });
   const f = $('.file input'); f.addEventListener('change', () => { $('.file em').textContent = f.files[0] ? f.files[0].name : 'Choisir une photo'; });
 
   /* soulignement du menu */

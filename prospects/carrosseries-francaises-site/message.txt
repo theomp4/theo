@@ -17,7 +17,7 @@ Pourtant, cette réputation ne travaille pas autant qu'elle le pourrait. L'audit
 
 Alors je vous ai préparé une maquette de site, simple et claire, construite autour de votre logo : vos services, les 4 étapes d'un sinistre (appel, expert, véhicule de prêt, restitution), vos avis et vos horaires. Vos clients peuvent aussi envoyer une photo des dégâts pour obtenir un devis, à toute heure.
 
-👉 [LIEN NETLIFY]
+👉 [LIEN CLOUDFLARE]
 
 Seriez-vous disponible 15 minutes cette semaine pour que je vous présente l'audit et la maquette, par téléphone ou directement à l'atelier ?
 
@@ -34,7 +34,7 @@ Objet : Re : Les Carrosseries Françaises : votre audit en ligne + une maquette 
 
 Bonjour Madame Gharzouli,
 
-Je me permets de revenir vers vous au sujet de l'audit et de la maquette de site que je vous ai envoyés pour Les Carrosseries Françaises : [LIEN NETLIFY].
+Je me permets de revenir vers vous au sujet de l'audit et de la maquette de site que je vous ai envoyés pour Les Carrosseries Françaises : [LIEN CLOUDFLARE].
 
 Je peux passer à l'atelier quand cela vous arrange pour vous les présenter en 15 minutes.
 
@@ -48,7 +48,12 @@ PIÈCES JOINTES
 2. photos/01-accueil.jpg, photos/02-voiture-reparee.jpg, photos/04-sinistre.jpg, photos/06-mobile.jpg
    (ou la vidéo apercu-scroll.mp4)
 
-MISE EN LIGNE : app.netlify.com/drop → glisser UNIQUEMENT le dossier « A-GLISSER-SUR-NETLIFY ».
-Puis, dans Netlify : Forms → activer la détection des formulaires (sinon les demandes de devis ne sont pas reçues),
-et redéployer une fois (re-glisser le dossier) pour que le formulaire soit détecté.
+MISE EN LIGNE (Cloudflare Pages)
+dash.cloudflare.com → Workers & Pages → Créer → Pages → « Importer des ressources » (drag and drop)
+→ nommer le projet (ex. carrosseries-francaises) → glisser UNIQUEMENT le dossier « A-GLISSER-SUR-CLOUDFLARE »
+→ Déployer. Le lien est du type https://carrosseries-francaises.pages.dev
+
+FORMULAIRE DE DEVIS : en l'état, c'est une maquette (le visiteur arrive sur la page « Demande envoyée »,
+rien n'est envoyé). Pour recevoir les demandes, mettre l'adresse d'un service de formulaires dans
+assets/main.js (ligne « const ENVOI = '' »), puis redéployer.
 Adresse mail du client : introuvable en ligne, à demander au 01 39 65 06 68 ou via leur page Facebook.

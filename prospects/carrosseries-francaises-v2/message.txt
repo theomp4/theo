@@ -17,7 +17,7 @@ Pourtant, cette réputation ne travaille pas autant qu'elle le pourrait. L'audit
 
 Alors je vous ai préparé une maquette de site, construite comme un petit film qu'on déroule : on traverse le « C » de votre logo pour entrer dans l'atelier, vos trois bandes bleu-blanc-rouge font le lien entre les scènes, et les 4 étapes d'un sinistre défilent sous les yeux du visiteur. Vos clients peuvent aussi envoyer une photo des dégâts pour obtenir un devis, à toute heure.
 
-👉 [LIEN CLOUDFLARE]
+👉 https://black-wind-8d9a.reviewmakercontact.workers.dev
 
 Ouvrez-le plutôt sur ordinateur, ça vaut le coup d'œil. Les photos sont celles de votre atelier (la 911, la R8, la dépanneuse).
 
@@ -36,7 +36,7 @@ Objet : Re : Les Carrosseries Françaises : votre audit en ligne + une maquette 
 
 Bonjour Madame Gharzouli,
 
-Je me permets de revenir vers vous au sujet de l'audit et de la maquette de site que je vous ai envoyés pour Les Carrosseries Françaises : [LIEN CLOUDFLARE].
+Je me permets de revenir vers vous au sujet de l'audit et de la maquette de site que je vous ai envoyés pour Les Carrosseries Françaises : https://black-wind-8d9a.reviewmakercontact.workers.dev.
 
 Je peux passer à l'atelier quand cela vous arrange pour vous les présenter en 15 minutes.
 
